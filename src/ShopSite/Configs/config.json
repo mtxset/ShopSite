@@ -1,0 +1,6 @@
+﻿{
+  "database": {
+    "connection": "Data Source=(localdb)\\mtxdb;Initial Catalog=ShopSite"
+  }
+}
+ 

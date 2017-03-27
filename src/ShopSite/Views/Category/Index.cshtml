@@ -1,0 +1,13 @@
+﻿@model ShopSite.ViewModels.CategoryListViewModel
+
+
+@{
+    ViewBag.Title = "Category";
+} 
+
+@foreach (var item in Model.Categories)
+{ 
+    <section class="panel panel-default">
+        <div class="panel-heading">@item.Name</div>  
+    </section>
+}

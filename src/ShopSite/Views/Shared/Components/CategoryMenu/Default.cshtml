@@ -1,0 +1,10 @@
+﻿@model ShopSite.ViewModels.CategoryListViewModel
+
+<ul>
+    
+    @foreach (var item in Model.Categories)
+    {
+        <a href="#" class="list-group-item">@item.Name</a>
+    }
+
+</ul>
