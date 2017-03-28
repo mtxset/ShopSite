@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -57,7 +58,13 @@ namespace ShopSite.Controllers
         [HttpGet]
         public IActionResult ProductCreate()
         {
-            return View("~/Views/Admin/Products/Create.cshtml");
+            var model = new ProductEdit
+            {
+                Categories = GetAllCategories()
+            };
+
+            return View("~/Views/Admin/Products/Create.cshtml", model);
+
         }
 
         public IActionResult ProductRemove(int id)
@@ -85,9 +92,14 @@ namespace ShopSite.Controllers
         public IActionResult ProductCreate(ProductEdit model)
         {
             if (!ModelState.IsValid)
-                return View("~/Views/Admin/Products/Create.cshtml");
+                return RedirectToAction("ProductCreate");
 
             var product = model.Product;
+
+            foreach (var item in model.SelectedCategories)
+            {
+                
+            }
 
             _productRepo.Create(product);
             _productRepo.Commit();
@@ -156,7 +168,24 @@ namespace ShopSite.Controllers
 
             model.Product = product;
 
+            model.Categories = GetAllCategories();
+
             return View("~/Views/Admin/Products/Edit.cshtml", model);
+        }
+
+        private List<SelectListItem> GetAllCategories()
+        {
+            var list = new List<SelectListItem>();
+            
+            foreach (var item in _categoryRepo.GetAll())
+            {
+                list.Add(new SelectListItem()
+                {
+                    Text = item.Name,
+                    Value = item.ParentId.ToString()
+                });
+            }
+            return list;
         }
 
 
