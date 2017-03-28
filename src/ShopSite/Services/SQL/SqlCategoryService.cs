@@ -4,7 +4,7 @@ using System.Linq;
 using ShopSite.Data;
 using ShopSite.Models;
 
-namespace ShopSite.Services
+namespace ShopSite.Services.SQL
 {
     public class SqlCategoryService : ICategoryService
     {

@@ -7,6 +7,7 @@ namespace ShopSite.Models
 {
     public class ProductCategory
     {
+        public int Id { get; set; }
         public bool IsFeaturedProduct { get; set; }
 
         public int CategoryId { get; set; }

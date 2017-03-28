@@ -12,5 +12,6 @@ namespace ShopSite.Data
         }
 
         public DbSet<Category> CategoryDbContext { get; set; }
+        public DbSet<Product> ProductDbContext { get; set; }
     }
 }

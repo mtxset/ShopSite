@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using ShopSite.Data;
 using ShopSite.Models;
 using ShopSite.Services;
+using ShopSite.Services.SQL;
 
 namespace ShopSite
 {
@@ -44,6 +45,7 @@ namespace ShopSite
             services.AddSingleton(provider => JsonConfiguration);
 
             services.AddScoped<ICategoryService, SqlCategoryService>();
+            services.AddScoped<IProductService, ProductService>();
             //services.AddScoped<ICategoryService, CategoryService>();
         }
 

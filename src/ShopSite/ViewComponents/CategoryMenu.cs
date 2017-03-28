@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopSite.Services;
 using ShopSite.ViewModels;
+using ShopSite.ViewModels.Category;
 
 namespace ShopSite.ViewComponents
 {

@@ -1,4 +1,4 @@
-﻿@model ShopSite.ViewModels.TempEdit
+﻿@model ShopSite.ViewModels.Admin.CategoryEdit
 
 @{
     ViewBag.Title = Model.Name;
@@ -6,7 +6,7 @@
 
 <h3>Edit @Model.Name</h3>
 
-<form class="form-horizontal" asp-action="Edit" method="post">
+<form class="form-horizontal" asp-action="CategoryEdit" method="post">
     <div class="form-group">
         <label class="col-sm-2 control-label">Category Name</label>
         <div class="col-sm-10">

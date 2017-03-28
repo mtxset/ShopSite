@@ -8,9 +8,10 @@ using ShopSite.Data;
 namespace ShopSite.Migrations
 {
     [DbContext(typeof(ShopSiteDbContext))]
-    partial class ShopSiteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170328064247_v3")]
+    partial class v3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -152,8 +153,6 @@ namespace ShopSite.Migrations
                     b.Property<bool>("IsAllowedToOrder");
 
                     b.Property<bool>("IsFeatured");
-
-                    b.Property<string>("Name");
 
                     b.Property<decimal>("Price");
 

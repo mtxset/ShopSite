@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using ShopSite.Models;
 
-namespace ShopSite.ViewModels
+namespace ShopSite.ViewModels.Category
 {
     public class CategoryListViewModel
     {
-        public IEnumerable<Category> Categories { get; set; }
+        public IEnumerable<Models.Category> Categories { get; set; }
 
-        public Category Category { get; set; }
+        public Models.Category Category { get; set; }
 
         public IEnumerable<SelectListItem> ConvertedCategories { get; set; }
     }
