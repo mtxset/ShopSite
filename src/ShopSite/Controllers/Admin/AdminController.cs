@@ -87,17 +87,7 @@ namespace ShopSite.Controllers
             if (!ModelState.IsValid)
                 return View("~/Views/Admin/Products/Create.cshtml");
 
-            var product = new Product
-            {
-                Name = model.Product.Name,
-                ShortDescription = model.Product.ShortDescription,
-                Description = model.Product.Description,
-                Price = model.Product.Price,
-                StockQuantity = model.Product.StockQuantity,
-                IsAllowedToOrder = model.Product.IsAllowedToOrder,
-                IsFeatured = model.Product.IsFeatured
-                //Categories = model.Categories
-            };
+            var product = model.Product;
 
             _productRepo.Create(product);
             _productRepo.Commit();
@@ -106,18 +96,12 @@ namespace ShopSite.Controllers
         }
 
         [HttpPost]
-        public IActionResult CategoryCreate(CategoryEdit model)
+        public IActionResult CategoryCreate(Category model)
         {
-            if (!User.IsInRole("Admin")) return View();
-
             if (!ModelState.IsValid)
                 return View("~/Views/Admin/Categories/Create.cshtml");
 
-            var category = new Category
-            {
-                Name = model.Name,
-                Description = model.Description
-            };
+            var category = model;
 
             _categoryRepo.Create(category);
             _categoryRepo.Commit();
@@ -135,7 +119,8 @@ namespace ShopSite.Controllers
                 category.Name = model.Name;
                 category.Description = model.Description;
                 category.ParentId = model.ParentId;
-
+                
+                _categoryRepo.Update(category);
                 _categoryRepo.Commit();
 
                 return RedirectToAction("Index");
@@ -145,7 +130,22 @@ namespace ShopSite.Controllers
         }
 
         [HttpPost]
-        public IActionResult ProductEdit(int id, )
+        public IActionResult ProductEdit(int id, ProductEdit model)
+        {
+            var product = _productRepo.Get(id);
+
+            if (ModelState.IsValid && product != null)
+            {
+                product = model.Product;
+
+                _productRepo.Update(product);
+                _productRepo.Commit();
+
+                return RedirectToAction("Index");
+            }
+
+            return View("~/Views/Admin/Products/Edit.cshtml");
+        }
 
         [HttpGet]
         public IActionResult ProductEdit(int id)
@@ -180,8 +180,7 @@ namespace ShopSite.Controllers
                 list.Add(new SelectListItem()
                 {
                     Text = item.Name,
-                    Value = item.ParentId.ToString(),
-                    Selected = true
+                    Value = item.ParentId.ToString()
                 });
             }
 
