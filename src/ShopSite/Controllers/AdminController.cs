@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ShopSite.Models;
 using ShopSite.Services;
 using ShopSite.ViewModels;
-using ShopSite.ViewModels.Account;
 
 namespace ShopSite.Controllers
 {
@@ -73,7 +72,7 @@ namespace ShopSite.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, CategoryEditViewModel model)
+        public IActionResult Edit(int id, TempEdit model)
         {
             var category = _categoryData.GetCategory(id);
 
@@ -81,7 +80,7 @@ namespace ShopSite.Controllers
             {
                 category.Name = model.Name;
                 category.Description = model.Description;
-                //category.ParentId = model.ParentId;
+                category.ParentId = model.ParentId;
 
                 _categoryData.Commit();
 
@@ -94,53 +93,31 @@ namespace ShopSite.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var model = _categoryData.GetCategory(id);
-
-            if (model == null)
-            {
-                return RedirectToAction("Index");
-            }
-
-            return View(model);
-
-            /*
             var model = new TempEdit();
 
-            model.Category = _categoryData.GetCategory(id);
+            var categories = _categoryData.GetAll();
+            var category = _categoryData.GetCategory(id);
 
-            return View(model);
+            model.Name = category.Name;
+            model.Description = category.Description;
 
-            
-            var model = _categoryData.GetCategory(id);
+            model.ParentId = category.ParentId ?? 0;
 
-            if (model == null)
+            var list = new List<SelectListItem>();
+
+            foreach (var item in categories)
             {
-                return RedirectToAction("Index");
-            }
-
-            return View(model);
-            */
-            /*
-            var model = new CategoryListViewModel
-            {
-                Categories = _categoryData.GetAll(),
-                Category = _categoryData.GetCategory(id)
-            };
-
-            List<SelectListItem> sl = new List<SelectListItem>();
-
-            foreach (var item in model.Categories)
-            {
-                sl.Add(new SelectListItem()
+                list.Add(new SelectListItem()
                 {
                     Text = item.Name,
                     Value = item.ParentId.ToString(),
-                    Selected = item.Id == model.Category.ParentId
+                    Selected = true
                 });
             }
 
-            model.ConvertedCategories = sl;
-            return View(model);*/
+            model.Categories = list;
+
+            return View(model);
         }
     }
 }
