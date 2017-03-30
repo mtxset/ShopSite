@@ -1,5 +1,4 @@
-﻿
-@model ProductEdit
+﻿@model ProductEdit
 
 @{
     ViewBag.Title = "Create";
@@ -53,31 +52,22 @@
     <div class="form-group">
         <label class="col-sm-2 control-label">Is Allowed To Order</label>
         <div class="col-sm-1">
-            <input type="checkbox" asp-for="Product.IsAllowedToOrder" rows="3" class="form-control" />
+            <input type="checkbox" asp-for="Product.IsAllowedToOrder" rows="3" class="form-control"/>
         </div>
     </div>
-
-
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Categories</label>
-        <div class="col-sm-1">
-            <ul>
-                @foreach (var item in Model.Categories)
-                {
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="SelectedCategories" value="@item.Selected" />
-                            @item.Text
-                        </label>
-                    </div>
-                }
-            </ul>
+    @foreach (var item in Model.Categories)
+    {
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="SelectedCategories" value="@item.Selected" />
+                @item.Text
+            </label>
         </div>
-    </div>
+    }
 
     <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" value="Save" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Create</button>
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" value="Save" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Create</button>
+            </div>
         </div>
-    </div>
 </form>

@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ShopSite.Models;
 using ShopSite.Services;
-using ShopSite.ViewModels;
 using ShopSite.ViewModels.Admin;
 using ShopSite.ViewModels.Category;
 using ShopSite.ViewModels.Product;
