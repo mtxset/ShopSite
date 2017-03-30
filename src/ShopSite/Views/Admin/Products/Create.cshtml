@@ -62,18 +62,16 @@
         <label class="col-sm-2 control-label">Categories</label>
         <div class="col-sm-1">
             <ul>
-                @foreach (var item in Model.Categories)
+                @for (int i = 0; i < Model.Categories.Count(); i++)
                 {
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="SelectedCategories" value="@item.Selected" />
-                            @item.Text
-                        </label>
-                    </div>
+                    @Html.Label(Model.Categories[i].Text)
+                    @Html.EditorFor(x => x.SelectedCategories[i])
                 }
             </ul>
         </div>
     </div>
+
+ 
 
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">

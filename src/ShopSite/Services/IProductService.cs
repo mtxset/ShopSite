@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ShopSite.Models;
 
 namespace ShopSite.Services
@@ -10,6 +11,8 @@ namespace ShopSite.Services
         Product Get(int id);
 
         int Commit();
+
+        IQueryable QueryProduct();
 
         void Create(Product product);
         void Update(Product product);

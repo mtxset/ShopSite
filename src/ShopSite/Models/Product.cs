@@ -22,5 +22,10 @@ namespace ShopSite.Models
 
         public IList<ProductCategory> Categories { get; protected set; } = new List<ProductCategory>();
 
+        public void AddCategory(ProductCategory category)
+        {
+            category.Product = this;
+            Categories.Add(category);
+        }
     }
 }
