@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ShopSite.Models;
 
@@ -13,5 +14,10 @@ namespace ShopSite.Data
 
         public DbSet<Category> CategoryDbContext { get; set; }
         public DbSet<Product> ProductDbContext { get; set; }
+
+        public IQueryable QueryProduct()
+        {
+            return ProductDbContext;
+        }
     }
 }

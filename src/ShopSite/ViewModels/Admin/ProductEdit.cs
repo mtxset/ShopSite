@@ -7,7 +7,7 @@ namespace ShopSite.ViewModels.Admin
     {
         public Models.Product Product { get; set; }
 
-        public IEnumerable<SelectListItem> Categories { get; set; } 
+        public IList<SelectListItem> Categories { get; set; } 
         
         public IList<bool> SelectedCategories { get; set; }
     }

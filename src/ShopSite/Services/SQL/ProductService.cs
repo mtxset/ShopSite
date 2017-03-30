@@ -16,6 +16,11 @@ namespace ShopSite.Services.SQL
             _context = context;
         }
 
+        public IQueryable QueryProduct()
+        {
+            return _context.QueryProduct();
+        }
+
         public IList<Product> GetAll()
         {
             return _context.ProductDbContext.ToList();

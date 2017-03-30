@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ShopSite.Models;
 using ShopSite.Services;
+using ShopSite.ViewModels;
 using ShopSite.ViewModels.Admin;
 using ShopSite.ViewModels.Category;
 using ShopSite.ViewModels.Product;
@@ -94,9 +97,27 @@ namespace ShopSite.Controllers
 
             var product = model.Product;
 
-            foreach (var item in model.SelectedCategories)
+            var categories = _categoryRepo.GetAll();
+            
+            var categoryIds = categories.Select(item => item.Id).ToList();
+
+            var selectedCategoryIds = new List<int>();
+
+            for (var i = 0; i < model.SelectedCategories.Count; i++)
             {
-                
+                if (model.SelectedCategories[i])
+                {
+                    selectedCategoryIds.Add(categoryIds[i]);
+                }    
+            }
+
+            foreach (var item in selectedCategoryIds)
+            {
+                var productCategory = new ProductCategory
+                {
+                    CategoryId = item
+                };
+                product.AddCategory(productCategory);
             }
 
             _productRepo.Create(product);
@@ -163,10 +184,8 @@ namespace ShopSite.Controllers
             var model = new ProductEdit();
 
             var product = _productRepo.Get(id);
-
+            
             model.Product = product;
-
-            model.Categories = GetAllCategories();
 
             return View("~/Views/Admin/Products/Edit.cshtml", model);
         }
@@ -194,6 +213,7 @@ namespace ShopSite.Controllers
 
             var categories = _categoryRepo.GetAll();
             var category = _categoryRepo.GetCategory(id);
+            
 
             model.Name = category.Name;
             model.Description = category.Description;
