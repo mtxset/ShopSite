@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ShopSite.Data;
 using ShopSite.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ShopSite.Services.SQL
 {
@@ -18,7 +19,7 @@ namespace ShopSite.Services.SQL
 
         public IQueryable QueryProduct()
         {
-            return _context.QueryProduct();
+            return _context.ProductDbContext;
         }
 
         public IList<Product> GetAll()
@@ -28,7 +29,7 @@ namespace ShopSite.Services.SQL
 
         public Product Get(int id)
         {
-            return _context.ProductDbContext.FirstOrDefault(r => r.Id == id);
+            return _context.ProductDbContext.Include(x => x.Categories).FirstOrDefault(r => r.Id == id);
         }
 
         public int Commit()

@@ -1,14 +1,15 @@
-﻿namespace ShopSite.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ShopSite.Models
 {
     public class ProductCategory
     {
-        public int Id { get; set; }
-        public bool IsFeaturedProduct { get; set; }
+        //public int Id { get; set; }
 
         public int CategoryId { get; set; }
         public int ProductId { get; set; }
 
-        public virtual Category Category { get; set; }
-        public virtual Product Product { get; set; }
+        public Category Category { get; set; }
+        public Product Product { get; set; }
     }
 }

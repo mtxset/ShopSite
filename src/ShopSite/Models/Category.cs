@@ -15,6 +15,8 @@ namespace ShopSite.Models
 
         public Category Parent { get; set; }
 
-        public IList<Category> Children { get; protected set; } = new List<Category>();
+        public IList<Category> Children { get; set; } = new List<Category>();
+
+        public ICollection<ProductCategory> Products { get; set; } = new List<ProductCategory>();
     }
 }

@@ -4,6 +4,8 @@ using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using ShopSite.Data;
 using ShopSite.Models;
 using ShopSite.Services;
 using ShopSite.ViewModels;
@@ -110,7 +112,7 @@ namespace ShopSite.Controllers
                     selectedCategoryIds.Add(categoryIds[i]);
                 }    
             }
-
+            
             foreach (var item in selectedCategoryIds)
             {
                 var productCategory = new ProductCategory
@@ -184,7 +186,7 @@ namespace ShopSite.Controllers
             var model = new ProductEdit();
 
             var product = _productRepo.Get(id);
-            
+
             model.Product = product;
 
             return View("~/Views/Admin/Products/Edit.cshtml", model);
