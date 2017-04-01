@@ -17,6 +17,6 @@ namespace ShopSite.Models
 
         public IList<Category> Children { get; set; } = new List<Category>();
 
-        public ICollection<ProductCategory> Products { get; set; } = new List<ProductCategory>();
+        public IList<ProductCategory> Products { get; set; } = new List<ProductCategory>();
     }
 }

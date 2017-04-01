@@ -20,7 +20,7 @@ namespace ShopSite.Models
 
         public int? StockQuantity { get; set; }
 
-        public ICollection<ProductCategory> Categories { get; set; } = new List<ProductCategory>();
+        public IList<ProductCategory> Categories { get; set; } = new List<ProductCategory>();
 
         public void AddCategory(ProductCategory category)
         {
