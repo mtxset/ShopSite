@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ShopSite.Data;
 using ShopSite.Models;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace ShopSite.Services.SQL
 {
@@ -27,17 +28,18 @@ namespace ShopSite.Services.SQL
 
         public ProductAttribute Get(int id)
         {
-            throw new NotImplementedException();
+            return _context.AttributeDbContext
+                .FirstOrDefault(r => r.Id == id);
         }
 
         public IList<ProductAttribute> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.AttributeDbContext.Include(x => x.Group).ToList();
         }
 
         public void Remove(ProductAttribute productAttribute)
         {
-            throw new NotImplementedException();
+            _context.Remove(productAttribute);
         }
 
         public void Update(ProductAttribute productAttribute)

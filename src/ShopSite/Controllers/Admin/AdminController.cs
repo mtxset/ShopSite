@@ -18,20 +18,33 @@ namespace ShopSite.Controllers
         private ICategoryService _categoryRepo;
         private IProductService _productRepo;
         private IProductAttributeGroupService _attributeGroupRepo;
+        private IProductAttributeService _attributeRepo;
 
         public AdminController(
             ICategoryService categoryRepo, 
             IProductService productRepo, 
-            IProductAttributeGroupService attributeGroupRepo)
+            IProductAttributeGroupService attributeGroupRepo,
+            IProductAttributeService attributeRepo)
         {
             _categoryRepo = categoryRepo;
             _productRepo = productRepo;
             _attributeGroupRepo = attributeGroupRepo;
+            _attributeRepo = attributeRepo;
         }
 
         public ViewResult Index()
         {
             return View();
+        }
+
+        public ViewResult Attributes()
+        {
+            var model = new AttributeListViewModel
+            {
+                ProductAttributes = _attributeRepo.GetAll()
+            };
+
+            return View("~/Views/Admin/Attributes/Attributes.cshtml", model);
         }
 
         public ViewResult AttributeGroups()
@@ -62,6 +75,28 @@ namespace ShopSite.Controllers
             };
 
             return View("~/Views/Admin/Categories/Categories.cshtml", model);
+        }
+
+        [HttpGet]
+        public IActionResult AttributeCreate()
+        {
+            var list = new List<SelectListItem>();
+
+            foreach (var item in _attributeGroupRepo.GetAll())
+            {
+                list.Add(new SelectListItem()
+                {
+                    Text = item.Name,
+                    Value = item.Id.ToString()
+                });
+            }
+
+            var model = new AttributeEdit
+            {
+                Groups = list
+            };
+
+            return View("~/Views/Admin/Attributes/AttributeCreate.cshtml", model);
         }
 
         [HttpGet]
@@ -105,6 +140,16 @@ namespace ShopSite.Controllers
 
             _productRepo.Remove(product);
             _productRepo.Commit();
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult AttributeRemove(int id)
+        {
+            var attribute = _attributeRepo.Get(id);
+
+            _attributeRepo.Remove(attribute);
+            _attributeRepo.Commit();
 
             return RedirectToAction("Index");
         }
@@ -171,6 +216,24 @@ namespace ShopSite.Controllers
 
             _attributeGroupRepo.Create(attributeGroup);
             _attributeGroupRepo.Commit();
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult AttributeCreate(AttributeEdit model)
+        {
+            if (!ModelState.IsValid)
+                return RedirectToAction("AttributeCreate");
+
+            var attribute = new ProductAttribute
+            {
+                GroupId = model.GroupId,
+                Name = model.Name
+            };
+
+            _attributeRepo.Create(attribute);
+            _attributeRepo.Commit();
 
             return RedirectToAction("Index");
         }

@@ -1,0 +1,25 @@
+﻿@using ShopSite.ViewModels.Admin.AttributeEdit
+@model ProductEdit
+
+@{
+    ViewBag.Title = "Create";
+}
+
+
+<form class="form-horizontal" asp-action="AttributeEdit" method="post">
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Attribute Name</label>
+        <div class="col-sm-9">
+            <input asp-for="Name" class="form-control" />
+        </div>
+    </div>
+
+    
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" value="Save" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Update</button>
+        </div>
+    </div>
+</form>

@@ -1,4 +1,4 @@
-﻿{
+{
   "buildOptions": {
     "emitEntryPoint": true,
     "preserveCompilationContext": true
@@ -17,7 +17,8 @@
     "Microsoft.EntityFrameworkCore.Design": "1.1.1",
     "Microsoft.Extensions.Logging.Console": "1.1.1",
     "Microsoft.AspNetCore.Identity": "1.1.1",
-    "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.1.1"
+    "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.1.1",
+    "System.Runtime": "4.3.0"
   },
   "frameworks": {
     "net461": {}
