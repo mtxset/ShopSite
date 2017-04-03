@@ -45,9 +45,9 @@ namespace ShopSite.Services.SQL
             _context.Remove(attributeGroup);
         }
 
-        public void Update(ProductAttributeGroup category)
+        public void Update(ProductAttributeGroup attributeGroup)
         {
-            throw new NotImplementedException();
+            _context.Update(attributeGroup);
         }
     }
 }
