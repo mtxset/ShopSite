@@ -57,5 +57,10 @@ namespace ShopSite.Services.SQL
         {
             _context.Remove(product);
         }
+
+        public IQueryable<Product> GetByCategory(int id)
+        {
+            return _context.ProductDbContext.Where(x => x.Categories.Any(c => c.CategoryId == id));
+        }
     }
 }

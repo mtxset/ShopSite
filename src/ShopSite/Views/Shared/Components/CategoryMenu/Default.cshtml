@@ -4,7 +4,7 @@
     
     @foreach (var item in Model.Categories)
     {
-        <a href="#" class="list-group-item">@item.Name</a>
+        <a asp-controller="Product" asp-action="ProductsByCategory" asp-route-id="@item.Id" class="list-group-item">@item.Name</a>
     }
 
 </ul>

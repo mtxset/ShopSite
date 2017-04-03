@@ -47,8 +47,7 @@ namespace ShopSite.Controllers
             return View("~/Views/Admin/Attributes/Attributes.cshtml", model);
         }
 
-   
-
+  
         [HttpGet]
         public IActionResult AttributeEdit(int id)
         {
@@ -109,8 +108,6 @@ namespace ShopSite.Controllers
 
             return list;
         }
-
-
 
         [HttpGet]
         public IActionResult AttributeCreate()

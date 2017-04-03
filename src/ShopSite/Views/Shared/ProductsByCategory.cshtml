@@ -1,0 +1,67 @@
+﻿@model ShopSite.ViewModels.ProductsByCategoryVM
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <p class="lead">Category <label class="text-primary">@Model.CategoryName</label>  </p>
+            <p class="lead">Products found: <label class="text-info">@Model.TotalProducts</label></p>
+            <div class="list-group">
+
+                <div class="panel-group" id="accordion-price">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h2 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion-price" href="#collapse-price">
+                                    Price
+                                    <i class="fa fa-angle-down"></i>
+                                </a>
+                            </h2>
+                        </div>
+                        <div id="collapse-price" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div id="priceSlider"></div>
+                                <div>
+                                    <input type="hidden" id="originMinPrice" value="@Model.MinPrice.ToString("F0")" />
+                                    <input type="hidden" id="originMaxPrice" value="@Model.MaxPrice.ToString("F0")" />
+                                    <span id="minPrice"></span>
+                                    <span id="maxPrice"></span>
+                                </div>
+                                <div class="price-actions">
+                                    <button id="reset-price" type="button" class="btn btn-default">Reset</button>
+                                    <button id="apply-price" type="button" class="btn btn-default">Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="row">
+
+                @foreach (var item in Model.Products)
+                {
+                    <div class="col-sm-4 col-lg-4 col-md-4">
+                        <div class="thumbnail">
+                            <img src="http://placehold.it/320x150">
+                            <div class="caption">
+                                <h4 class="pull-right">@item.Price</h4>
+                                <h4>
+                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">@item.Name</a>
+                                </h4>
+                                <p>@item.ShortDescription</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
