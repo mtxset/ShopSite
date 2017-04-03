@@ -44,7 +44,7 @@ namespace ShopSite.Services.SQL
 
         public void Update(ProductAttribute productAttribute)
         {
-            throw new NotImplementedException();
+            _context.Update(productAttribute);
         }
     }
 }

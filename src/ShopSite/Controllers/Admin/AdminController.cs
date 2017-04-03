@@ -47,6 +47,23 @@ namespace ShopSite.Controllers
             return View("~/Views/Admin/Attributes/Attributes.cshtml", model);
         }
 
+   
+
+        [HttpGet]
+        public IActionResult AttributeEdit(int id)
+        {
+            var attribute = _attributeRepo.Get(id);
+
+            var model = new AttributeEdit
+            {
+                Name = attribute.Name,
+                GroupId = attribute.GroupId,
+                Groups = GetAttributeGroups()
+            };
+
+            return View("~/Views/Admin/Attributes/AttributeEdit.cshtml", model);
+        }
+
         public ViewResult AttributeGroups()
         {
             var model = new AttributeGroupListViewModel()
@@ -77,8 +94,7 @@ namespace ShopSite.Controllers
             return View("~/Views/Admin/Categories/Categories.cshtml", model);
         }
 
-        [HttpGet]
-        public IActionResult AttributeCreate()
+        private IList<SelectListItem> GetAttributeGroups()
         {
             var list = new List<SelectListItem>();
 
@@ -91,9 +107,15 @@ namespace ShopSite.Controllers
                 });
             }
 
+            return list;
+        }
+
+        [HttpGet]
+        public IActionResult AttributeCreate()
+        {
             var model = new AttributeEdit
             {
-                Groups = list
+                Groups = GetAttributeGroups()
             };
 
             return View("~/Views/Admin/Attributes/AttributeCreate.cshtml", model);
@@ -224,7 +246,7 @@ namespace ShopSite.Controllers
         public IActionResult AttributeCreate(AttributeEdit model)
         {
             if (!ModelState.IsValid)
-                return RedirectToAction("AttributeCreate");
+                return RedirectToAction("Attributes");
 
             var attribute = new ProductAttribute
             {
@@ -252,6 +274,8 @@ namespace ShopSite.Controllers
             return RedirectToAction("Index");
         }
 
+ 
+
         [HttpGet]
         IActionResult AttributeGroupEdit(int id, AttributeGroupEdit model)
         {
@@ -266,7 +290,25 @@ namespace ShopSite.Controllers
 
                 return RedirectToAction("Index");
             }
-            return View("~/Views/Admin/Attributes/AttributeGroupEdit.cshtml");
+            return RedirectToAction("Attributes");
+        }
+
+        [HttpPost]
+        public IActionResult AttributeEdit(int id, AttributeEdit model)
+        {
+            var attribute = _attributeRepo.Get(id);
+
+            if (ModelState.IsValid && attribute != null)
+            {
+                attribute.Name = model.Name;
+                attribute.GroupId = model.GroupId;
+
+
+                _attributeRepo.Update(attribute);
+                _attributeRepo.Commit();
+            }
+
+            return RedirectToAction("Attributes");
         }
 
         [HttpPost]
@@ -304,7 +346,7 @@ namespace ShopSite.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View("~/Views/Admin/Products/Edit.cshtml");
+            return RedirectToAction("Products");
         }
 
         [HttpGet]
