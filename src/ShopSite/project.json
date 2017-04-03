@@ -32,6 +32,7 @@
     "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
   },
   "tools": {
+   
     "Microsoft.EntityFrameworkCore.Tools": "1.1.0-preview4-final"
   }
 }

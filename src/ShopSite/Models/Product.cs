@@ -21,11 +21,19 @@ namespace ShopSite.Models
         public int? StockQuantity { get; set; }
 
         public IList<ProductCategory> Categories { get; set; } = new List<ProductCategory>();
+        public IList<AttributeValue> AttributeValues { get; set; } = new List<AttributeValue>();
 
         public void AddCategory(ProductCategory category)
         {
             category.Product = this;
             Categories.Add(category);
         }
+
+        public void AddAttribute(AttributeValue attributeValue)
+        {
+            attributeValue.Product = this;
+            AttributeValues.Add(attributeValue);
+        }
+
     }
 }

@@ -44,9 +44,15 @@ namespace ShopSite
 
             services.AddSingleton(provider => JsonConfiguration);
 
+            AddCustomServices(services);
+            //services.AddScoped<ICategoryService, CategoryService>();
+        }
+
+        public void AddCustomServices(IServiceCollection services)
+        {
             services.AddScoped<ICategoryService, SqlCategoryService>();
             services.AddScoped<IProductService, ProductService>();
-            //services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IAttributeGroupService, AttributeGroupService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

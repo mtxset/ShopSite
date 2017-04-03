@@ -1,17 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ShopSite.Data;
 using ShopSite.Models;
 using ShopSite.Services;
-using ShopSite.ViewModels;
 using ShopSite.ViewModels.Admin;
 using ShopSite.ViewModels.Category;
 using ShopSite.ViewModels.Product;
+using ShopSite.ViewModels.Attribute;
 
 namespace ShopSite.Controllers
 {
@@ -20,16 +17,31 @@ namespace ShopSite.Controllers
     {
         private ICategoryService _categoryRepo;
         private IProductService _productRepo;
+        private IAttributeGroupService _attributeGroupRepo;
 
-        public AdminController(ICategoryService categoryRepo, IProductService productRepo)
+        public AdminController(
+            ICategoryService categoryRepo, 
+            IProductService productRepo, 
+            IAttributeGroupService attributeGroupRepo)
         {
             _categoryRepo = categoryRepo;
             _productRepo = productRepo;
+            _attributeGroupRepo = attributeGroupRepo;
         }
 
         public ViewResult Index()
         {
             return View();
+        }
+
+        public ViewResult AttributeGroups()
+        {
+            var model = new AttributeGroupListViewModel()
+            {
+                AttributeGroups = _attributeGroupRepo.GetAll()
+            };
+
+            return View("~/Views/Admin/Attributes/AttributeGroups.cshtml", model);
         }
 
         public ViewResult Products()
@@ -53,6 +65,12 @@ namespace ShopSite.Controllers
         }
 
         [HttpGet]
+        public IActionResult AttributeGroupCreate()
+        {
+            return View("~/Views/Admin/Attributes/AttributeGroupCreate.cshtml");
+        }
+
+        [HttpGet]
         public IActionResult CategoryCreate()
         {
             return View("~/Views/Admin/Categories/Create.cshtml");
@@ -68,6 +86,17 @@ namespace ShopSite.Controllers
 
             return View("~/Views/Admin/Products/Create.cshtml", model);
 
+        }
+
+        public IActionResult AttributeGroupRemove(int id)
+        {
+            var attributeGroup = _attributeGroupRepo.Get(id);
+
+            _attributeGroupRepo.Remove(attributeGroup);
+
+            _attributeGroupRepo.Commit();
+
+            return RedirectToAction("Index");
         }
 
         public IActionResult ProductRemove(int id)
@@ -129,6 +158,24 @@ namespace ShopSite.Controllers
         }
 
         [HttpPost]
+        public IActionResult AttributeGroupCreate(AttributeGroupEdit model)
+        {
+            if (!ModelState.IsValid)
+                return View("~/Views/Admin/Attributes/AttributeGroupCreate.cshtml");
+
+            var attributeGroup = new AttributeGroup()
+            {
+                Name = model.Name
+            };
+
+
+            _attributeGroupRepo.Create(attributeGroup);
+            _attributeGroupRepo.Commit();
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
         public IActionResult CategoryCreate(Category model)
         {
             if (!ModelState.IsValid)
@@ -140,6 +187,23 @@ namespace ShopSite.Controllers
             _categoryRepo.Commit();
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        IActionResult AttributeGroupEdit(int id, AttributeGroupEdit model)
+        {
+            var attributeGroup = _attributeGroupRepo.Get(id);
+
+            if (ModelState.IsValid && attributeGroup != null)
+            {
+                attributeGroup.Name = model.Name;
+
+                _attributeGroupRepo.Update(attributeGroup);
+                _attributeGroupRepo.Commit();
+
+                return RedirectToAction("Index");
+            }
+            return View("~/Views/Admin/Attributes/AttributeGroupEdit.cshtml");
         }
 
         [HttpPost]

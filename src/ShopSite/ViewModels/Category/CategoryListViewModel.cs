@@ -9,6 +9,9 @@ namespace ShopSite.ViewModels.Category
 
         public Models.Category Category { get; set; }
 
+        /// <summary>
+        /// Fills SelectListItem with categories. (Name = Name, Value = Id)
+        /// </summary>
         public IEnumerable<SelectListItem> ConvertedCategories { get; set; }
     }
 }
