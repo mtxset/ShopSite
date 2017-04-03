@@ -27,9 +27,16 @@ namespace ShopSite.Services.SQL
             return _context.ProductDbContext.ToList();
         }
 
+        public Product GetWithCategories(int id)
+        {
+            return _context.ProductDbContext
+                .Include(x => x.Categories)
+                .FirstOrDefault(r => r.Id == id);
+        }
+
         public Product Get(int id)
         {
-            return _context.ProductDbContext.Include(x => x.Categories).FirstOrDefault(r => r.Id == id);
+            return _context.ProductDbContext.FirstOrDefault(r => r.Id == id);
         }
 
         public int Commit()

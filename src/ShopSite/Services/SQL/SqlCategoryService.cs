@@ -20,6 +20,11 @@ namespace ShopSite.Services.SQL
             return _context.CategoryDbContext.ToList();
         }
 
+        public IQueryable<Category> GetListByIds(IList<int> ids)
+        {
+            return _context.CategoryDbContext.Where(r => ids.Contains(r.Id));
+        }
+
         public Category GetCategory(int id)
         {
             return _context.CategoryDbContext.FirstOrDefault(r => r.Id == id);

@@ -1,4 +1,5 @@
-﻿@model ProductEdit
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@model ProductEdit
 
 @{
     ViewBag.Title = "Edit";
@@ -57,8 +58,27 @@
     </div>
 
     <div class="form-group">
+        <label class="col-sm-2 control-label">Categories</label>
+        <div class="col-sm-2">
+            <ul class="list-group">
+               
+                @for (int i = 0; i < Model.Categories.Count(); i++)
+                {
+                    <li class="list-group-item">
+                        @Html.Label(Model.Categories[i].Text)
+
+                        @(Model.Categories[i].Selected ? 
+                            Html.CheckBoxFor(x => x.SelectedCategories[i], new {@checked = "checked"}) : 
+                            Html.CheckBoxFor(x => x.SelectedCategories[i]))
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" value="Save" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Create</button>
+            <button type="submit" value="Save" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Update</button>
         </div>
     </div>
 </form>

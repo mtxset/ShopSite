@@ -8,6 +8,7 @@ namespace ShopSite.Services
     {
         IList<Product> GetAll();
 
+        Product GetWithCategories(int id);
         Product Get(int id);
 
         int Commit();

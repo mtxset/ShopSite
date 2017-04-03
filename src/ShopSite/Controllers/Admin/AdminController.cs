@@ -185,9 +185,38 @@ namespace ShopSite.Controllers
         {
             var model = new ProductEdit();
 
-            var product = _productRepo.Get(id);
+            var product = _productRepo.GetWithCategories(id);
 
             model.Product = product;
+
+            var productCategoryIds = new List<int>();
+
+            foreach (var item in product.Categories)
+            {
+                productCategoryIds.Add(item.CategoryId);
+            }
+
+            var categories = _categoryRepo.GetListByIds(productCategoryIds);
+            var list = new List<SelectListItem>();
+
+            foreach (var item in _categoryRepo.GetAll())
+            {
+                list.Add(new SelectListItem()
+                {
+                    Text = item.Name,
+                    Value = item.Id.ToString()
+                });
+            }
+
+            foreach (SelectListItem selectItem in list)
+            {
+                foreach (var item in categories.ToList())
+                {
+                    selectItem.Selected = string.Equals(selectItem.Text, item.Name);
+                }
+            }
+
+            model.Categories = list;
 
             return View("~/Views/Admin/Products/Edit.cshtml", model);
         }
@@ -201,7 +230,7 @@ namespace ShopSite.Controllers
                 list.Add(new SelectListItem()
                 {
                     Text = item.Name,
-                    Value = item.ParentId.ToString()
+                    Value = item.Id.ToString()
                 });
             }
             return list;
