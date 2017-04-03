@@ -5,8 +5,8 @@ namespace ShopSite.ViewModels.Attribute
 {
     public class AttributeGroupListViewModel
     {
-        public IEnumerable<Models.AttributeGroup> AttributeGroups { get; set; }
+        public IEnumerable<Models.ProductAttributeGroup> AttributeGroups { get; set; }
 
-        public Models.AttributeGroup AttributeGroup { get; set; }
+        public Models.ProductAttributeGroup AttributeGroup { get; set; }
     }
 }

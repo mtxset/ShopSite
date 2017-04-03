@@ -6,7 +6,7 @@ using ShopSite.Data;
 
 namespace ShopSite.Services.SQL
 {
-    public class AttributeGroupService : IAttributeGroupService
+    public class AttributeGroupService : IProductAttributeGroupService
     {
         private ShopSiteDbContext _context;
 
@@ -20,32 +20,32 @@ namespace ShopSite.Services.SQL
             return _context.SaveChanges();
         }
 
-        public void Create(AttributeGroup attributeGroup)
+        public void Create(ProductAttributeGroup attributeGroup)
         {
             _context.Add(attributeGroup);
         }
 
-        public AttributeGroup Get(int id)
+        public ProductAttributeGroup Get(int id)
         {
             return _context.AttributeGroupDbContext.FirstOrDefault(r => r.Id == id);
         }
 
-        public IList<AttributeGroup> GetAll()
+        public IList<ProductAttributeGroup> GetAll()
         {
             return _context.AttributeGroupDbContext.ToList();
         }
 
-        public IQueryable<AttributeGroup> GetListByIds(IList<int> ids)
+        public IQueryable<ProductAttributeGroup> GetListByIds(IList<int> ids)
         {
             throw new NotImplementedException();
         }
 
-        public void Remove(AttributeGroup attributeGroup)
+        public void Remove(ProductAttributeGroup attributeGroup)
         {
             _context.Remove(attributeGroup);
         }
 
-        public void Update(AttributeGroup category)
+        public void Update(ProductAttributeGroup category)
         {
             throw new NotImplementedException();
         }

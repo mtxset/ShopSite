@@ -31,7 +31,7 @@ namespace ShopSite
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            
+
             services.AddEntityFramework()
                 .AddEntityFrameworkSqlServer()
                 .AddDbContext<ShopSiteDbContext>
@@ -39,20 +39,19 @@ namespace ShopSite
                     opts => opts.UseSqlServer(JsonConfiguration["database:connection"])
                 );
 
-
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ShopSiteDbContext>();
 
             services.AddSingleton(provider => JsonConfiguration);
 
             AddCustomServices(services);
-            //services.AddScoped<ICategoryService, CategoryService>();
         }
 
         public void AddCustomServices(IServiceCollection services)
         {
             services.AddScoped<ICategoryService, SqlCategoryService>();
             services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IAttributeGroupService, AttributeGroupService>();
+            services.AddScoped<IProductAttributeGroupService, AttributeGroupService>();
+            services.AddScoped<IProductAttributeService, AttributeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

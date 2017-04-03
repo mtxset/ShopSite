@@ -21,7 +21,7 @@ namespace ShopSite.Models
         public int? StockQuantity { get; set; }
 
         public IList<ProductCategory> Categories { get; set; } = new List<ProductCategory>();
-        public IList<AttributeValue> AttributeValues { get; set; } = new List<AttributeValue>();
+        public IList<ProductAttributeValue> AttributeValues { get; set; } = new List<ProductAttributeValue>();
 
         public void AddCategory(ProductCategory category)
         {
@@ -29,7 +29,7 @@ namespace ShopSite.Models
             Categories.Add(category);
         }
 
-        public void AddAttribute(AttributeValue attributeValue)
+        public void AddAttribute(ProductAttributeValue attributeValue)
         {
             attributeValue.Product = this;
             AttributeValues.Add(attributeValue);

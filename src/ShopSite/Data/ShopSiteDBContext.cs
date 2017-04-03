@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using ShopSite.Models;
 
 namespace ShopSite.Data
@@ -14,7 +13,8 @@ namespace ShopSite.Data
 
         public DbSet<Category> CategoryDbContext { get; set; }
         public DbSet<Product> ProductDbContext { get; set; }
-        public DbSet<AttributeGroup> AttributeGroupDbContext { get; set; }
+        public DbSet<ProductAttributeGroup> AttributeGroupDbContext { get; set; }
+        public DbSet<ProductAttribute> AttributeDbContext { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

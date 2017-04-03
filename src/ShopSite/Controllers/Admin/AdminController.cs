@@ -17,12 +17,12 @@ namespace ShopSite.Controllers
     {
         private ICategoryService _categoryRepo;
         private IProductService _productRepo;
-        private IAttributeGroupService _attributeGroupRepo;
+        private IProductAttributeGroupService _attributeGroupRepo;
 
         public AdminController(
             ICategoryService categoryRepo, 
             IProductService productRepo, 
-            IAttributeGroupService attributeGroupRepo)
+            IProductAttributeGroupService attributeGroupRepo)
         {
             _categoryRepo = categoryRepo;
             _productRepo = productRepo;
@@ -163,7 +163,7 @@ namespace ShopSite.Controllers
             if (!ModelState.IsValid)
                 return View("~/Views/Admin/Attributes/AttributeGroupCreate.cshtml");
 
-            var attributeGroup = new AttributeGroup()
+            var attributeGroup = new ProductAttributeGroup()
             {
                 Name = model.Name
             };
