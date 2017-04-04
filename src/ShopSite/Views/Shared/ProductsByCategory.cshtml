@@ -15,24 +15,35 @@
 
                                     <i class="fa fa-angle-down"></i>
                                     Price
-                                    @Model.MaxPrice
-                                    @Model.MinPrice
-
                                 </a>
-                                
+
                             </h2>
                         </div>
                         <div id="collapse-price" class="panel-collapse collapse in">
                             <div class="panel-body">
-                                <div id="priceSlider"></div>
                                 <div>
-                                    <div id="soft"></div>
-                                    <br />
-                                    <br>
+
+                                    <form method="get">
+                                        <div class="noUi-target noUi-ltr noUi-horizontal noUi-background" id="slider-range"></div>
+                                        <br />
+                                        <span class="pull-left" id="slider-range-lower"></span>
+                                        <span class="pull-right" id="slider-range-upper"></span>
+
+                                        <input asp-for="SearchMinPrice" type="hidden" id="slider-range-min" value="@Model.MinPrice.ToString("F0")" />
+                                        <input asp-for="SearchMaxPrice" type="hidden" id="slider-range-max" value="@Model.MaxPrice.ToString("F0")" />
+
+                                        <input type="hidden" id="last-range-min" value="@Model.SearchMinPrice" />
+                                        <input type="hidden" id="last-range-max" value="@Model.SearchMaxPrice" />
+
+                                        <br />
+                                        <br>
                                 </div>
                                 <div class="price-actions">
+
                                     <button id="reset-price" type="button" class="btn btn-default">Reset</button>
-                                    <button id="apply-price" type="button" class="btn btn-default">Apply</button>
+                                    <button type="submit" asp-action="ProductsByCategory" class="btn btn-default">Apply</button>
+                                   </form>
+
                                 </div>
                             </div>
                         </div>
@@ -71,14 +82,41 @@
 </div>
 <script src="~/lib/nouislider/nouislider.min.js"></script>
 <script>
-    var slider = document.getElementById('soft');
 
-    noUiSlider.create(slider, {
-        start: [20, 80],
+    var stepSliderMMValues =
+     [document.getElementById('slider-range-min'),
+     document.getElementById('slider-range-max'),
+     document.getElementById('last-range-min'),
+     document.getElementById('last-range-max')
+     ];
+
+    if (!stepSliderMMValues[2].value)
+        stepSliderMMValues[2].value = stepSliderMMValues[0].value;
+
+    if (!stepSliderMMValues[3].value)
+        stepSliderMMValues[3].value = stepSliderMMValues[1].value;
+
+    var rangeSlider = document.getElementById('slider-range');
+    noUiSlider.create(rangeSlider, {
+        start: [stepSliderMMValues[2].value, stepSliderMMValues[3].value],
         connect: true,
+        step: 1,
         range: {
-            'min': 0,
-            'max': 100
+            'min': parseInt(stepSliderMMValues[0].value),
+            'max': parseInt(stepSliderMMValues[1].value)
         }
+    });
+
+    var stepSliderValueElement =
+        [document.getElementById('slider-range-lower'),
+        document.getElementById('slider-range-upper')
+        ];
+
+    rangeSlider.noUiSlider.on('update', function (values, handle) {
+        stepSliderValueElement[0].textContent = values[0];
+        stepSliderValueElement[1].textContent = values[1];
+
+        stepSliderMMValues[0].value = values[0];
+        stepSliderMMValues[1].value = values[1];
     });
 </script>

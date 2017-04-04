@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopSite.Services;
 using ShopSite.ViewModels;
+using System;
+using System.Globalization;
 using System.Linq;
 
 namespace ShopSite.Controllers
@@ -18,8 +20,24 @@ namespace ShopSite.Controllers
             _productRepo = productRepo;
         }
 
-        public IActionResult ProductsByCategory(int id, SearchOptions searchOptions)
+        public IActionResult ProductsByCategory(int id)
         {
+            // TODO: weak
+            int? searchMaxPrice = null;
+            int? searchMinPrice = null;
+
+            if (Request.Query.Count > 0)
+            {
+                var MaxPrice = Request.Query["searchMaxPrice"][0];
+                var MinPrice = Request.Query["searchMinPrice"][0];
+
+                if (!string.IsNullOrEmpty(MinPrice))
+                    searchMinPrice = (int)Convert.ToDouble(MinPrice, CultureInfo.InvariantCulture.NumberFormat);
+
+                if (!string.IsNullOrEmpty(MaxPrice))
+                    searchMaxPrice = (int)Convert.ToDouble(MaxPrice, CultureInfo.InvariantCulture.NumberFormat);
+            }
+
             var category = _categoryRepo.GetCategory(id);
 
             if (category == null)
@@ -30,7 +48,7 @@ namespace ShopSite.Controllers
                 CategoryId = category.Id,
                 ParentCategoryId = category.ParentId,
                 CategoryName = category.Name,
-                SeachOptions = searchOptions
+
             };
 
             var q = _productRepo.GetByCategory(id);
@@ -38,16 +56,21 @@ namespace ShopSite.Controllers
             model.MaxPrice = q.Max(x => x.Price);
             model.MinPrice = q.Min(x => x.Price);
 
+            if (searchMaxPrice != null)
+            {
+                model.SearchMaxPrice = searchMaxPrice;
+                q = q.Where(x => x.Price <= searchMaxPrice);
+            }
+
+            if (searchMinPrice != null)
+            {
+                model.SearchMinPrice = searchMinPrice;
+                q = q.Where(x => x.Price >= searchMinPrice);
+            }
+
             model.TotalProducts = q.Count();
 
-            if (searchOptions.MinPrice.HasValue)
-                q = q.Where(x => x.Price >= searchOptions.MinPrice.Value);
-
-            if (searchOptions.MaxPrice.HasValue)
-                q = q.Where(x => x.Price <= searchOptions.MaxPrice.Value);
-
-            // TODO: prob should be in SQL query   
-
+            // TODO: prob should be in SQL query 
             var products = q.Select(x => new ProductPreview
             {
                 Id = x.Id,
@@ -57,8 +80,6 @@ namespace ShopSite.Controllers
                 ShortDescription = x.ShortDescription
 
             }).ToList();
-
-            // Does not load descriptions
 
             model.Products = products;
 

@@ -11,7 +11,8 @@ namespace ShopSite.ViewModels
 
         public int TotalProducts { get; set; }
 
-        public SearchOptions SeachOptions { get; set; }
+        public int? SearchMaxPrice { get; set; }
+        public int? SearchMinPrice { get; set; }
 
         public decimal MaxPrice { get; set; }
         public decimal MinPrice { get; set; }
