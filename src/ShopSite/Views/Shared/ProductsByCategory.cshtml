@@ -12,9 +12,8 @@
                         <div class="panel-heading">
                             <h2 class="panel-title">
                                 <a data-toggle="collapse" data-parent="#accordion-price" href="#collapse-price">
-
-                                    <i class="fa fa-angle-down"></i>
                                     @Localizer["Price"]
+                                    <i class="fa fa-angle-down"></i>
                                 </a>
 
                             </h2>
@@ -42,7 +41,7 @@
 
                                     <button id="reset-price" type="button" class="btn btn-default">Reset</button>
                                     <button type="submit" asp-action="ProductsByCategory" class="btn btn-default">Apply</button>
-                                   </form>
+                                    </form>
 
                                 </div>
                             </div>
@@ -50,6 +49,19 @@
                     </div>
                 </div>
 
+                <li class="pagination-option">
+                    <label>Show :</label>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            20 <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">All</a></li>
+                            <li><a href="#">50</a></li>
+                            <li><a href="#">30</a></li>
+                        </ul>
+                    </div>
+                </li>
             </div>
         </div>
 
@@ -75,6 +87,8 @@
 
             </div>
         </div>
+
+        
 
     </div>
 
