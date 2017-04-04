@@ -47,7 +47,7 @@ namespace ShopSite.Services.SQL
 
         public void Update(Category category)
         {
-            throw new NotImplementedException();
+            _context.Update(category);
         }
 
         public void Remove(Category category)
