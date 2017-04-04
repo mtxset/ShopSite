@@ -12,19 +12,23 @@
                         <div class="panel-heading">
                             <h2 class="panel-title">
                                 <a data-toggle="collapse" data-parent="#accordion-price" href="#collapse-price">
-                                    Price
+
                                     <i class="fa fa-angle-down"></i>
+                                    Price
+                                    @Model.MaxPrice
+                                    @Model.MinPrice
+
                                 </a>
+                                
                             </h2>
                         </div>
                         <div id="collapse-price" class="panel-collapse collapse in">
                             <div class="panel-body">
                                 <div id="priceSlider"></div>
                                 <div>
-                                    <input type="hidden" id="originMinPrice" value="@Model.MinPrice.ToString("F0")" />
-                                    <input type="hidden" id="originMaxPrice" value="@Model.MaxPrice.ToString("F0")" />
-                                    <span id="minPrice"></span>
-                                    <span id="maxPrice"></span>
+                                    <div id="soft"></div>
+                                    <br />
+                                    <br>
                                 </div>
                                 <div class="price-actions">
                                     <button id="reset-price" type="button" class="btn btn-default">Reset</button>
@@ -65,3 +69,16 @@
 
 
 </div>
+<script src="~/lib/nouislider/nouislider.min.js"></script>
+<script>
+    var slider = document.getElementById('soft');
+
+    noUiSlider.create(slider, {
+        start: [20, 80],
+        connect: true,
+        range: {
+            'min': 0,
+            'max': 100
+        }
+    });
+</script>
