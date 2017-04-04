@@ -1,18 +1,46 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using ShopSite.Data;
+using ShopSite.Localization;
 using ShopSite.Models;
 using ShopSite.Services;
 using ShopSite.Services.SQL;
+using System.Globalization;
 
 namespace ShopSite
 {
+    public static class CustomAppBuilders
+    {
+        public static IApplicationBuilder UseCustomLocalization(this IApplicationBuilder app)
+        {
+            var cultures = new[]
+            {
+                new CultureInfo("en-US"),
+                new CultureInfo("vi-VN"),
+                new CultureInfo("fr-FR"),
+                new CultureInfo("pt-BR"),
+                new CultureInfo("uk-UA"),
+                new CultureInfo("ru-RU")
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en-US", "en-US"),
+                SupportedCultures = cultures,
+                SupportedUICultures = cultures
+            });
+            return app;
+        }
+    }
+
     public class Startup
     {
         public Startup(IHostingEnvironment env)
@@ -30,7 +58,10 @@ namespace ShopSite
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services
+                .AddMvc()
+                .AddViewLocalization()
+                .AddDataAnnotationsLocalization();
 
             services.AddEntityFramework()
                 .AddEntityFrameworkSqlServer()
@@ -42,16 +73,21 @@ namespace ShopSite
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ShopSiteDbContext>();
 
             services.AddSingleton(provider => JsonConfiguration);
+            
 
             AddCustomServices(services);
         }
 
+        
         public void AddCustomServices(IServiceCollection services)
         {
             services.AddScoped<ICategoryService, SqlCategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IProductAttributeGroupService, AttributeGroupService>();
             services.AddScoped<IProductAttributeService, AttributeService>();
+            services.AddScoped<IResourceService, ResourceService>();
+
+            services.AddSingleton<IStringLocalizerFactory, StringLocalizerFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,6 +100,8 @@ namespace ShopSite
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCustomLocalization();
+           
             app.UseFileServer();
 
             app.UseIdentity();

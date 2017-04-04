@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ShopSite.Models;
+using ShopSite.Localization.Models;
 
 namespace ShopSite.Data
 {
@@ -15,6 +16,7 @@ namespace ShopSite.Data
         public DbSet<Product> ProductDbContext { get; set; }
         public DbSet<ProductAttributeGroup> AttributeGroupDbContext { get; set; }
         public DbSet<ProductAttribute> AttributeDbContext { get; set; }
+        public DbSet<Resource> ResourceDbContext { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,6 +39,11 @@ namespace ShopSite.Data
         public IQueryable QueryProduct()
         {
             return ProductDbContext;
+        }
+
+        public IQueryable QueryResource()
+        {
+            return ResourceDbContext;
         }
 
     }
