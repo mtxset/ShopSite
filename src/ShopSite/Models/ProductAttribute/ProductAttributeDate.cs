@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ShopSite.Models
 {
-    public class ProductAttributeData
+    public class ProductAttributeDate
     {
         public int Id { get; set; }
 

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using ShopSite.Data;
+using ShopSite.Models;
 
 namespace ShopSite.Migrations
 {
@@ -202,22 +203,6 @@ namespace ShopSite.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("GroupId");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
-
-                    b.ToTable("AttributeDbContext");
-                });
-
-            modelBuilder.Entity("ShopSite.Models.ProductAttribute1", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
                     b.Property<int>("AtributeType");
 
                     b.Property<int>("CategoryId");
@@ -226,13 +211,39 @@ namespace ShopSite.Migrations
 
                     b.Property<int>("ProductAttributeCompexTypeDefinitionId");
 
+                    b.Property<int?>("ProductAttributeGroupId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("ProductAttributeCompexTypeDefinitionId");
 
-                    b.ToTable("ProductAttributes");
+                    b.HasIndex("ProductAttributeGroupId");
+
+                    b.ToTable("AttributeDbContext");
+                });
+
+            modelBuilder.Entity("ShopSite.Models.ProductAttributeCompexType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AtributeNameId");
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<int?>("ValueId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AtributeNameId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ValueId");
+
+                    b.ToTable("ProductAttributeCompexType");
                 });
 
             modelBuilder.Entity("ShopSite.Models.ProductAttributeCompexTypeDefinition", b =>
@@ -252,7 +263,7 @@ namespace ShopSite.Migrations
                     b.ToTable("ProductAttributeCompexTypeDefinition");
                 });
 
-            modelBuilder.Entity("ShopSite.Models.ProductAttributeData", b =>
+            modelBuilder.Entity("ShopSite.Models.ProductAttributeDate", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -269,7 +280,7 @@ namespace ShopSite.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductAttributeData");
+                    b.ToTable("ProductAttributeDates");
                 });
 
             modelBuilder.Entity("ShopSite.Models.ProductAttributeDec", b =>
@@ -480,14 +491,6 @@ namespace ShopSite.Migrations
 
             modelBuilder.Entity("ShopSite.Models.ProductAttribute", b =>
                 {
-                    b.HasOne("ShopSite.Models.ProductAttributeGroup", "Group")
-                        .WithMany("Attributes")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ShopSite.Models.ProductAttribute1", b =>
-                {
                     b.HasOne("ShopSite.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
@@ -497,6 +500,27 @@ namespace ShopSite.Migrations
                         .WithMany()
                         .HasForeignKey("ProductAttributeCompexTypeDefinitionId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ShopSite.Models.ProductAttributeGroup")
+                        .WithMany("Attributes")
+                        .HasForeignKey("ProductAttributeGroupId");
+                });
+
+            modelBuilder.Entity("ShopSite.Models.ProductAttributeCompexType", b =>
+                {
+                    b.HasOne("ShopSite.Models.ProductAttribute", "AtributeName")
+                        .WithMany()
+                        .HasForeignKey("AtributeNameId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ShopSite.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ShopSite.Models.ProductAttributeCompexTypeDefinition", "Value")
+                        .WithMany()
+                        .HasForeignKey("ValueId");
                 });
 
             modelBuilder.Entity("ShopSite.Models.ProductAttributeCompexTypeDefinition", b =>
@@ -506,7 +530,7 @@ namespace ShopSite.Migrations
                         .HasForeignKey("ParentId");
                 });
 
-            modelBuilder.Entity("ShopSite.Models.ProductAttributeData", b =>
+            modelBuilder.Entity("ShopSite.Models.ProductAttributeDate", b =>
                 {
                     b.HasOne("ShopSite.Models.ProductAttribute", "AtributeName")
                         .WithMany()

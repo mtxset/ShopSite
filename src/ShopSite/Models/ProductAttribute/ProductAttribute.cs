@@ -1,6 +1,6 @@
 ﻿namespace ShopSite.Models
 {
-    public class ProductAttribute1
+    public class ProductAttribute
     {
         public int Id { get; set; }
 

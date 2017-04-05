@@ -8,7 +8,7 @@ namespace ShopSite.Models
     public class ProductAttributeCompexType
     {
         public int Id { get; set; }
-        public int ValueId { get; set; }
+        public int? ValueId { get; set; }
         public int ProductId { get; set; }
         public int AtributeNameId { get; set; }
 
