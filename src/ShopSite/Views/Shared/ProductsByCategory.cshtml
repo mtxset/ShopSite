@@ -26,10 +26,8 @@
                                         <span class="pull-left" id="slider-range-lower"></span>
                                         <span class="pull-right" id="slider-range-upper"></span>
 
-                                        <input asp-for="SearchMinPrice" value="5" />
-                                        <input asp-for="SearchMaxPrice" value="5000" />
-
-                                        <input asp-for="CategoryName" rows="3" class="form-control" />
+                                        <input asp-for="SearchMinPrice" type="hidden" value="@Model.MinPrice.ToString("F0")" />
+                                        <input asp-for="SearchMaxPrice"  type="hidden" value="@Model.MaxPrice.ToString("F0")"/>
 
                                         <input type="hidden" id="last-range-min" value="@Model.SearchMinPrice" />
                                         <input type="hidden" id="last-range-max" value="@Model.SearchMaxPrice" />
