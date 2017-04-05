@@ -23,7 +23,7 @@ namespace ShopSite.Data
         public DbSet<ProductAttributeDec> ProductAttributeDecs { get; set; }
         public DbSet<ProductAttributeDate> ProductAttributeDates { get; set; }
         public DbSet<ProductAttributeCompexType> ProductAttributeCompexType { get; set; }
-        public DbSet<ProductAttributeCompexTypeDefinition> ProductAttributeCompexTypeDefinition { get; set; }
+        public DbSet<ProductAttributeComplexTypeDefinition> ProductAttributeComplexTypeDefinition { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

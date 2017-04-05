@@ -10,7 +10,7 @@
 
         public AttrType AtributeType { get; set; }
         public int ProductAttributeCompexTypeDefinitionId { get; set; }
-        public ProductAttributeCompexTypeDefinition ProductAttributeCompexTypeDefinition { get; set; }
+        public ProductAttributeComplexTypeDefinition ProductAttributeCompexTypeDefinition { get; set; }
 
         public enum AttrType
         {
