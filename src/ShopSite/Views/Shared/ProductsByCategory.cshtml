@@ -23,11 +23,10 @@
                                     <div>
                                         <div class="noUi-target noUi-ltr noUi-horizontal noUi-background" id="slider-range"></div>
                                         <br />
-                                        <span class="pull-left" id="slider-range-lower"></span>
-                                        <span class="pull-right" id="slider-range-upper"></span>
 
-                                        <input asp-for="SearchMinPrice" type="hidden" value="@Model.MinPrice.ToString("F0")" />
-                                        <input asp-for="SearchMaxPrice"  type="hidden" value="@Model.MaxPrice.ToString("F0")"/>
+
+                                        <input asp-for="SearchMinPrice" size="3" class="pull-left" value="@decimal.Floor(Model.MinPrice)" />
+                                        <input asp-for="SearchMaxPrice" size="3" class="pull-right" value="@decimal.Ceiling(Model.MaxPrice)"/>
 
                                         <input type="hidden" id="last-range-min" value="@Model.SearchMinPrice" />
                                         <input type="hidden" id="last-range-max" value="@Model.SearchMaxPrice" />
@@ -119,8 +118,8 @@
     });
 
     var stepSliderValueElement =
-        [document.getElementById('slider-range-lower'),
-        document.getElementById('slider-range-upper')
+        [document.getElementById('SearchMinPrice'),
+        document.getElementById('SearchMaxPrice')
         ];
 
     rangeSlider.noUiSlider.on('update', function (values, handle) {

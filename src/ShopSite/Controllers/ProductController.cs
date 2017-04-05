@@ -43,11 +43,17 @@ namespace ShopSite.Controllers
             model.MinPrice = q.Min(x => x.Price);
 
             if (readModel.SearchMaxPrice.HasValue)
+            { 
                 q = q.Where(x => x.Price <= readModel.SearchMaxPrice);
+                model.SearchMaxPrice = readModel.SearchMaxPrice;
+            }
 
             if (readModel.SearchMinPrice.HasValue)
+            { 
                 q = q.Where(x => x.Price >= readModel.SearchMinPrice);
-          
+                model.SearchMinPrice = readModel.SearchMinPrice;
+            }
+
 
             model.TotalProducts = q.Count();
 
