@@ -18,33 +18,32 @@ namespace ShopSite.Services.SQL
 
         public int Commit()
         {
-            return _context.SaveChanges();
+            throw new NotImplementedException();
         }
 
-        public void Create(ProductAttribute productAttribute)
+        public void Create(ProductAttribute product)
         {
-            _context.Add(productAttribute);
+            throw new NotImplementedException();
         }
 
         public ProductAttribute Get(int id)
         {
-            return _context.AttributeDbContext
-                .FirstOrDefault(r => r.Id == id);
+            throw new NotImplementedException();
         }
 
         public IList<ProductAttribute> GetAll()
         {
-            return _context.AttributeDbContext.Include(x => x.Group).ToList();
+            throw new NotImplementedException();
         }
 
-        public void Remove(ProductAttribute productAttribute)
+        public void Remove(ProductAttribute product)
         {
-            _context.Remove(productAttribute);
+            throw new NotImplementedException();
         }
 
-        public void Update(ProductAttribute productAttribute)
+        public void Update(ProductAttribute product)
         {
-            _context.Update(productAttribute);
+            throw new NotImplementedException();
         }
     }
 }

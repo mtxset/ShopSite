@@ -21,8 +21,8 @@ namespace ShopSite.Controllers
         private IProductAttributeService _attributeRepo;
 
         public AdminController(
-            ICategoryService categoryRepo, 
-            IProductService productRepo, 
+            ICategoryService categoryRepo,
+            IProductService productRepo,
             IProductAttributeGroupService attributeGroupRepo,
             IProductAttributeService attributeRepo)
         {
@@ -47,20 +47,11 @@ namespace ShopSite.Controllers
             return View("~/Views/Admin/Attributes/Attributes.cshtml", model);
         }
 
-  
+
         [HttpGet]
         public IActionResult AttributeEdit(int id)
         {
-            var attribute = _attributeRepo.Get(id);
-
-            var model = new AttributeEdit
-            {
-                Name = attribute.Name,
-                GroupId = attribute.GroupId,
-                Groups = GetAttributeGroups()
-            };
-
-            return View("~/Views/Admin/Attributes/AttributeEdit.cshtml", model);
+            return View("~/Views/Admin/Attributes/AttributeEdit.cshtml");
         }
 
         public ViewResult AttributeGroups()
@@ -195,7 +186,7 @@ namespace ShopSite.Controllers
             var product = model.Product;
 
             var categories = _categoryRepo.GetAll();
-            
+
             var categoryIds = categories.Select(item => item.Id).ToList();
 
             var selectedCategoryIds = new List<int>();
@@ -205,9 +196,9 @@ namespace ShopSite.Controllers
                 if (model.SelectedCategories[i])
                 {
                     selectedCategoryIds.Add(categoryIds[i]);
-                }    
+                }
             }
-            
+
             foreach (var item in selectedCategoryIds)
             {
                 var productCategory = new ProductCategory
@@ -257,18 +248,6 @@ namespace ShopSite.Controllers
         [HttpPost]
         public IActionResult AttributeCreate(AttributeEdit model)
         {
-            if (!ModelState.IsValid)
-                return RedirectToAction("Attributes");
-
-            var attribute = new ProductAttribute
-            {
-                GroupId = model.GroupId,
-                Name = model.Name
-            };
-
-            _attributeRepo.Create(attribute);
-            _attributeRepo.Commit();
-
             return RedirectToAction("Index");
         }
 
@@ -307,19 +286,6 @@ namespace ShopSite.Controllers
         [HttpPost]
         public IActionResult AttributeEdit(int id, AttributeEdit model)
         {
-            var attribute = _attributeRepo.Get(id);
-
-            if (ModelState.IsValid && attribute != null)
-            {
-                attribute.Name = model.Name;
-                attribute.GroupId = model.GroupId;
-
-                _attributeRepo.Update(attribute);
-                _attributeRepo.Commit();
-
-                return RedirectToAction("Attributes");
-            }
-
             return RedirectToAction("Index");
         }
 
@@ -333,7 +299,7 @@ namespace ShopSite.Controllers
                 category.Name = model.Name;
                 category.Description = model.Description;
                 category.ParentId = model.ParentId;
-                
+
                 _categoryRepo.Update(category);
                 _categoryRepo.Commit();
 
@@ -405,7 +371,7 @@ namespace ShopSite.Controllers
         private List<SelectListItem> GetAllCategories()
         {
             var list = new List<SelectListItem>();
-            
+
             foreach (var item in _categoryRepo.GetAll())
             {
                 list.Add(new SelectListItem()
@@ -425,7 +391,7 @@ namespace ShopSite.Controllers
 
             var categories = _categoryRepo.GetAll();
             var category = _categoryRepo.GetCategory(id);
-            
+
 
             model.Name = category.Name;
             model.Description = category.Description;

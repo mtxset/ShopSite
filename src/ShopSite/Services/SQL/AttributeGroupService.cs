@@ -17,22 +17,22 @@ namespace ShopSite.Services.SQL
 
         public int Commit()
         {
-            return _context.SaveChanges();
+            throw new NotImplementedException();
         }
 
         public void Create(ProductAttributeGroup attributeGroup)
         {
-            _context.Add(attributeGroup);
+            throw new NotImplementedException();
         }
 
         public ProductAttributeGroup Get(int id)
         {
-            return _context.AttributeGroupDbContext.FirstOrDefault(r => r.Id == id);
+            throw new NotImplementedException();
         }
 
         public IList<ProductAttributeGroup> GetAll()
         {
-            return _context.AttributeGroupDbContext.ToList();
+            throw new NotImplementedException();
         }
 
         public IQueryable<ProductAttributeGroup> GetListByIds(IList<int> ids)
@@ -42,12 +42,12 @@ namespace ShopSite.Services.SQL
 
         public void Remove(ProductAttributeGroup attributeGroup)
         {
-            _context.Remove(attributeGroup);
+            throw new NotImplementedException();
         }
 
         public void Update(ProductAttributeGroup attributeGroup)
         {
-            _context.Update(attributeGroup);
+            throw new NotImplementedException();
         }
     }
 }

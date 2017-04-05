@@ -18,6 +18,13 @@ namespace ShopSite.Data
         public DbSet<ProductAttribute> AttributeDbContext { get; set; }
         public DbSet<Resource> ResourceDbContext { get; set; }
 
+        public DbSet<ProductAttributeString> ProductAttributeStrings { get; set; }
+        public DbSet<ProductAttributeInt> ProductAttributeInts { get; set; }
+        public DbSet<ProductAttributeDec> ProductAttributeDecs { get; set; }
+        public DbSet<ProductAttributeDate> ProductAttributeDates { get; set; }
+        public DbSet<ProductAttributeCompexType> ProductAttributeCompexType { get; set; }
+        public DbSet<ProductAttributeCompexTypeDefinition> ProductAttributeCompexTypeDefinition { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
