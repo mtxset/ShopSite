@@ -39,6 +39,8 @@ namespace ShopSite.Controllers
 
             var q = _productRepo.GetByCategory(id);
 
+            
+
             model.MaxPrice = q.Max(x => x.Price);
             model.MinPrice = q.Min(x => x.Price);
 

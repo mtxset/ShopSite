@@ -9,8 +9,8 @@ using ShopSite.Models;
 namespace ShopSite.Migrations
 {
     [DbContext(typeof(ShopSiteDbContext))]
-    [Migration("20170405113434_primary")]
-    partial class primary
+    [Migration("20170405114425_v1")]
+    partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
