@@ -19,7 +19,8 @@
     "Microsoft.AspNetCore.Identity": "1.1.1",
     "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.1.1",
     "Microsoft.VisualStudio.Web.CodeGenerators.Mvc": "1.1.0-preview4-final",
-    "Microsoft.VisualStudio.Web.CodeGeneration.Tools":"1.1.0-preview4-final"
+    "Microsoft.VisualStudio.Web.CodeGeneration.Tools": "1.1.0-preview4-final",
+    "Microsoft.Extensions.Logging.Debug": "1.1.1"
   },
   "frameworks": {
     "net461": {}
