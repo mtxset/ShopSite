@@ -1,0 +1,17 @@
+﻿insert into ProductCategory (CategoryId, ProductId) values (3, 3010);
+insert into ProductCategory (CategoryId, ProductId) values (2, 3005);
+insert into ProductCategory (CategoryId, ProductId) values (3, 3002);
+insert into ProductCategory (CategoryId, ProductId) values (2, 3009);
+insert into ProductCategory (CategoryId, ProductId) values (2, 3009);
+insert into ProductCategory (CategoryId, ProductId) values (2, 3007);
+insert into ProductCategory (CategoryId, ProductId) values (3, 3002);
+insert into ProductCategory (CategoryId, ProductId) values (3, 3003);
+insert into ProductCategory (CategoryId, ProductId) values (1, 3004);
+insert into ProductCategory (CategoryId, ProductId) values (2, 3002);
+insert into ProductCategory (CategoryId, ProductId) values (1, 3005);
+insert into ProductCategory (CategoryId, ProductId) values (1, 3006);
+insert into ProductCategory (CategoryId, ProductId) values (2, 3009);
+insert into ProductCategory (CategoryId, ProductId) values (2, 3003);
+insert into ProductCategory (CategoryId, ProductId) values (2, 3002);
+insert into ProductCategory (CategoryId, ProductId) values (2, 3008);
+insert into ProductCategory (CategoryId, ProductId) values (2, 3003);

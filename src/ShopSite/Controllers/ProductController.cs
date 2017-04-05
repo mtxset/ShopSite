@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShopSite.Models;
+using ShopSite.Pagination;
 using ShopSite.Services;
 using ShopSite.ViewModels;
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ShopSite.Controllers
 {
@@ -20,24 +23,8 @@ namespace ShopSite.Controllers
             _productRepo = productRepo;
         }
 
-        public IActionResult ProductsByCategory(int id, int? page)
+        public async Task<IActionResult> ProductsByCategory(int id, ProductsByCategoryVM readModel)
         {
-            // TODO: weak
-            int? searchMaxPrice = null;
-            int? searchMinPrice = null;
-            
-            if (Request.Query.Count > 0)
-            {
-                var MaxPrice = Request.Query["searchMaxPrice"][0];
-                var MinPrice = Request.Query["searchMinPrice"][0];
-
-                if (!string.IsNullOrEmpty(MinPrice))
-                    searchMinPrice = (int)Convert.ToDouble(MinPrice, CultureInfo.InvariantCulture.NumberFormat);
-
-                if (!string.IsNullOrEmpty(MaxPrice))
-                    searchMaxPrice = (int)Convert.ToDouble(MaxPrice, CultureInfo.InvariantCulture.NumberFormat);
-            }
-
             var category = _categoryRepo.GetCategory(id);
 
             if (category == null)
@@ -55,21 +42,14 @@ namespace ShopSite.Controllers
             model.MaxPrice = q.Max(x => x.Price);
             model.MinPrice = q.Min(x => x.Price);
 
-            if (searchMaxPrice != null)
-            {
-                model.SearchMaxPrice = searchMaxPrice;
-                q = q.Where(x => x.Price <= searchMaxPrice);
-            }
+            if (readModel.SearchMaxPrice.HasValue)
+                q = q.Where(x => x.Price <= readModel.SearchMaxPrice);
 
-            if (searchMinPrice != null)
-            {
-                model.SearchMinPrice = searchMinPrice;
-                q = q.Where(x => x.Price >= searchMinPrice);
-            }
+            if (readModel.SearchMinPrice.HasValue)
+                q = q.Where(x => x.Price >= readModel.SearchMinPrice);
+          
 
             model.TotalProducts = q.Count();
-
-            
 
             // TODO: prob should be in SQL query search by price
             var products = q.Select(x => new ProductPreview
@@ -83,6 +63,10 @@ namespace ShopSite.Controllers
             }).ToList();
 
             model.Products = products;
+
+            int pageSize = 2;
+
+            var job = await PaginatedList<Product>.CreateAsync(q, readModel.Page ?? 1, pageSize);
 
             return View(model);
         }

@@ -15,35 +15,35 @@
                                     @Localizer["Price"]
                                     <i class="fa fa-angle-down"></i>
                                 </a>
-
                             </h2>
                         </div>
                         <div id="collapse-price" class="panel-collapse collapse in">
                             <div class="panel-body">
-                                <div>
-
-                                    <form method="get">
+                                <form method="get" asp-action="ProductsByCategory">
+                                    <div>
                                         <div class="noUi-target noUi-ltr noUi-horizontal noUi-background" id="slider-range"></div>
                                         <br />
                                         <span class="pull-left" id="slider-range-lower"></span>
                                         <span class="pull-right" id="slider-range-upper"></span>
 
-                                        <input asp-for="SearchMinPrice" type="hidden" id="slider-range-min" value="@Model.MinPrice.ToString("F0")" />
-                                        <input asp-for="SearchMaxPrice" type="hidden" id="slider-range-max" value="@Model.MaxPrice.ToString("F0")" />
+                                        <input asp-for="SearchMinPrice" value="5" />
+                                        <input asp-for="SearchMaxPrice" value="5000" />
+
+                                        <input asp-for="CategoryName" rows="3" class="form-control" />
 
                                         <input type="hidden" id="last-range-min" value="@Model.SearchMinPrice" />
                                         <input type="hidden" id="last-range-max" value="@Model.SearchMaxPrice" />
 
                                         <br />
                                         <br />
-                                </div>
-                                <div class="price-actions">
+                                    </div>
+                                    <div class="price-actions">
+                                        <button id="reset-price" type="button" class="btn btn-default">Reset</button>
+                                        <button type="submit" class="btn btn-default">Apply</button>
+                                    </div>
+                                </form>
 
-                                    <button id="reset-price" type="button" class="btn btn-default">Reset</button>
-                                    <button type="submit" asp-action="ProductsByCategory" class="btn btn-default">Apply</button>
-                                    </form>
 
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -56,12 +56,13 @@
                             20 <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a asp-controller="Product" asp-action="ProductByCategory" asp-route- href="#">All</a></li>
-                            <li><a href="#">50</a></li>
-                            <li><a href="#">30</a></li>
+                            <li><a asp-controller="Product" asp-action="ProductsByCategory" asp-route-page="0">All</a></li>
+                            <li><a asp-controller="Product" asp-action="ProductsByCategory" asp-route-page="50">50</a></li>
+                            <li><a asp-controller="Product" asp-action="ProductsByCategory" asp-route-page="30">30</a></li>
                         </ul>
                     </div>
                 </li>
+
             </div>
         </div>
 
@@ -93,8 +94,8 @@
 <script>
 
     var stepSliderMMValues =
-     [document.getElementById('slider-range-min'),
-     document.getElementById('slider-range-max'),
+     [document.getElementById('SearchMinPrice'),
+     document.getElementById('SearchMaxPrice'),
      document.getElementById('last-range-min'),
      document.getElementById('last-range-max')
      ];
@@ -104,6 +105,9 @@
 
     if (!stepSliderMMValues[3].value)
         stepSliderMMValues[3].value = stepSliderMMValues[1].value;
+
+    if (stepSliderMMValues[0].value == stepSliderMMValues[1].value)
+        stepSliderMMValues[0].value = 0;
 
     var rangeSlider = document.getElementById('slider-range');
     noUiSlider.create(rangeSlider, {
