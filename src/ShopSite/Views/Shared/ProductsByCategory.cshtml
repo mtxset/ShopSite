@@ -25,8 +25,8 @@
                                         <br />
 
 
-                                        <input asp-for="SearchMinPrice" size="3" class="pull-left" value="@decimal.Floor(Model.MinPrice)" />
-                                        <input asp-for="SearchMaxPrice" size="3" class="pull-right" value="@decimal.Ceiling(Model.MaxPrice)"/>
+                                        <input asp-for="SearchMinPrice" size="3" class="pull-left" value="@Math.Floor(Model.MinPrice)" />
+                                        <input asp-for="SearchMaxPrice" size="3" class="pull-right" value="@Math.Ceiling(Model.MaxPrice)"/>
 
                                         <input type="hidden" id="last-range-min" value="@Model.SearchMinPrice" />
                                         <input type="hidden" id="last-range-max" value="@Model.SearchMaxPrice" />
