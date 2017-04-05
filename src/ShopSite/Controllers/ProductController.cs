@@ -23,7 +23,7 @@ namespace ShopSite.Controllers
             _productRepo = productRepo;
         }
 
-        public async Task<IActionResult> ProductsByCategory(int id, ProductsByCategoryVM readModel)
+        public IActionResult ProductsByCategory(int id, ProductsByCategoryVM readModel)
         {
             var category = _categoryRepo.GetCategory(id);
 
@@ -38,25 +38,36 @@ namespace ShopSite.Controllers
             };
 
             var q = _productRepo.GetByCategory(id);
+            //is features/publiushed
 
             model.MaxPrice = q.Max(x => x.Price);
             model.MinPrice = q.Min(x => x.Price);
 
             if (readModel.SearchMaxPrice.HasValue)
-            { 
+            {
                 q = q.Where(x => x.Price <= readModel.SearchMaxPrice);
                 model.SearchMaxPrice = readModel.SearchMaxPrice;
             }
 
             if (readModel.SearchMinPrice.HasValue)
-            { 
+            {
                 q = q.Where(x => x.Price >= readModel.SearchMinPrice);
                 model.SearchMinPrice = readModel.SearchMinPrice;
             }
 
             model.TotalProducts = q.Count();
 
-            // TODO: prob should be in SQL query search by price
+            if (readModel.SearchOptions.PageSize == 0) readModel.SearchOptions.PageSize = 2;
+
+            int currentPageNumber = readModel.SearchOptions.Page <= 0 ? 1 : readModel.SearchOptions.Page;
+            int offset = (readModel.SearchOptions.PageSize * currentPageNumber) - readModel.SearchOptions.PageSize;
+
+            while (currentPageNumber > 1 && offset >= model.TotalProducts)
+            {
+                currentPageNumber--;
+                offset = (readModel.SearchOptions.PageSize * currentPageNumber) - readModel.SearchOptions.PageSize;
+            }
+
             var products = q.Select(x => new ProductPreview
             {
                 Id = x.Id,
@@ -65,13 +76,12 @@ namespace ShopSite.Controllers
                 StockQuantity = x.StockQuantity,
                 ShortDescription = x.ShortDescription
 
-            }).ToList();
+            }).Skip(offset).Take(readModel.SearchOptions.PageSize).ToList();
 
             model.Products = products;
 
-            int pageSize = 2;
-
-            var job = await PaginatedList<Product>.CreateAsync(q, readModel.Page ?? 1, pageSize);
+            model.SearchOptions.PageSize = readModel.SearchOptions.PageSize;
+            model.SearchOptions.Page = currentPageNumber;
 
             return View(model);
         }

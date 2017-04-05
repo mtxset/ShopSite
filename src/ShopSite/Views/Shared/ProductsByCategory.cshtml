@@ -1,6 +1,9 @@
 ﻿@model ShopSite.ViewModels.ProductsByCategoryVM
 @using System.Globalization;
 
+@{ 
+    
+}
 <div class="container">
     <div class="row">
         <div class="col-md-3">
@@ -14,7 +17,7 @@
                             <h2 class="panel-title">
                                 <a data-toggle="collapse" data-parent="#accordion-price" href="#collapse-price">
                                     @Localizer["Price"]
-                                    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span> 
+                                    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
                                 </a>
                             </h2>
                         </div>
@@ -45,21 +48,22 @@
                         </div>
                     </div>
                 </div>
-
-                <li class="pagination-option">
-                    <label>Show :</label>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                            20 <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a asp-controller="Product" asp-action="ProductsByCategory" asp-route-page="0">All</a></li>
-                            <li><a asp-controller="Product" asp-action="ProductsByCategory" asp-route-page="50">50</a></li>
-                            <li><a asp-controller="Product" asp-action="ProductsByCategory" asp-route-page="30">30</a></li>
-                        </ul>
-                    </div>
-                </li>
-
+                
+                    <ul class="pagination">
+                        <label>@Localizer["Show"]</label>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                @Model.SearchOptions.PageSize <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><input type="submit" asp-controller="Product" asp-action="ProductsByCategory" asp-for="SearchOptions.PageSize" value="100" /></li>
+                                <li><a asp-controller="Product" asp-action="ProductsByCategory" asp-route-SearchOptions.PageSize="50">50</a></li>
+                                <li><a asp-controller="Product" asp-action="ProductsByCategory" asp-route-SearchOptions.PageSize="30">30</a></li>
+                                <li><a asp-controller="Product" asp-action="ProductsByCategory" asp-route-SearchOptions.PageSize="3">3</a></li>
+                            </ul>
+                        </div>
+                    </ul>
+                
             </div>
         </div>
 
@@ -83,6 +87,16 @@
                 }
 
             </div>
+            @{
+
+            }
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <a asp-action="ProductsByCategory" asp-route-SearchOptions.Page=@(Model.SearchOptions.Page-1) class="btn btn-default btn">@Localizer["Previous"]</a>
+                    <a asp-action="ProductsByCategory" asp-route-SearchOptions.Page=@(Model.SearchOptions.Page+1) class="btn btn-default btn">@Localizer["Next"]</a>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
