@@ -12,7 +12,7 @@ namespace ShopSite.Models
         public int ProductId { get; set; }
         public int AtributeNameId { get; set; }
 
-        public ProductAttributeCompexTypeDefinition Value { get; set; }
+        public ProductAttributeComplexTypeDefinition Value { get; set; }
 
         public Product Product { get; set; }
         public ProductAttribute AtributeName { get; set; }
