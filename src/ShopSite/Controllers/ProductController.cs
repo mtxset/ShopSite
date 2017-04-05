@@ -55,7 +55,6 @@ namespace ShopSite.Controllers
                 model.SearchMinPrice = readModel.SearchMinPrice;
             }
 
-
             model.TotalProducts = q.Count();
 
             // TODO: prob should be in SQL query search by price
