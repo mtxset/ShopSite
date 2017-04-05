@@ -17,6 +17,10 @@ namespace ShopSite.ViewModels
         public decimal MaxPrice { get; set; }
         public decimal MinPrice { get; set; }
 
+        public int Page { get; set; }
+
+        public SearchOptions SearchOptions { get; set; }
+
         public IList<ProductPreview> Products { get; set; } = new List<ProductPreview>();
 
         /*

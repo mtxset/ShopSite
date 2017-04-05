@@ -20,12 +20,12 @@ namespace ShopSite.Controllers
             _productRepo = productRepo;
         }
 
-        public IActionResult ProductsByCategory(int id)
+        public IActionResult ProductsByCategory(int id, int? page)
         {
             // TODO: weak
             int? searchMaxPrice = null;
             int? searchMinPrice = null;
-
+            
             if (Request.Query.Count > 0)
             {
                 var MaxPrice = Request.Query["searchMaxPrice"][0];
@@ -48,7 +48,6 @@ namespace ShopSite.Controllers
                 CategoryId = category.Id,
                 ParentCategoryId = category.ParentId,
                 CategoryName = category.Name,
-
             };
 
             var q = _productRepo.GetByCategory(id);
@@ -70,7 +69,9 @@ namespace ShopSite.Controllers
 
             model.TotalProducts = q.Count();
 
-            // TODO: prob should be in SQL query 
+            
+
+            // TODO: prob should be in SQL query search by price
             var products = q.Select(x => new ProductPreview
             {
                 Id = x.Id,
