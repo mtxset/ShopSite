@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace ShopSite.Models
 {
-    public class ProductAttributeString
+    public class ProductAttributeInt
     {
         public int Id { get; set; }
-        public string Value { get; set; }
+        public int Value { get; set; }
         public int ProductId { get; set; }
         public int AtributeNameId { get; set; }
 

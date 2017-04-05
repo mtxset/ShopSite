@@ -8,9 +8,10 @@ using ShopSite.Data;
 namespace ShopSite.Migrations
 {
     [DbContext(typeof(ShopSiteDbContext))]
-    partial class ShopSiteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170405072341_AttributeOther")]
+    partial class AttributeOther
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -213,51 +214,10 @@ namespace ShopSite.Migrations
                     b.ToTable("AttributeDbContext");
                 });
 
-            modelBuilder.Entity("ShopSite.Models.ProductAttribute1", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AtributeType");
-
-                    b.Property<int>("CategoryId");
-
-                    b.Property<string>("Name");
-
-                    b.Property<int>("ProductAttributeCompexTypeDefinitionId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("ProductAttributeCompexTypeDefinitionId");
-
-                    b.ToTable("ProductAttributes");
-                });
-
-            modelBuilder.Entity("ShopSite.Models.ProductAttributeCompexTypeDefinition", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.Property<int?>("ParentId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentId");
-
-                    b.ToTable("ProductAttributeCompexTypeDefinition");
-                });
-
             modelBuilder.Entity("ShopSite.Models.ProductAttributeData", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AtributeNameId");
 
                     b.Property<int>("ProductId");
 
@@ -265,11 +225,9 @@ namespace ShopSite.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AtributeNameId");
-
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductAttributeData");
+                    b.ToTable("ProductAttributeDatas");
                 });
 
             modelBuilder.Entity("ShopSite.Models.ProductAttributeDec", b =>
@@ -277,15 +235,11 @@ namespace ShopSite.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("AtributeNameId");
-
                     b.Property<int>("ProductId");
 
                     b.Property<decimal>("Value");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AtributeNameId");
 
                     b.HasIndex("ProductId");
 
@@ -309,15 +263,11 @@ namespace ShopSite.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("AtributeNameId");
-
                     b.Property<int>("ProductId");
 
                     b.Property<int>("Value");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AtributeNameId");
 
                     b.HasIndex("ProductId");
 
@@ -329,15 +279,11 @@ namespace ShopSite.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("AtributeNameId");
-
                     b.Property<int>("ProductId");
 
                     b.Property<string>("Value");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AtributeNameId");
 
                     b.HasIndex("ProductId");
 
@@ -486,33 +432,8 @@ namespace ShopSite.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("ShopSite.Models.ProductAttribute1", b =>
-                {
-                    b.HasOne("ShopSite.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ShopSite.Models.ProductAttributeCompexTypeDefinition", "ProductAttributeCompexTypeDefinition")
-                        .WithMany()
-                        .HasForeignKey("ProductAttributeCompexTypeDefinitionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ShopSite.Models.ProductAttributeCompexTypeDefinition", b =>
-                {
-                    b.HasOne("ShopSite.Models.ProductAttributeCompexTypeDefinition", "Parent")
-                        .WithMany()
-                        .HasForeignKey("ParentId");
-                });
-
             modelBuilder.Entity("ShopSite.Models.ProductAttributeData", b =>
                 {
-                    b.HasOne("ShopSite.Models.ProductAttribute", "AtributeName")
-                        .WithMany()
-                        .HasForeignKey("AtributeNameId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("ShopSite.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -521,11 +442,6 @@ namespace ShopSite.Migrations
 
             modelBuilder.Entity("ShopSite.Models.ProductAttributeDec", b =>
                 {
-                    b.HasOne("ShopSite.Models.ProductAttribute", "AtributeName")
-                        .WithMany()
-                        .HasForeignKey("AtributeNameId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("ShopSite.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -534,11 +450,6 @@ namespace ShopSite.Migrations
 
             modelBuilder.Entity("ShopSite.Models.ProductAttributeInt", b =>
                 {
-                    b.HasOne("ShopSite.Models.ProductAttribute", "AtributeName")
-                        .WithMany()
-                        .HasForeignKey("AtributeNameId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("ShopSite.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -547,11 +458,6 @@ namespace ShopSite.Migrations
 
             modelBuilder.Entity("ShopSite.Models.ProductAttributeString", b =>
                 {
-                    b.HasOne("ShopSite.Models.ProductAttribute", "AtributeName")
-                        .WithMany()
-                        .HasForeignKey("AtributeNameId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("ShopSite.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")

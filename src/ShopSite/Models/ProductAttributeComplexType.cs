@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 
 namespace ShopSite.Models
 {
-    public class ProductAttributeString
+    public class ProductAttributeCompexType
     {
         public int Id { get; set; }
-        public string Value { get; set; }
+        public int ValueId { get; set; }
         public int ProductId { get; set; }
         public int AtributeNameId { get; set; }
+
+        public ProductAttributeCompexTypeDefinition Value { get; set; }
 
         public Product Product { get; set; }
         public ProductAttribute AtributeName { get; set; }
