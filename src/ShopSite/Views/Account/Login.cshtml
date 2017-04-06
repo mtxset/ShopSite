@@ -4,25 +4,27 @@
     ViewBag.Title = "Login";
 }
 
-<h1>Login</h1>
+<title>@ViewBag.Title</title>
+
+<h1>@Localizer["Log in"]</h1>
 <form method="post" asp-controller="Account" asp-action="Login" asp-route-returnurl="@Model.ReturnUrl">
     <div asp-validation-summary="ModelOnly"></div>
     <div>
-        <label asp-for="Username"></label>
+        <label asp-for="Username">@Localizer["Username"]</label>
         <input asp-for="Username" />
         <span asp-validation-for="Username"></span>
     </div>
     <div>
-        <label asp-for="Password"></label>
+        <label asp-for="Password">@Localizer["Password"]</label>
         <input asp-for="Password" />
         <span asp-validation-for="Password"></span>
     </div>
     <div>
-        <label asp-for="RememberMe"></label>
+        <label asp-for="RememberMe">@Localizer["Remember me?"]</label>
         <input asp-for="RememberMe" />
         <span asp-validation-for="RememberMe"></span>
     </div>
     <div>
-        <input type="submit" value="Login" />
+        <input type="submit" value="@Localizer["Log in"]" />
     </div>
 </form>

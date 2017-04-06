@@ -2,7 +2,6 @@
 using ShopSite.Services;
 using ShopSite.ViewModels;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System;
 
@@ -24,10 +23,11 @@ namespace ShopSite
             Random r = new Random();
             List<int> ids = new List<int>();
             
-            for(int i = 0; i< 9; i++)
+            for(int i = 0; i < 9; i++)
             {
                 ids.Add(r.Next(1, 30));
             }
+
             var q = _productRepo.GetByListOfIds(ids);
 
             var products = q.Select(x => new ProductPreview

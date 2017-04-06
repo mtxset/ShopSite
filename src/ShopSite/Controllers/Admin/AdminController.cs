@@ -12,7 +12,7 @@ using ShopSite.ViewModels.Attribute;
 
 namespace ShopSite.Controllers
 {
-    [Authorize]
+    [Authorize(Roles ="admin")]
     public class AdminController : Controller
     {
         private ICategoryService _categoryRepo;

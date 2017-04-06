@@ -1,6 +1,11 @@
 ﻿@model ShopSite.ViewModels.ProductsByCategoryVM
 @using System.Globalization;
 
+@{ 
+    ViewBag.Title = Model.CategoryName;
+}
+
+<h3>@ViewBag.PageSize</h3>
 <div class="container">
     <div class="row">
         <div class="col-md-3">
@@ -34,8 +39,8 @@
                                         <br />
                                     </div>
                                     <div class="price-actions">
-                                        <button id="reset-price" type="button" class="btn btn-default">Reset</button>
-                                        <button type="submit" class="btn btn-default">Apply</button>
+                                        <!--<button id="reset-price" type="button" class="btn btn-default">Reset</button>-->
+                                        <button type="submit" class="btn btn-default center-block">@Localizer["Apply"]</button>
                                     </div>
                                 </form>
                             </div>

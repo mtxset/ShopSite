@@ -71,6 +71,7 @@ namespace ShopSite
                 );
 
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ShopSiteDbContext>();
+            services.AddTransient<AdminRoleSeed>();
 
             services.AddSingleton(provider => JsonConfiguration);
             
@@ -90,8 +91,11 @@ namespace ShopSite
             services.AddSingleton<IStringLocalizerFactory, StringLocalizerFactory>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public async void Configure(
+            IApplicationBuilder app, 
+            IHostingEnvironment env, 
+            ILoggerFactory loggerFactory,
+            AdminRoleSeed adminSeeder)
         {
             loggerFactory.AddConsole();
             loggerFactory.AddDebug();
@@ -100,14 +104,20 @@ namespace ShopSite
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("Error");
+            }
 
             app.UseCustomLocalization();
            
             app.UseFileServer();
 
             app.UseIdentity();
-
+           
             app.UseMvcWithDefaultRoute();
+
+            await adminSeeder.EnsureAdminSeed();
         }
     }
 }

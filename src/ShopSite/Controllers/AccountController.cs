@@ -75,6 +75,13 @@ namespace ShopSite.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> LogOff()
+        {
+            await _signManager.SignOutAsync();
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
         public IActionResult Index()
         {
             return View();

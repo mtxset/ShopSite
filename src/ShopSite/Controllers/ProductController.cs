@@ -25,6 +25,7 @@ namespace ShopSite.Controllers
 
         public IActionResult ProductsByCategory(int id, ProductsByCategoryVM readModel)
         {
+            var v = ViewBag.PageSize;
             var category = _categoryRepo.GetCategory(id);
 
             if (category == null)
