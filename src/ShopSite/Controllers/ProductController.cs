@@ -37,8 +37,7 @@ namespace ShopSite.Controllers
                 CategoryName = category.Name,
             };
 
-            var q = _productRepo.GetByCategory(id);
-            //is features/publiushed
+            var q = _productRepo.GetByCategory(id).Where(x => x.IsFeatured);
 
             model.MaxPrice = q.Max(x => x.Price);
             model.MinPrice = q.Min(x => x.Price);
@@ -74,7 +73,8 @@ namespace ShopSite.Controllers
                 Name = x.Name,
                 Price = x.Price,
                 StockQuantity = x.StockQuantity,
-                ShortDescription = x.ShortDescription
+                ShortDescription = x.ShortDescription,
+                ImageUrl = x.ImageUrl
 
             }).Skip(offset).Take(readModel.SearchOptions.PageSize).ToList();
 
@@ -82,6 +82,13 @@ namespace ShopSite.Controllers
 
             model.SearchOptions.PageSize = readModel.SearchOptions.PageSize;
             model.SearchOptions.Page = currentPageNumber;
+
+            return View(model);
+        }
+
+        public IActionResult Details(int id)
+        {
+            var model = _productRepo.Get(id);
 
             return View(model);
         }

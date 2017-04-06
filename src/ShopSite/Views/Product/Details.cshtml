@@ -1,0 +1,69 @@
+@model ShopSite.Models.Product
+
+@{
+    ViewBag.Title = Model.Name;
+}
+<link rel="stylesheet" href="~/product/product-details.css" />
+<div>
+    <ol class="breadcrumb">
+        <li><a href="~/">@Localizer["Home"]</a></li>
+        @if (Model.Categories.Any())
+        {
+            //@await Component.InvokeAsync("CategoryBreadcrumb", new { categoryIds = Model.Categories.Select(x => x.Id) })
+        }
+        <li><span class="active">@Model.Name</span></li>
+    </ol>
+</div>
+
+<div class="product-detail">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="thumbnail">
+                <img src="@if (!string.IsNullOrEmpty(Model.ImageUrl)) { @Model.ImageUrl.ToString(); } else { @("/images/cheese.jpg"); }">
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="product-name">
+                <h1>@Model.Name</h1>
+            </div>
+            <div class="product-short-desc">@Html.Raw(Model.ShortDescription)</div>
+            @if (Model.StockQuantity <= 0)
+            {
+                <div class="out-of-stock">
+                    <span class="label label-danger">@Localizer["Out of stock"]</span>
+                </div>
+            }
+
+            <div class="product-price">
+                <h4>@Localizer["Price"] @Model.Price</h4>
+            </div>
+
+            <div class="add-to-cart">
+                <form class="inline">
+                    <input type="hidden" name="productId" value="@Model.Id" />
+                    <div class="product-quantity">
+                        <button type="button" class="quantity-button" name="subtract" value="-">-</button>
+                        <input type="text" class="quantity-field" readonly="readonly" name="qty" value="1">
+                        <button type="button" class="quantity-button" name="add" value="+">+</button>
+                    </div>
+                    <button type="button" disabled="@(!Model.IsAllowedToOrder || Model.StockQuantity <= 0)" class="btn btn-lg btn-add-cart">@Localizer["Add to cart"]</button>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+
+    <div class="col-lg-offset-1 col-md-10">
+        @if (!string.IsNullOrWhiteSpace(Model.Description))
+        {
+            <div>
+                <h3>@Localizer["Product detail"]</h3>
+                @Html.Raw(Model.Description)
+            </div>
+        }
+    </div>
+    <br />
+    <br />
+</div>
+<script src="~/js/jquery.js"></script>
+<script src="~/product/product-details.js"></script>

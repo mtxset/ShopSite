@@ -1,0 +1,20 @@
+﻿@model List<ShopSite.ViewModels.ProductPreview>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-sm-4 col-lg-4 col-md-4">
+            <div class="thumbnail">
+                <img style="width:320px;height:150px" src="@if (!string.IsNullOrEmpty(item.ImageUrl)) { @item.ImageUrl.ToString(); } else { @("/images/cheese.jpg"); }">
+                <div class="caption">
+                    <h4 class="pull-right">@item.Price</h4>
+                    <h4>
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">@item.Name</a>
+                    </h4>
+                    <p>@item.ShortDescription</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

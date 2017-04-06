@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShopSite.Models;
 using ShopSite.Services;
-using ShopSite.ViewModels;
 using ShopSite.ViewModels.Category;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ShopSite.ViewComponents
 {
@@ -16,12 +18,36 @@ namespace ShopSite.ViewComponents
 
         public IViewComponentResult Invoke()
         {
-            var model = new CategoryListViewModel
+            
+            var categories = _categoryData.GetAll();
+
+            var categoryMenuItems = new List<CategoryMenuItem>();
+
+            foreach (var item in categories.Where(x=>!x.ParentId.HasValue))
             {
-                Categories = _categoryData.GetAll()
+                var categoryMenuItem = Map(item);
+                categoryMenuItems.Add(categoryMenuItem);
+            }
+
+            return View(categoryMenuItems);
+        }
+
+        private CategoryMenuItem Map(Category category)
+        {
+            var categoryMenuItem = new CategoryMenuItem
+            {
+                Id = category.Id,
+                Name = category.Name
             };
 
-            return View(model);
+            var childCategories = category.Children;
+            foreach (var childCategory in childCategories)
+            {
+                var childCategoryMenuItem = Map(childCategory);
+                categoryMenuItem.AddChildItem(childCategoryMenuItem);
+            }
+
+            return categoryMenuItem;
         }
     }
 }

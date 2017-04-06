@@ -20,6 +20,8 @@ namespace ShopSite.Models
 
         public int? StockQuantity { get; set; }
 
+        public string ImageUrl { get; set; }
+
         public IList<ProductCategory> Categories { get; set; } = new List<ProductCategory>();
         public IList<ProductAttributeValue> AttributeValues { get; set; } = new List<ProductAttributeValue>();
 

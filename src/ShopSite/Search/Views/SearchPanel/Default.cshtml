@@ -1,0 +1,29 @@
+﻿<form class="form-inline" method="get" action="~/search">
+
+    <div class="form-group search-input">
+        <input type="text" size="25" class="form-control" placeholder="...">
+        <!--<input type="text" name="query" asp-for="Query" class="form-control" placeholder="Search here...">-->
+    </div>
+
+    <div class="form-group search-category hidden-xs">
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                @Localizer["Categories"]
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#">HTML</a></li>
+                <li><a href="#">CSS</a></li>
+                <li><a href="#">JavaScript</a></li>
+            </ul>
+        </div>
+        <!--<select name="category" asp-for="Category" asp-items="Model.AvailableCategories">
+            <option value="all">All Categories</option>
+        </select>-->
+    </div>
+
+    <button type="button" class="btn btn-info">
+        <span class="glyphicon glyphicon-search"></span> @Localizer["Search"]
+    </button>
+</form>
+<br />

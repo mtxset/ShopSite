@@ -7,6 +7,8 @@ namespace ShopSite.Services
     public interface IProductService
     {
         IList<Product> GetAll();
+        IList<Product> GetByListOfIds(List<int> ids);
+
         IQueryable<Product> GetByCategory(int id);
 
         Product GetWithCategories(int id);

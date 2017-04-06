@@ -26,6 +26,11 @@ namespace ShopSite.Services.SQL
             return _context.ProductDbContext.ToList();
         }
 
+        public IList<Product> GetByListOfIds(List<int> ids)
+        {
+            return _context.ProductDbContext.Where(s => ids.Any(id => id == s.Id)).ToList();
+        }
+
         public Product GetWithCategories(int id)
         {
             return _context.ProductDbContext
