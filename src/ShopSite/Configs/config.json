@@ -1,6 +1,8 @@
 ﻿{
   "database": {
     "connection": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ShopSite"
-  }
+  },
+
+  "ProductPageSize": "15"
 }
  

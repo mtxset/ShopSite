@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShopSite.Models;
-using ShopSite.Pagination;
+using Microsoft.Extensions.Configuration;
 using ShopSite.Services;
 using ShopSite.ViewModels;
-using System;
-using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ShopSite.Controllers
 {
@@ -14,13 +11,16 @@ namespace ShopSite.Controllers
     {
         private ICategoryService _categoryRepo;
         private IProductService _productRepo;
+        private int _pageSize;
 
         public ProductController(
             ICategoryService categoryRepo,
-            IProductService productRepo)
+            IProductService productRepo,
+            IConfiguration config)
         {
             _categoryRepo = categoryRepo;
             _productRepo = productRepo;
+            _pageSize = config.GetValue<int>("ProductPageSize");
         }
 
         public IActionResult ProductsByCategory(int id, ProductsByCategoryVM readModel)
@@ -56,8 +56,8 @@ namespace ShopSite.Controllers
             }
 
             model.TotalProducts = q.Count();
-
-            if (readModel.SearchOptions.PageSize == 0) readModel.SearchOptions.PageSize = 2;
+            
+            if (readModel.SearchOptions.PageSize == 0) readModel.SearchOptions.PageSize = _pageSize;
 
             int currentPageNumber = readModel.SearchOptions.Page <= 0 ? 1 : readModel.SearchOptions.Page;
             int offset = (readModel.SearchOptions.PageSize * currentPageNumber) - readModel.SearchOptions.PageSize;
