@@ -114,10 +114,10 @@ namespace ShopSite
             app.UseFileServer();
 
             app.UseIdentity();
-           
+            
             app.UseMvcWithDefaultRoute();
 
-            await adminSeeder.EnsureAdminSeed();
+            //await adminSeeder.EnsureAdminSeed();
         }
     }
 }

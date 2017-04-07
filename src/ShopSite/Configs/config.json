@@ -2,7 +2,7 @@
   "AdminUserName": "mtxset",
 
   "database": {
-    "connection": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ShopSite"
+    "connection": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ShopSite0"
   },
 
   "ProductPageSize": "15"
