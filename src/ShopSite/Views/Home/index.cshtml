@@ -2,17 +2,17 @@
 
 
 @{ ViewBag.Title = Localizer["Home"]; }
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3">
-                <p class="lead">Shop Name</p>
-                <div class="list-group">
-                    @await Component.InvokeAsync("CategoryMenu")
-                </div>
-            </div>
-            <div class="col-md-9">
-               @await Html.PartialAsync("_ShowProductsPartial", Model)
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <p class="lead">Shop Name</p>
+            <div class="list-group">
+                @await Component.InvokeAsync("CategoryMenu")
             </div>
         </div>
+        <div class="col-md-9">
+            @await Html.PartialAsync("_ShowProductsPartial", Model)
+        </div>
     </div>
-    </div>
+</div>
+    

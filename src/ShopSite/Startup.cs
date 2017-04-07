@@ -117,7 +117,7 @@ namespace ShopSite
            
             app.UseMvcWithDefaultRoute();
 
-            await adminSeeder.EnsureAdminSeed();
+            //await adminSeeder.EnsureAdminSeed();
         }
     }
 }
