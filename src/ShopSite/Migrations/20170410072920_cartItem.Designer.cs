@@ -9,9 +9,10 @@ using ShopSite.Models;
 namespace ShopSite.Migrations
 {
     [DbContext(typeof(ShopSiteDbContext))]
-    partial class ShopSiteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170410072920_cartItem")]
+    partial class cartItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -213,11 +214,15 @@ namespace ShopSite.Migrations
 
                     b.Property<int>("ProductAttributeCompexTypeDefinitionId");
 
+                    b.Property<int?>("ProductAttributeGroupId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("ProductAttributeCompexTypeDefinitionId");
+
+                    b.HasIndex("ProductAttributeGroupId");
 
                     b.ToTable("AttributeDbContext");
                 });
@@ -299,6 +304,18 @@ namespace ShopSite.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductAttributeDecs");
+                });
+
+            modelBuilder.Entity("ShopSite.Models.ProductAttributeGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AttributeGroupDbContext");
                 });
 
             modelBuilder.Entity("ShopSite.Models.ProductAttributeInt", b =>
@@ -433,13 +450,15 @@ namespace ShopSite.Migrations
 
                     b.Property<int>("Quantity");
 
-                    b.Property<string>("UserId");
+                    b.Property<int>("UserId");
+
+                    b.Property<string>("UserId1");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("CartDbContext");
                 });
@@ -506,6 +525,10 @@ namespace ShopSite.Migrations
                         .WithMany()
                         .HasForeignKey("ProductAttributeCompexTypeDefinitionId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ShopSite.Models.ProductAttributeGroup")
+                        .WithMany("Attributes")
+                        .HasForeignKey("ProductAttributeGroupId");
                 });
 
             modelBuilder.Entity("ShopSite.Models.ProductAttributeCompexType", b =>
@@ -619,7 +642,7 @@ namespace ShopSite.Migrations
 
                     b.HasOne("ShopSite.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId1");
                 });
         }
     }

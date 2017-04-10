@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ShopSite.Models;
 using ShopSite.Localization.Models;
+using ShopSite.Orders.Models;
 
 namespace ShopSite.Data
 {
@@ -13,11 +14,12 @@ namespace ShopSite.Data
         }
 
         public DbSet<Category> CategoryDbContext { get; set; }
-        public DbSet<Product> ProductDbContext { get; set; }
-        public DbSet<ProductAttributeGroup> AttributeGroupDbContext { get; set; }
-        public DbSet<ProductAttribute> AttributeDbContext { get; set; }
+        public DbSet<Product> ProductDbContext { get; set; }        
         public DbSet<Resource> ResourceDbContext { get; set; }
 
+        public DbSet<CartItem> CartDbContext { get; set; }
+
+        public DbSet<ProductAttribute> AttributeDbContext { get; set; }
         public DbSet<ProductAttributeString> ProductAttributeStrings { get; set; }
         public DbSet<ProductAttributeInt> ProductAttributeInts { get; set; }
         public DbSet<ProductAttributeDec> ProductAttributeDecs { get; set; }

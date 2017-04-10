@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,9 @@ using ShopSite.Data;
 using ShopSite.Data.Repository;
 using ShopSite.Localization;
 using ShopSite.Models;
-using ShopSite.Models.Order;
+using ShopSite.Orders.Models;
+using ShopSite.Orders.Services;
+using ShopSite.Orders.Services.SQL;
 using ShopSite.Services;
 using ShopSite.Services.SQL;
 using System.Globalization;
@@ -96,7 +99,11 @@ namespace ShopSite
             services.AddScoped<IProductAttributeGroupService, AttributeGroupService>();
             services.AddScoped<IProductAttributeService, AttributeService>();
             services.AddScoped<IResourceService, ResourceService>();
-                
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); // required for work context
+            services.AddScoped<IWorkContext, WorkContext>();
+
+            services.AddScoped<IRepository<CartItem>, Repository<CartItem>>();
             services.AddScoped<ICartService, CartService>();
 
             services.AddSingleton<IStringLocalizerFactory, StringLocalizerFactory>();

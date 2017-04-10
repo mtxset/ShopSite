@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
-using ShopSite.Models.Order;
 using ShopSite.Data.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using ShopSite.Orders.Models;
+using ShopSite.Models;
 
-namespace ShopSite.Services.SQL
+namespace ShopSite.Orders.Services.SQL
 {
     public class CartService : ICartService
     {
@@ -15,19 +16,19 @@ namespace ShopSite.Services.SQL
             _cartItemRepository = cartService;
         }
 
-        public CartItem AddToCart(int userId, int productId, int quantity)
+        public CartItem AddToCart(User user, int productId, int quantity)
         {
             // Get data from user(userId) filled with product(productId) from cartItem table
             var cartItem = _cartItemRepository.Table
                 .Include(x => x.Product)
-                .Where(x => x.ProductId == productId && x.UserId == userId).FirstOrDefault();
+                .Where(x => x.ProductId == productId && x.UserId == user.Id).FirstOrDefault();
 
             // Adding new, else just increasing quantity
             if (cartItem == null)
             {
                 cartItem = new CartItem
                 {
-                    UserId = userId,
+                    UserId = user.Id,
                     ProductId = productId,
                     Quantity = quantity
                 };
@@ -42,12 +43,11 @@ namespace ShopSite.Services.SQL
             return cartItem;
         }
 
-        public IList<CartItem> GetCartItems(int userId)
+        public IList<CartItem> GetCartItems(User user)
         {
-            // TODO: should be updated after adding attributes?
             return _cartItemRepository.Table
-                .Include(x => x.Product).ThenInclude(p => p.ImageUrl)
-                .Where(x => x.UserId == userId).ToList();
+                .Include(x => x.Product)//.ThenInclude(p => p.ImageUrl) //TODO: fix
+                .Where(x => x.UserId== user.Id).ToList();
         }
     }
 }

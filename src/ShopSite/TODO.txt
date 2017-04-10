@@ -1,1 +1,2 @@
-﻿Why Update was not implemented back then in Ode?
+﻿On cart update a window should appear (Orders.Views.Cart.AddtoCartResult.cshtml)
+Fix in cart view (Orders.Views.Cart.Index) quantity update

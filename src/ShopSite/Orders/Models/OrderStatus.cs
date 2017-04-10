@@ -1,4 +1,4 @@
-﻿namespace ShopSite.Models.Order
+﻿namespace ShopSite.Orders.Models
 {
     public enum OrderStatus
     {

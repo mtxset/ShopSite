@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = Model.Name;
 }
+
 <link rel="stylesheet" href="~/product/product-details.css" />
 <div>
     <ol class="breadcrumb">
@@ -43,14 +44,14 @@
                     <input type="hidden" name="productId" value="@Model.Id" />
                     <div class="product-quantity">
                         <button type="button" class="quantity-button" name="subtract" value="-">-</button>
-                        <input type="text" class="quantity-field" readonly="readonly" name="qty" value="1">
+                        <input type="text" class="quantity-field" readonly="readonly" name="Quantity" value="1">
                         <button type="button" class="quantity-button" name="add" value="+">+</button>
                     </div>
                     <button type="button" disabled="@(!Model.IsAllowedToOrder || Model.StockQuantity <= 0)" class="btn btn-lg btn-add-cart">@Localizer["Add to cart"]</button>
                 </form>
             </div>
         </div>
-        
+
     </div>
 
     <div class="col-lg-offset-1 col-md-10">
@@ -67,3 +68,4 @@
 </div>
 <script src="~/js/jquery.js"></script>
 <script src="~/product/product-details.js"></script>
+<script src="~/js/add-to-cart.js"></script>

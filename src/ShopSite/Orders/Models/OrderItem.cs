@@ -1,4 +1,6 @@
-﻿namespace ShopSite.Models.Order
+﻿using Microsoft.DotNet.Cli.Utils;
+
+namespace ShopSite.Orders.Models
 {
     public class OrderItem
     {

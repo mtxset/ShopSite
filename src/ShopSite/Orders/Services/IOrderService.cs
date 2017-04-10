@@ -1,7 +1,7 @@
 ﻿using ShopSite.Models;
-using ShopSite.Models.Order;
+using ShopSite.Orders.Models;
 
-namespace ShopSite.Services
+namespace ShopSite.Orders.Services
 {
     public interface IOrderService
     {

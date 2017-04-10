@@ -36,7 +36,9 @@ namespace ShopSite.Localization
         {
             get
             {
-                throw new NotImplementedException();
+                var format = GetString(name);
+                var value = string.Format(format ?? name, arguments);
+                return new LocalizedString(name, value, format == null);
             }
         }
 

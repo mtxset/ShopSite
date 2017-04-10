@@ -1,8 +1,9 @@
 ﻿using ShopSite.Data.Repository;
+using ShopSite.Models;
 using System;
 using System.Collections.Generic;
 
-namespace ShopSite.Models.Order
+namespace ShopSite.Orders.Models
 {
     public class Order : BaseEntity
     {

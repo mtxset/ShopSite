@@ -1,8 +1,8 @@
 ﻿using System;
 using ShopSite.Models;
-using ShopSite.Models.Order;
+using ShopSite.Orders.Models;
 
-namespace ShopSite.Services.SQL
+namespace ShopSite.Orders.Services.SQL
 {
     public class OrderService : IOrderService
     {

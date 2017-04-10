@@ -1,0 +1,63 @@
+﻿@model ShopSite.Orders.ViewModels.CartVM
+
+@{
+    ViewData["Title"] = Localizer["Cart"];
+}
+
+<div class="row cart-list">
+    <div class="col-md-9">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th colspan="2">@Localizer["Product"]</th>
+                    <th class="text-right">@Localizer["Price"]</th>
+                    <th class="text-center">@Localizer["Quantity"]</th>
+                    <th class="text-center">@Localizer["Total"]</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <form asp-controller="Cart">
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <tr>
+                            <td class="product-image">
+                                <img src="@if (!string.IsNullOrEmpty(@item.ProductImageUrl)) { @item.ProductImageUrl.ToString(); } else { @("/images/cheese.jpg"); }">
+                            </td>
+                            <td>
+                                <h4>@item.ProductName</h4>
+                            </td>
+                            <td class="text-right">@item.ProductPrice</td>
+                            <td class="text-center">
+                                <input type="text" class="quantity-field" readonly="readonly" name="Quantity" value="@item.Quantity">
+                                <!--
+                                <button type="button" class="quantity-button" id="subtract" value="-">-</button>
+                                <input type="text" class="quantity-field" readonly="readonly" name="Quantity" value="@item.Quantity">
+                                <button type="button" class="quantity-button-inc" id="add" value="@item.Id">+</button>
+                                    -->
+                            </td>
+                            <td class="text-center">@(item.Quantity*item.ProductPrice)</td>
+                            <td class="text-right">
+                                <input type="submit" asp-action="Remove" asp-route-id="@item.Id" class="btn btn-danger" value="@Localizer["Remove"]" />
+                            </td>
+                        </tr>
+                    }
+                </form>
+            </tbody>
+        </table>
+        <div class="col-md-3">
+            <div class="order-summary">
+                <h4>@Localizer["Order summary"]</h4>
+                <dl class="dl-horizontal">
+                    <dt>@Localizer["Subtotal"]</dt>
+                    <dd><strong>@Model.SubTotal</strong></dd>
+                </dl>
+                <p class="text-right"><a href="#" class="btn btn-primary">@Localizer["Checkout"]</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/js/jquery.js"></script>
+<script src="~/js/update-cart-item.js"></script>
