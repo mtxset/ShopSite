@@ -87,6 +87,7 @@ namespace ShopSite
             services.AddScoped<IProductAttributeGroupService, AttributeGroupService>();
             services.AddScoped<IProductAttributeService, AttributeService>();
             services.AddScoped<IResourceService, ResourceService>();
+            services.AddScoped<IProductAttributeComplexTypeDefinitionsService, ProductAttributeComplexTypeDefinitionsService>();
 
             services.AddSingleton<IStringLocalizerFactory, StringLocalizerFactory>();
         }
