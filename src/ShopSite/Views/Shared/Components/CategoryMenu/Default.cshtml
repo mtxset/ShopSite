@@ -1,5 +1,5 @@
 ﻿@model List<ShopSite.ViewModels.Category.CategoryMenuItem>
-
+<link rel="stylesheet" href="~/css/site.css" />
 <ul class="nav navbar-nav main-menu">
 
     @foreach (var item in Model)
@@ -14,10 +14,10 @@
                     {
                         if (childItem.ChildItems.Any())
                         {
-                            <li class="dropdown-submenu">
-                                <a href="javascript:void(0);">@childItem.Name</a>
-                                <ul class="dropdown-menu">
-                                    <li><a asp-controller="Product" asp-action="ProductsByCategory" asp-route-id="@childItem.Id">@Localizer["All"] @childItem.Name</a></li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown" href="javascript:void(0);">@childItem.Name <span class="glyphicon glyphicon-menu-down"></span></a>
+                                <ul class="nav navbar-nav main-menu">
+                                    <li class="dropdown"><a asp-controller="Product" asp-action="ProductsByCategory" asp-route-id="@childItem.Id">@Localizer["All"] @childItem.Name</a></li>
                                     @foreach (var childChildItem in childItem.ChildItems)
                                     {
                                         <li><a asp-controller="Product" asp-action="ProductsByCategory" asp-route-id="@childChildItem.Id">@childChildItem.Name</a></li>

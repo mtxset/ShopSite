@@ -9,8 +9,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using ShopSite.Data;
+using ShopSite.Data.Repository;
 using ShopSite.Localization;
 using ShopSite.Models;
+using ShopSite.Models.Order;
 using ShopSite.Services;
 using ShopSite.Services.SQL;
 using System.Globalization;
@@ -70,7 +72,14 @@ namespace ShopSite
                     opts => opts.UseSqlServer(JsonConfiguration["database:connection"])
                 );
 
-            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ShopSiteDbContext>();
+            services.AddIdentity<User, IdentityRole>(opts=> 
+            {
+                opts.Password.RequireDigit = false;
+                opts.Password.RequireLowercase = false;
+                opts.Password.RequireNonAlphanumeric = false;
+                opts.Password.RequireUppercase = false;
+
+            }).AddEntityFrameworkStores<ShopSiteDbContext>();
             services.AddTransient<AdminRoleSeed>();
 
             services.AddSingleton(provider => JsonConfiguration);
@@ -87,6 +96,8 @@ namespace ShopSite
             services.AddScoped<IProductAttributeGroupService, AttributeGroupService>();
             services.AddScoped<IProductAttributeService, AttributeService>();
             services.AddScoped<IResourceService, ResourceService>();
+                
+            services.AddScoped<ICartService, CartService>();
 
             services.AddSingleton<IStringLocalizerFactory, StringLocalizerFactory>();
         }
@@ -117,7 +128,7 @@ namespace ShopSite
             
             app.UseMvcWithDefaultRoute();
 
-            //await adminSeeder.EnsureAdminSeed();
+            await adminSeeder.EnsureAdminSeed();
         }
     }
 }

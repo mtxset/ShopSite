@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using ShopSite.Data;
 using ShopSite.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace ShopSite.Services.SQL
 {
