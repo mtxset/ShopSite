@@ -1,6 +1,8 @@
 ﻿{
   "AdminUserName": "mtxset",
 
+  "UserRoles": ["admin", "customer", "guest"],
+
   "database": {
     "connection": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ShopSite0"
   },
