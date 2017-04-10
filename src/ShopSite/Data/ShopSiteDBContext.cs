@@ -17,6 +17,7 @@ namespace ShopSite.Data
         public DbSet<Product> ProductDbContext { get; set; }        
         public DbSet<Resource> ResourceDbContext { get; set; }
 
+        public DbSet<Order> Orders { get; set; }
         public DbSet<CartItem> CartDbContext { get; set; }
 
         public DbSet<ProductAttribute> AttributeDbContext { get; set; }

@@ -103,6 +103,9 @@ namespace ShopSite
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); // required for work context
             services.AddScoped<IWorkContext, WorkContext>();
 
+            services.AddScoped<IRepository<Order>, Repository<Order>>();
+            services.AddScoped<IOrderService, OrderService>();
+
             services.AddScoped<IRepository<CartItem>, Repository<CartItem>>();
             services.AddScoped<ICartService, CartService>();
 

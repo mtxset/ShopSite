@@ -1,4 +1,5 @@
-﻿using Microsoft.DotNet.Cli.Utils;
+﻿using ShopSite.Models;
+using System;
 
 namespace ShopSite.Orders.Models
 {
@@ -9,6 +10,8 @@ namespace ShopSite.Orders.Models
         public int ProductId { get; set; }
 
         public int Quantity { get; set; }
+
+        public decimal ProductPrice { get; set; }
 
         public virtual Order Order { get; set; }
 
