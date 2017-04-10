@@ -63,5 +63,10 @@ namespace ShopSite.Orders.Controllers
             return RedirectToAction("OrderConfirmation");
         }
 
+        [HttpGet]
+        public IActionResult OrderConfirmation()
+        {
+            return View();
+        }
     }
 }
