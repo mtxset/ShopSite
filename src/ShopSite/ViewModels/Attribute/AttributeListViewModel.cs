@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using ShopSite.ProductAttributes.Models;
 
 namespace ShopSite.ViewModels.Attribute
 {
     public class AttributeListViewModel
     {
-        public IEnumerable<Models.ProductAttribute> ProductAttributes { get; set; }
+        public IEnumerable<ProductAttribute> ProductAttributes { get; set; }
 
-        public Models.ProductAttribute ProductAttribute { get; set; }
+        public ProductAttribute ProductAttribute { get; set; }
 
-        public Models.ProductAttributeGroup AttributeGroup { get; set; }
+        public ProductAttributeGroup AttributeGroup { get; set; }
     }
 }

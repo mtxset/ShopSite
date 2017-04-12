@@ -1,4 +1,6 @@
-﻿namespace ShopSite.Models
+﻿using ShopSite.Models;
+
+namespace ShopSite.ProductAttributes.Models
 {
     public class ProductAttributeValue
     {

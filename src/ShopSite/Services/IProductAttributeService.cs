@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using ShopSite.Models;
+using ShopSite.ProductAttributes.Models;
 
 namespace ShopSite.Services
 {

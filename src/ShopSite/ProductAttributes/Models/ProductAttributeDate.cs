@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using ShopSite.Models;
 
-namespace ShopSite.Models
+namespace ShopSite.ProductAttributes.Models
 {
     public class ProductAttributeDate
     {

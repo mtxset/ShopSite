@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ShopSite.ProductAttributes.Models;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ShopSite.Models

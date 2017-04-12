@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShopSite.Data;
+using ShopSite.ProductAttributes.Models;
 
 namespace ShopSite.Models
 {
@@ -20,7 +21,7 @@ namespace ShopSite.Models
         public async Task<IActionResult> Index()
         {
             var shopSiteDbContext = _context.ProductAttributeComplexTypeDefinition.Include(p => p.Parent);
-            return View(await shopSiteDbContext.ToListAsync());
+            return View("~/ProductAttributes/Views/ProductAttributeComplexTypeDefinitions/Index.cshtml", await shopSiteDbContext.ToListAsync());
         }
 
         // GET: ProductAttributeComplexTypeDefinitions/Details/5

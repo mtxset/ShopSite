@@ -9,6 +9,7 @@ using ShopSite.ViewModels.Admin;
 using ShopSite.ViewModels.Category;
 using ShopSite.ViewModels.Product;
 using ShopSite.ViewModels.Attribute;
+using ShopSite.ProductAttributes.Models;
 
 namespace ShopSite.Controllers
 {
