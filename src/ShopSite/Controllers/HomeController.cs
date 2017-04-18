@@ -18,7 +18,7 @@ namespace ShopSite
             _productRepo = productservice;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(HomePageVm readModel)
         {
             Random r = new Random();
             List<int> ids = new List<int>();
@@ -40,8 +40,14 @@ namespace ShopSite
                 ImageUrl = x.ImageUrl
 
             }).ToList();
-  
-            return View(products);
+
+            var model = new HomePageVm
+            {
+                IndexPage = readModel.IndexPage,
+                Products = new PagedList<ProductPreview>(products, readModel.IndexPage, 2)
+            };
+
+            return View(model);
         }
     }
 }

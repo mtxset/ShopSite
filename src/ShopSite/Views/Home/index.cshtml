@@ -1,4 +1,4 @@
-﻿@model List<ShopSite.ViewModels.ProductPreview>
+﻿@model ShopSite.ViewModels.HomePageVm
 
 
 @{ ViewBag.Title = Localizer["Home"]; }
@@ -11,7 +11,23 @@
             </div>
         </div>
         <div class="col-md-9">
-            @await Html.PartialAsync("_ShowProductsPartial", Model)
+            @await Html.PartialAsync("_ShowProductsPartial", Model.Products)
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <a asp-action="Index" 
+                   asp-route-IndexPage=@(Model.IndexPage-1) 
+                   class="btn btn-default @((!Model.Products.HasPreviousPage)?"disabled":"") ">@Localizer["Previous"]</a>
+                @for (int i =0; i< Model.Products.TotalPages; i++)
+                {
+                    <a asp-action="Index" asp-route-IndexPage="@i.ToString()" 
+                       class="btn @((Model.IndexPage == i)? "btn-primary" : "btn-default") ">@i.ToString()</a>
+                }
+                <a asp-action="Index" 
+                   asp-route-IndexPage=@(Model.IndexPage+1) 
+                   class="btn btn-default @((!Model.Products.HasNextPage)?"disabled":"")">@Localizer["Next"]</a>
+            </div>
         </div>
     </div>
 </div>
