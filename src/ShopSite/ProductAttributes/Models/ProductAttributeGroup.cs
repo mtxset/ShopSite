@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ShopSite.Models
+namespace ShopSite.ProductAttributes.Models
 {
     public class ProductAttributeGroup
     {

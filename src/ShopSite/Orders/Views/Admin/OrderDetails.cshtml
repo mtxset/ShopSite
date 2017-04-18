@@ -1,0 +1,68 @@
+﻿@using ShopSite.Orders.Models
+@model ShopSite.Orders.Models.Order
+
+<div class="panel-heading">
+    <h2>Order details</h2>
+</div>
+<div class="panel-body">
+    <h3>Order Information</h3>
+    <dl class="dl-horizontal">
+        <dt>Order Id</dt>
+        <dd>@Model.Id</dd>
+        <dt>Created On</dt>
+        <dd>@Model.CreatedOn</dd>
+        <dt>Customer Name</dt>
+        <dd>@Model.CreatedBy.UserName</dd>
+        <dt>Sub Total</dt>
+        <dd>@Model.SubTotal</dd>
+        <dt>Order Status</dt>
+        <dd>
+            <form method="post" asp-action="ChangeStatus" class="form-inline inline">
+                <input asp-for="Id" type="hidden" />
+                <div class="form-group">
+                    <select asp-for="OrderStatus" asp-items="@Html.GetEnumSelectList(typeof(OrderStatus))"></select>
+                </div>
+                <input type="submit" value="Save" class="btn btn-primary btn-xs" />
+            </form>
+        </dd>
+    </dl>
+
+    <h3>Shipping Information</h3>
+    <dl class="dl-horizontal">
+        <dt>Contact Name</dt>
+        <dd>@Model.OrderAddress.ContactName</dd>
+        <dt>Region</dt>
+        <dd>@Model.OrderAddress.Region</dd>
+        <dt>Address</dt>
+        <dd>@Model.OrderAddress.AddressLine1, @Model.OrderAddress.AddressLine1, @Model.OrderAddress.AddressLine1</dd>
+        <dt>Phone</dt>
+        <dd>@Model.OrderAddress.Phone</dd>
+    </dl>
+
+    <h3>Product Infromation</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderItems)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.ProductPrice</td>
+                    <td>@item.Quantity</td>
+                    <td>@(item.Quantity * item.ProductPrice)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div>
+        <a asp-controller="Order" class="btn btn-info" asp-action="Admin">Back</a>
+    </div>
+</div>

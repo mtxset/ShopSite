@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ShopSite.Models;
 using ShopSite.Localization.Models;
 using ShopSite.Orders.Models;
+using ShopSite.ProductAttributes.Models;
 
 namespace ShopSite.Data
 {

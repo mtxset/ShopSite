@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ShopSite.Data;
 using ShopSite.Models;
+using ShopSite.ProductAttributes.Models;
 
 namespace ShopSite.Services.SQL
 {

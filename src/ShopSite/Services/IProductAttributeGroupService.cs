@@ -1,4 +1,5 @@
 ﻿using ShopSite.Models;
+using ShopSite.ProductAttributes.Models;
 using System.Collections.Generic;
 using System.Linq;
 

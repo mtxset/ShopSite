@@ -4,23 +4,33 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShopSite.Data;
+using ShopSite.ProductAttributes.Models;
+using Microsoft.AspNetCore.Authorization;
+using ShopSite.Services;
 
 namespace ShopSite.Models
 {
+    [Authorize(Roles = "admin")]
     public class ProductAttributeComplexTypeDefinitionsController : Controller
     {
+        private IProductAttributeComplexTypeDefinitionsService _PAComplexTDRepo;
+        //remove some later
         private readonly ShopSiteDbContext _context;
 
-        public ProductAttributeComplexTypeDefinitionsController(ShopSiteDbContext context)
+        public ProductAttributeComplexTypeDefinitionsController(ShopSiteDbContext context,
+            IProductAttributeComplexTypeDefinitionsService PAComplexTDRepo)
         {
-            _context = context;    
+            _PAComplexTDRepo = PAComplexTDRepo;
+            //remove
+            _context = context;
         }
 
         // GET: ProductAttributeComplexTypeDefinitions
         public async Task<IActionResult> Index()
         {
-            var shopSiteDbContext = _context.ProductAttributeComplexTypeDefinition.Include(p => p.Parent);
-            return View(await shopSiteDbContext.ToListAsync());
+            //var shopSiteDbContext = _context.ProductAttributeComplexTypeDefinition.Include(p => p.Parent);
+            var qResult = _PAComplexTDRepo.GetAll();
+            return View("~/ProductAttributes/Views/ProductAttributeComplexTypeDefinitions/Index.cshtml", await qResult.ToListAsync());
         }
 
         // GET: ProductAttributeComplexTypeDefinitions/Details/5
@@ -46,7 +56,7 @@ namespace ShopSite.Models
         public IActionResult Create()
         {
             ViewData["ParentId"] = new SelectList(_context.ProductAttributeComplexTypeDefinition, "Id", "Name");
-            return View();
+            return View("~/ProductAttributes/Views/ProductAttributeComplexTypeDefinitions/Create.cshtml");
         }
 
         // POST: ProductAttributeComplexTypeDefinitions/Create

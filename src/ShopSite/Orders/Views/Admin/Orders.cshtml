@@ -1,0 +1,49 @@
+﻿@using ShopSite.Orders.Models
+@model IList<ShopSite.Orders.Models.Order>
+
+<div class="row">
+    <div class="col-md-8">
+        <h2>@Localizer["Order List"]</h2>
+    </div>
+    <div class="col-md-4 text-right">
+    </div>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Order Id</th>
+            <th>Order Status</th>
+            <th>Customer name</th>
+            <th>Created On</th>
+            <th>SubTotal</th>
+            <th>Actions</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.OrderStatus</td>
+                <td>@item.CreatedBy.UserName</td>
+                <td>@item.CreatedOn</td>
+                <td>@item.SubTotal</td>
+                <td>
+                    <a asp-controller="Order" asp-action="OrderDetails" asp-route-id="@item.Id" class="btn btn-primary btn-xs">
+                        <span class="glyphicon glyphicon-eye-open"></span>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

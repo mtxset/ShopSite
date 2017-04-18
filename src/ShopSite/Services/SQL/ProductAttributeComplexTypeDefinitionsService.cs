@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using ShopSite.Models;
 using ShopSite.Data;
+using ShopSite.ProductAttributes.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ShopSite.Services.SQL
 {
@@ -14,6 +16,12 @@ namespace ShopSite.Services.SQL
         public ProductAttributeComplexTypeDefinitionsService(ShopSiteDbContext context)
         {
             _context = context;
+        }
+
+        public IQueryable<ProductAttributeComplexTypeDefinition> GetAll()
+        {
+            var IQueryableVar = _context.ProductAttributeComplexTypeDefinition.Include(p => p.Parent);
+            return IQueryableVar;
         }
     }
 }

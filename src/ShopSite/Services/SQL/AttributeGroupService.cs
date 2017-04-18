@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ShopSite.Models;
 using ShopSite.Data;
+using ShopSite.ProductAttributes.Models;
 
 namespace ShopSite.Services.SQL
 {

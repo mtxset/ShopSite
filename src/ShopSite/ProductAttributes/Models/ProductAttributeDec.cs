@@ -1,14 +1,15 @@
-﻿using System;
+﻿using ShopSite.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShopSite.Models
+namespace ShopSite.ProductAttributes.Models
 {
-    public class ProductAttributeString
+    public class ProductAttributeDec
     {
         public int Id { get; set; }
-        public string Value { get; set; }
+        public decimal Value { get; set; }
         public int ProductId { get; set; }
         public int AtributeNameId { get; set; }
 
