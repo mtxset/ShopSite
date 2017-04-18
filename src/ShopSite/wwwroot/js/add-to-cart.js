@@ -14,6 +14,7 @@ $(function () {
             data: JSON.stringify({ productId: productId, quantity: quantity }),
             contentType: "application/json"
         }).done(function (data) {
+            console.log(data)
             $('#shopModal').find('.modal-content').html(data);
             $('#shopModal').modal('show');
             $('.cart-badge .badge').text($('#shopModal').find('.cart-item-count').text());

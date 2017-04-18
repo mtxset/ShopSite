@@ -83,7 +83,8 @@ namespace ShopSite.Orders.Controllers
         [HttpPost]
         public async Task<IActionResult> Update([FromBody] string id, [FromBody] int quantity)
         {
-            return await Index();
+            throw new NotImplementedException();
+            //return await Index();
         }
 
         [HttpPost]

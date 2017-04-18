@@ -1,4 +1,4 @@
-﻿(function ($) {
+﻿$(function ($) {
     $(window).load(function () {
     });
 
@@ -8,5 +8,12 @@
             url: '/cart/addtocart',
             data: JSON.stringify({ productId: productId, quantity: quantity }),
             contentType: "application/json"
-    });
-})(jQuery);
+        }).done(function (data) {
+            $('#shopModal').find('.modal-content').html(data);
+            $('#shopModal').modal('show');
+            $('.cart-badge .badge').text($('#shopModal').find('.cart-item-count').text());
+        });
+    })(jQuery);
+
+
+});

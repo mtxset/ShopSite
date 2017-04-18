@@ -38,11 +38,6 @@ namespace ShopSite.Services.SQL
                 .FirstOrDefault(r => r.Id == id);
         }
 
-        public Product Get(int id)
-        {
-            return _context.Products.FirstOrDefault(r => r.Id == id);
-        }
-
         public int Commit()
         {
             return _context.SaveChanges();
@@ -66,6 +61,11 @@ namespace ShopSite.Services.SQL
         public IQueryable<Product> GetByCategory(int id)
         {
             return _context.Products.Where(x => x.Categories.Any(c => c.CategoryId == id));
+        }
+
+        public Product Get(int id)
+        {
+            return _context.Products.FirstOrDefault(r => r.Id == id);
         }
     }
 }

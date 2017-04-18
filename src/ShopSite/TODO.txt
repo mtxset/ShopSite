@@ -1,2 +1,1 @@
-﻿On cart update a window should appear (Orders.Views.Cart.AddtoCartResult.cshtml)
-Fix in cart view (Orders.Views.Cart.Index) quantity update
+﻿Fix in cart view (Orders.Views.Cart.Index) quantity update

@@ -38,6 +38,7 @@ namespace ShopSite.Orders.Services.SQL
             else
             {
                 cartItem.Quantity = quantity;
+                _cartItemRepository.Update(cartItem);
             }
 
             return cartItem;
