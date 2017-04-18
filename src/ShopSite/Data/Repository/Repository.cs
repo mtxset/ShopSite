@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace ShopSite.Data.Repository
 {
-    public class Repository<T> : IRepository<T> where T : BaseEntity
+    public class Repository<T> : IRepository<T> where T : class
     {
         private ShopSiteDbContext _context;
         private DbSet<T> _entities;

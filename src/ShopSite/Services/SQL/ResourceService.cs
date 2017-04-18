@@ -15,7 +15,7 @@ namespace ShopSite.Services.SQL
 
         public IQueryable<Resource> Query()
         {
-            return _context.ResourceDbContext;
+            return _context.Resources;
         }
     }
 }

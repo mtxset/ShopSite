@@ -41,7 +41,7 @@ namespace ShopSite.Models
                 return NotFound();
             }
 
-            var productAttributeComplexTypeDefinition = await _context.ProductAttributeComplexTypeDefinition
+            var productAttributeComplexTypeDefinition = await _context.ProductAttributeComplexTypeDefinitions
                 .Include(p => p.Parent)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (productAttributeComplexTypeDefinition == null)
@@ -55,7 +55,7 @@ namespace ShopSite.Models
         // GET: ProductAttributeComplexTypeDefinitions/Create
         public IActionResult Create()
         {
-            ViewData["ParentId"] = new SelectList(_context.ProductAttributeComplexTypeDefinition, "Id", "Name");
+            ViewData["ParentId"] = new SelectList(_context.ProductAttributeComplexTypeDefinitions, "Id", "Name");
             return View("~/ProductAttributes/Views/ProductAttributeComplexTypeDefinitions/Create.cshtml");
         }
 
@@ -72,7 +72,7 @@ namespace ShopSite.Models
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewData["ParentId"] = new SelectList(_context.ProductAttributeComplexTypeDefinition, "Id", "Name", productAttributeComplexTypeDefinition.ParentId);
+            ViewData["ParentId"] = new SelectList(_context.ProductAttributeComplexTypeDefinitions, "Id", "Name", productAttributeComplexTypeDefinition.ParentId);
             return View(productAttributeComplexTypeDefinition);
         }
 
@@ -84,12 +84,12 @@ namespace ShopSite.Models
                 return NotFound();
             }
 
-            var productAttributeComplexTypeDefinition = await _context.ProductAttributeComplexTypeDefinition.SingleOrDefaultAsync(m => m.Id == id);
+            var productAttributeComplexTypeDefinition = await _context.ProductAttributeComplexTypeDefinitions.SingleOrDefaultAsync(m => m.Id == id);
             if (productAttributeComplexTypeDefinition == null)
             {
                 return NotFound();
             }
-            ViewData["ParentId"] = new SelectList(_context.ProductAttributeComplexTypeDefinition, "Id", "Name", productAttributeComplexTypeDefinition.ParentId);
+            ViewData["ParentId"] = new SelectList(_context.ProductAttributeComplexTypeDefinitions, "Id", "Name", productAttributeComplexTypeDefinition.ParentId);
             return View(productAttributeComplexTypeDefinition);
         }
 
@@ -125,7 +125,7 @@ namespace ShopSite.Models
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["ParentId"] = new SelectList(_context.ProductAttributeComplexTypeDefinition, "Id", "Name", productAttributeComplexTypeDefinition.ParentId);
+            ViewData["ParentId"] = new SelectList(_context.ProductAttributeComplexTypeDefinitions, "Id", "Name", productAttributeComplexTypeDefinition.ParentId);
             return View(productAttributeComplexTypeDefinition);
         }
 
@@ -137,7 +137,7 @@ namespace ShopSite.Models
                 return NotFound();
             }
 
-            var productAttributeComplexTypeDefinition = await _context.ProductAttributeComplexTypeDefinition
+            var productAttributeComplexTypeDefinition = await _context.ProductAttributeComplexTypeDefinitions
                 .Include(p => p.Parent)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (productAttributeComplexTypeDefinition == null)
@@ -153,15 +153,15 @@ namespace ShopSite.Models
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var productAttributeComplexTypeDefinition = await _context.ProductAttributeComplexTypeDefinition.SingleOrDefaultAsync(m => m.Id == id);
-            _context.ProductAttributeComplexTypeDefinition.Remove(productAttributeComplexTypeDefinition);
+            var productAttributeComplexTypeDefinition = await _context.ProductAttributeComplexTypeDefinitions.SingleOrDefaultAsync(m => m.Id == id);
+            _context.ProductAttributeComplexTypeDefinitions.Remove(productAttributeComplexTypeDefinition);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
         private bool ProductAttributeComplexTypeDefinitionExists(int id)
         {
-            return _context.ProductAttributeComplexTypeDefinition.Any(e => e.Id == id);
+            return _context.ProductAttributeComplexTypeDefinitions.Any(e => e.Id == id);
         }
     }
 }

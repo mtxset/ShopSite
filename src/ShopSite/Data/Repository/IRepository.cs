@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace ShopSite.Data.Repository
 {
-    public interface IRepository<T> where T : BaseEntity
+    public interface IRepository<T> where T : class
     {
 
         T GetById(object id);

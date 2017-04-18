@@ -10,5 +10,7 @@ namespace ShopSite.ViewModels.Admin
         public IList<SelectListItem> Categories { get; set; } 
         
         public IList<bool> SelectedCategories { get; set; }
+
+        public bool EditImageUrl { get; set; }
     }
 }

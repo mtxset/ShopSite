@@ -8,26 +8,27 @@ using ShopSite.ProductAttributes.Models;
 
 namespace ShopSite.Data
 {
-    public class ShopSiteDbContext : IdentityDbContext<User>
+    public class ShopSiteDbContext : IdentityDbContext
     {
         public ShopSiteDbContext(DbContextOptions<ShopSiteDbContext> options) : base(options)
         {
         }
 
-        public DbSet<Category> CategoryDbContext { get; set; }
-        public DbSet<Product> ProductDbContext { get; set; }        
-        public DbSet<Resource> ResourceDbContext { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Product> Products { get; set; }        
+        public DbSet<Resource> Resources { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
 
         public DbSet<Order> Orders { get; set; }
-        public DbSet<CartItem> CartDbContext { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
 
-        public DbSet<ProductAttribute> AttributeDbContext { get; set; }
+        public DbSet<ProductAttribute> ProductAttributes { get; set; }
         public DbSet<ProductAttributeString> ProductAttributeStrings { get; set; }
         public DbSet<ProductAttributeInt> ProductAttributeInts { get; set; }
         public DbSet<ProductAttributeDec> ProductAttributeDecs { get; set; }
         public DbSet<ProductAttributeDate> ProductAttributeDates { get; set; }
-        public DbSet<ProductAttributeCompexType> ProductAttributeCompexType { get; set; }
-        public DbSet<ProductAttributeComplexTypeDefinition> ProductAttributeComplexTypeDefinition { get; set; }
+        public DbSet<ProductAttributeCompexType> ProductAttributeCompexTypes { get; set; }
+        public DbSet<ProductAttributeComplexTypeDefinition> ProductAttributeComplexTypeDefinitions { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -49,12 +50,12 @@ namespace ShopSite.Data
         
         public IQueryable QueryProduct()
         {
-            return ProductDbContext;
+            return Products;
         }
 
         public IQueryable QueryResource()
         {
-            return ResourceDbContext;
+            return Resources;
         }
 
     }

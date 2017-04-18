@@ -26,7 +26,7 @@ namespace ShopSite.Orders.Components
             var currentUser = await _workContext.GetCurrentUser();
             if (currentUser != null)
             { 
-                var cartItemCount = _cartService.GetCartItems(currentUser).Count();
+                var cartItemCount = _cartService.GetCartItems(currentUser.Id).Count();
 
                 return View("~/Orders/Views/Components/CartBadge.cshtml", cartItemCount);
             }

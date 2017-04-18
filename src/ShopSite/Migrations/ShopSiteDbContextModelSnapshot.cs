@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using ShopSite.Data;
-using ShopSite.Models;
 using ShopSite.Orders.Models;
+using ShopSite.ProductAttributes.Models;
 
 namespace ShopSite.Migrations
 {
@@ -58,6 +58,61 @@ namespace ShopSite.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AccessFailedCount");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken();
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256);
+
+                    b.Property<bool>("EmailConfirmed");
+
+                    b.Property<bool>("LockoutEnabled");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("PasswordHash");
+
+                    b.Property<string>("PhoneNumber");
+
+                    b.Property<bool>("PhoneNumberConfirmed");
+
+                    b.Property<string>("SecurityStamp");
+
+                    b.Property<bool>("TwoFactorEnabled");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
@@ -152,7 +207,7 @@ namespace ShopSite.Migrations
 
                     b.HasIndex("CultureId");
 
-                    b.ToTable("ResourceDbContext");
+                    b.ToTable("Resources");
                 });
 
             modelBuilder.Entity("ShopSite.Models.Category", b =>
@@ -171,7 +226,7 @@ namespace ShopSite.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("CategoryDbContext");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("ShopSite.Models.Product", b =>
@@ -198,168 +253,7 @@ namespace ShopSite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductDbContext");
-                });
-
-            modelBuilder.Entity("ShopSite.Models.ProductAttribute", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AtributeType");
-
-                    b.Property<int>("CategoryId");
-
-                    b.Property<string>("Name");
-
-                    b.Property<int>("ProductAttributeCompexTypeDefinitionId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("ProductAttributeCompexTypeDefinitionId");
-
-                    b.ToTable("AttributeDbContext");
-                });
-
-            modelBuilder.Entity("ShopSite.Models.ProductAttributeCompexType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AtributeNameId");
-
-                    b.Property<int>("ProductId");
-
-                    b.Property<int?>("ValueId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AtributeNameId");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("ValueId");
-
-                    b.ToTable("ProductAttributeCompexType");
-                });
-
-            modelBuilder.Entity("ShopSite.Models.ProductAttributeComplexTypeDefinition", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.Property<int?>("ParentId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentId");
-
-                    b.ToTable("ProductAttributeComplexTypeDefinition");
-                });
-
-            modelBuilder.Entity("ShopSite.Models.ProductAttributeDate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AtributeNameId");
-
-                    b.Property<int>("ProductId");
-
-                    b.Property<DateTime>("Value");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AtributeNameId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductAttributeDates");
-                });
-
-            modelBuilder.Entity("ShopSite.Models.ProductAttributeDec", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AtributeNameId");
-
-                    b.Property<int>("ProductId");
-
-                    b.Property<decimal>("Value");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AtributeNameId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductAttributeDecs");
-                });
-
-            modelBuilder.Entity("ShopSite.Models.ProductAttributeInt", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AtributeNameId");
-
-                    b.Property<int>("ProductId");
-
-                    b.Property<int>("Value");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AtributeNameId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductAttributeInts");
-                });
-
-            modelBuilder.Entity("ShopSite.Models.ProductAttributeString", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AtributeNameId");
-
-                    b.Property<int>("ProductId");
-
-                    b.Property<string>("Value");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AtributeNameId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductAttributeStrings");
-                });
-
-            modelBuilder.Entity("ShopSite.Models.ProductAttributeValue", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AttributeId");
-
-                    b.Property<int>("ProductId");
-
-                    b.Property<string>("Value");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AttributeId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductAttributeValue");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("ShopSite.Models.ProductCategory", b =>
@@ -372,62 +266,12 @@ namespace ShopSite.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("ProductCategory");
-                });
-
-            modelBuilder.Entity("ShopSite.Models.User", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AccessFailedCount");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256);
-
-                    b.Property<bool>("EmailConfirmed");
-
-                    b.Property<bool>("LockoutEnabled");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("PasswordHash");
-
-                    b.Property<string>("PhoneNumber");
-
-                    b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<string>("SecurityStamp");
-
-                    b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasName("UserNameIndex");
-
-                    b.ToTable("AspNetUsers");
+                    b.ToTable("ProductCategories");
                 });
 
             modelBuilder.Entity("ShopSite.Orders.Models.CartItem", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("ProductId");
@@ -442,12 +286,12 @@ namespace ShopSite.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CartDbContext");
+                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("ShopSite.Orders.Models.Order", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("CreatedById");
@@ -496,7 +340,7 @@ namespace ShopSite.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("OrderId");
+                    b.Property<int?>("OrderId");
 
                     b.Property<int>("ProductId");
 
@@ -513,6 +357,177 @@ namespace ShopSite.Migrations
                     b.ToTable("OrderItem");
                 });
 
+            modelBuilder.Entity("ShopSite.ProductAttributes.Models.ProductAttribute", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AtributeType");
+
+                    b.Property<int>("CategoryId");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("ProductAttributeCompexTypeDefinitionId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("ProductAttributeCompexTypeDefinitionId");
+
+                    b.ToTable("ProductAttributes");
+                });
+
+            modelBuilder.Entity("ShopSite.ProductAttributes.Models.ProductAttributeCompexType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AtributeNameId");
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<int?>("ValueId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AtributeNameId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ValueId");
+
+                    b.ToTable("ProductAttributeCompexTypes");
+                });
+
+            modelBuilder.Entity("ShopSite.ProductAttributes.Models.ProductAttributeComplexTypeDefinition", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<int?>("ParentId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("ProductAttributeComplexTypeDefinitions");
+                });
+
+            modelBuilder.Entity("ShopSite.ProductAttributes.Models.ProductAttributeDate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AtributeNameId");
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<DateTime>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AtributeNameId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductAttributeDates");
+                });
+
+            modelBuilder.Entity("ShopSite.ProductAttributes.Models.ProductAttributeDec", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AtributeNameId");
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<decimal>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AtributeNameId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductAttributeDecs");
+                });
+
+            modelBuilder.Entity("ShopSite.ProductAttributes.Models.ProductAttributeInt", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AtributeNameId");
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<int>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AtributeNameId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductAttributeInts");
+                });
+
+            modelBuilder.Entity("ShopSite.ProductAttributes.Models.ProductAttributeString", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AtributeNameId");
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AtributeNameId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductAttributeStrings");
+                });
+
+            modelBuilder.Entity("ShopSite.ProductAttributes.Models.ProductAttributeValue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AttributeId");
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AttributeId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductAttributeValue");
+                });
+
+            modelBuilder.Entity("ShopSite.Models.User", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUser");
+
+
+                    b.ToTable("User");
+
+                    b.HasDiscriminator().HasValue("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
@@ -523,7 +538,7 @@ namespace ShopSite.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("ShopSite.Models.User")
+                    b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUser")
                         .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -531,7 +546,7 @@ namespace ShopSite.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("ShopSite.Models.User")
+                    b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUser")
                         .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -544,7 +559,7 @@ namespace ShopSite.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("ShopSite.Models.User")
+                    b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUser")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -562,108 +577,6 @@ namespace ShopSite.Migrations
                     b.HasOne("ShopSite.Models.Category", "Parent")
                         .WithMany("Children")
                         .HasForeignKey("ParentId");
-                });
-
-            modelBuilder.Entity("ShopSite.Models.ProductAttribute", b =>
-                {
-                    b.HasOne("ShopSite.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ShopSite.Models.ProductAttributeComplexTypeDefinition", "ProductAttributeCompexTypeDefinition")
-                        .WithMany()
-                        .HasForeignKey("ProductAttributeCompexTypeDefinitionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ShopSite.Models.ProductAttributeCompexType", b =>
-                {
-                    b.HasOne("ShopSite.Models.ProductAttribute", "AtributeName")
-                        .WithMany()
-                        .HasForeignKey("AtributeNameId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ShopSite.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ShopSite.Models.ProductAttributeComplexTypeDefinition", "Value")
-                        .WithMany()
-                        .HasForeignKey("ValueId");
-                });
-
-            modelBuilder.Entity("ShopSite.Models.ProductAttributeComplexTypeDefinition", b =>
-                {
-                    b.HasOne("ShopSite.Models.ProductAttributeComplexTypeDefinition", "Parent")
-                        .WithMany()
-                        .HasForeignKey("ParentId");
-                });
-
-            modelBuilder.Entity("ShopSite.Models.ProductAttributeDate", b =>
-                {
-                    b.HasOne("ShopSite.Models.ProductAttribute", "AtributeName")
-                        .WithMany()
-                        .HasForeignKey("AtributeNameId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ShopSite.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ShopSite.Models.ProductAttributeDec", b =>
-                {
-                    b.HasOne("ShopSite.Models.ProductAttribute", "AtributeName")
-                        .WithMany()
-                        .HasForeignKey("AtributeNameId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ShopSite.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ShopSite.Models.ProductAttributeInt", b =>
-                {
-                    b.HasOne("ShopSite.Models.ProductAttribute", "AtributeName")
-                        .WithMany()
-                        .HasForeignKey("AtributeNameId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ShopSite.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ShopSite.Models.ProductAttributeString", b =>
-                {
-                    b.HasOne("ShopSite.Models.ProductAttribute", "AtributeName")
-                        .WithMany()
-                        .HasForeignKey("AtributeNameId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ShopSite.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ShopSite.Models.ProductAttributeValue", b =>
-                {
-                    b.HasOne("ShopSite.Models.ProductAttribute", "Attribute")
-                        .WithMany()
-                        .HasForeignKey("AttributeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ShopSite.Models.Product", "Product")
-                        .WithMany("AttributeValues")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ShopSite.Models.ProductCategory", b =>
@@ -710,6 +623,108 @@ namespace ShopSite.Migrations
 
                     b.HasOne("ShopSite.Models.Product", "Product")
                         .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ShopSite.ProductAttributes.Models.ProductAttribute", b =>
+                {
+                    b.HasOne("ShopSite.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ShopSite.ProductAttributes.Models.ProductAttributeComplexTypeDefinition", "ProductAttributeCompexTypeDefinition")
+                        .WithMany()
+                        .HasForeignKey("ProductAttributeCompexTypeDefinitionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ShopSite.ProductAttributes.Models.ProductAttributeCompexType", b =>
+                {
+                    b.HasOne("ShopSite.ProductAttributes.Models.ProductAttribute", "AtributeName")
+                        .WithMany()
+                        .HasForeignKey("AtributeNameId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ShopSite.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ShopSite.ProductAttributes.Models.ProductAttributeComplexTypeDefinition", "Value")
+                        .WithMany()
+                        .HasForeignKey("ValueId");
+                });
+
+            modelBuilder.Entity("ShopSite.ProductAttributes.Models.ProductAttributeComplexTypeDefinition", b =>
+                {
+                    b.HasOne("ShopSite.ProductAttributes.Models.ProductAttributeComplexTypeDefinition", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentId");
+                });
+
+            modelBuilder.Entity("ShopSite.ProductAttributes.Models.ProductAttributeDate", b =>
+                {
+                    b.HasOne("ShopSite.ProductAttributes.Models.ProductAttribute", "AtributeName")
+                        .WithMany()
+                        .HasForeignKey("AtributeNameId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ShopSite.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ShopSite.ProductAttributes.Models.ProductAttributeDec", b =>
+                {
+                    b.HasOne("ShopSite.ProductAttributes.Models.ProductAttribute", "AtributeName")
+                        .WithMany()
+                        .HasForeignKey("AtributeNameId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ShopSite.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ShopSite.ProductAttributes.Models.ProductAttributeInt", b =>
+                {
+                    b.HasOne("ShopSite.ProductAttributes.Models.ProductAttribute", "AtributeName")
+                        .WithMany()
+                        .HasForeignKey("AtributeNameId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ShopSite.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ShopSite.ProductAttributes.Models.ProductAttributeString", b =>
+                {
+                    b.HasOne("ShopSite.ProductAttributes.Models.ProductAttribute", "AtributeName")
+                        .WithMany()
+                        .HasForeignKey("AtributeNameId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ShopSite.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ShopSite.ProductAttributes.Models.ProductAttributeValue", b =>
+                {
+                    b.HasOne("ShopSite.ProductAttributes.Models.ProductAttribute", "Attribute")
+                        .WithMany()
+                        .HasForeignKey("AttributeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ShopSite.Models.Product", "Product")
+                        .WithMany("AttributeValues")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

@@ -29,29 +29,29 @@ namespace ShopSite.Orders.Controllers
         {
             var currentUser = await _workContext.GetCurrentUser();
 
-            CartItem cartItem = _cartService.AddToCart(currentUser, model.ProductId, model.Quantity);
+            CartItem cartItem = _cartService.AddToCart(currentUser.Id, model.ProductId, model.Quantity);
 
             return RedirectToAction("AddToCartResult", new { cartItemId = cartItem.Id });
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddToCartResult(string cartItemId)
+        public async Task<IActionResult> AddToCartResult(int cartItemId)
         {
             var currentUser = await _workContext.GetCurrentUser();
 
             var cartItem = _cartItemRepo.Table
-                .Include(x => x.Product)//.ThenInclude(x => x.ImageUrl) //TODO: fix
+                .Include(x => x.Product)
                 .FirstAsync(x => x.Id == cartItemId).Result;
 
             var model = new AddToCartResultVM
             {
                 ProductName = cartItem.Product.Name,
-                //ProductImage = cartItem.Product.ImageUrl, // TODO: fix
+                ProductImage = cartItem.Product.ImageUrl,
                 ProductPrice = cartItem.Product.Price,
                 Quantity = cartItem.Quantity
             };
 
-            var cartItems = _cartService.GetCartItems(currentUser);
+            var cartItems = _cartService.GetCartItems(currentUser.Id);
 
             model.CartItemCount = cartItems.Count;
             model.CartAmount = cartItems.Sum(x => x.Quantity * x.Product.Price);
@@ -63,7 +63,7 @@ namespace ShopSite.Orders.Controllers
         public async Task<IActionResult> Index()
         {
             var currentUser = await _workContext.GetCurrentUser();
-            var cartItems = _cartService.GetCartItems(currentUser);
+            var cartItems = _cartService.GetCartItems(currentUser.Id);
 
             var model = new CartVM
             {
@@ -72,7 +72,7 @@ namespace ShopSite.Orders.Controllers
                     Id = x.Id,
                     ProductName = x.Product.Name,
                     ProductPrice = x.Product.Price,
-                    //ProductImageUrl = x.Product.ImageUrl, // TODO: fix
+                    ProductImageUrl = x.Product.ImageUrl, 
                     Quantity = x.Quantity
                 }).ToList()
             };
@@ -87,7 +87,7 @@ namespace ShopSite.Orders.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Remove(string id)
+        public async Task<IActionResult> Remove(int id)
         {
             var cartItem = _cartItemRepo.Table
                 .FirstOrDefaultAsync(x => x.Id == id).Result;

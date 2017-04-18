@@ -17,17 +17,17 @@ namespace ShopSite.Services.SQL
 
         public IList<Category> GetAll()
         {
-            return _context.CategoryDbContext.ToList();
+            return _context.Categories.ToList();
         }
 
         public IQueryable<Category> GetListByIds(IList<int> ids)
         {
-            return _context.CategoryDbContext.Where(r => ids.Contains(r.Id));
+            return _context.Categories.Where(r => ids.Contains(r.Id));
         }
 
         public Category GetCategory(int id)
         {
-            return _context.CategoryDbContext.FirstOrDefault(r => r.Id == id);
+            return _context.Categories.FirstOrDefault(r => r.Id == id);
         }
 
         public Category GetCategoryParent(int id)

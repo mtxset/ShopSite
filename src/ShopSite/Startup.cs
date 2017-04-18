@@ -83,11 +83,11 @@ namespace ShopSite
                 opts.Password.RequireUppercase = false;
 
             }).AddEntityFrameworkStores<ShopSiteDbContext>();
+
             services.AddTransient<AdminRoleSeed>();
 
             services.AddSingleton(provider => JsonConfiguration);
             
-
             AddCustomServices(services);
         }
 
@@ -96,8 +96,9 @@ namespace ShopSite
         {
             services.AddScoped<ICategoryService, SqlCategoryService>();
             services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IProductAttributeGroupService, AttributeGroupService>();
-            services.AddScoped<IProductAttributeService, AttributeService>();
+
+            services.AddScoped<IRepository<ProductCategory>, Repository<ProductCategory>>();
+
             services.AddScoped<IResourceService, ResourceService>();
             services.AddScoped<IProductAttributeComplexTypeDefinitionsService, ProductAttributeComplexTypeDefinitionsService>();
 

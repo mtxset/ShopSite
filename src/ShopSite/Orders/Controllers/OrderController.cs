@@ -62,7 +62,7 @@ namespace ShopSite.Orders.Controllers
 
             var currentUser = await _workContext.GetCurrentUser();
 
-            _orderService.CreateOrder(currentUser, model.OrderAddress);
+            _orderService.CreateOrder(currentUser.Id, model.OrderAddress);
 
             return RedirectToAction("OrderConfirmation");
         }
@@ -94,11 +94,11 @@ namespace ShopSite.Orders.Controllers
 
         [HttpGet]
         [Authorize(Roles = "admin")]
-        public IActionResult OrderDetails(string id)
+        public IActionResult OrderDetails(int id)
         {
             var order = _orderRepo.Table
                 .Include(x => x.OrderAddress)
-                .Include(x => x.OrderItems).ThenInclude(x => x.Product)//.ThenInclude(x => x.ImageUrl) //TODO: fix
+                .Include(x => x.OrderItems).ThenInclude(x => x.Product)
                 .Include(x => x.CreatedBy)
                 .FirstOrDefault(x => x.Id == id);
 
@@ -110,7 +110,7 @@ namespace ShopSite.Orders.Controllers
 
         [HttpPost]
         [Authorize(Roles = "admin")]
-        public IActionResult ChangeStatus(string Id, int OrderStatus)
+        public IActionResult ChangeStatus(int Id, int OrderStatus)
         {
             var order = _orderRepo.Table.FirstOrDefault(x => x.Id == Id);
 

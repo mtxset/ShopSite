@@ -18,29 +18,29 @@ namespace ShopSite.Services.SQL
 
         public IQueryable QueryProduct()
         {
-            return _context.ProductDbContext;
+            return _context.Products;
         }
 
         public IList<Product> GetAll()
         {
-            return _context.ProductDbContext.ToList();
+            return _context.Products.ToList();
         }
 
         public IList<Product> GetByListOfIds(List<int> ids)
         {
-            return _context.ProductDbContext.Where(s => ids.Any(id => id == s.Id)).ToList();
+            return _context.Products.Where(s => ids.Any(id => id == s.Id)).ToList();
         }
 
         public Product GetWithCategories(int id)
         {
-            return _context.ProductDbContext
+            return _context.Products
                 .Include(x => x.Categories)
                 .FirstOrDefault(r => r.Id == id);
         }
 
         public Product Get(int id)
         {
-            return _context.ProductDbContext.FirstOrDefault(r => r.Id == id);
+            return _context.Products.FirstOrDefault(r => r.Id == id);
         }
 
         public int Commit()
@@ -55,7 +55,7 @@ namespace ShopSite.Services.SQL
 
         public void Update(Product product)
         {
-            throw new NotImplementedException();
+            _context.Update(product);
         }
 
         public void Remove(Product product)
@@ -65,7 +65,7 @@ namespace ShopSite.Services.SQL
 
         public IQueryable<Product> GetByCategory(int id)
         {
-            return _context.ProductDbContext.Where(x => x.Categories.Any(c => c.CategoryId == id));
+            return _context.Products.Where(x => x.Categories.Any(c => c.CategoryId == id));
         }
     }
 }

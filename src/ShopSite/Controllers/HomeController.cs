@@ -44,7 +44,7 @@ namespace ShopSite
             var model = new HomePageVm
             {
                 IndexPage = readModel.IndexPage,
-                Products = new PagedList<ProductPreview>(products, readModel.IndexPage, 2)
+                Products = new PagedList<ProductPreview>(products, readModel.IndexPage, 5)
             };
 
             return View(model);

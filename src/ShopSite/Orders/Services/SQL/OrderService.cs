@@ -18,11 +18,11 @@ namespace ShopSite.Orders.Services.SQL
             _orderRepo = orderRepo;
         }
 
-        public void CreateOrder(User user, OrderAddress address)
+        public void CreateOrder(string userId, OrderAddress address)
         {
             var cartItems = _cartItemRepo.Table
                 .Include(x => x.Product)
-                .Where(x => x.UserId == user.Id).ToList();
+                .Where(x => x.UserId == userId).ToList();
 
             var orderAddress = new OrderAddress()
             {
@@ -35,7 +35,7 @@ namespace ShopSite.Orders.Services.SQL
             var order = new Order
             {
                 CreatedOn = DateTimeOffset.Now,
-                CreatedById = user.Id,
+                CreatedById = userId,
                 OrderAddress = address
             };
 

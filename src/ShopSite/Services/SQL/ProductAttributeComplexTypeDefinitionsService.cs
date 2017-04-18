@@ -20,7 +20,7 @@ namespace ShopSite.Services.SQL
 
         public IQueryable<ProductAttributeComplexTypeDefinition> GetAll()
         {
-            var IQueryableVar = _context.ProductAttributeComplexTypeDefinition.Include(p => p.Parent);
+            var IQueryableVar = _context.ProductAttributeComplexTypeDefinitions.Include(p => p.Parent);
             return IQueryableVar;
         }
     }

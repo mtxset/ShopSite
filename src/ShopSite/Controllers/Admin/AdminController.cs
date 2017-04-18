@@ -8,61 +8,31 @@ using ShopSite.Services;
 using ShopSite.ViewModels.Admin;
 using ShopSite.ViewModels.Category;
 using ShopSite.ViewModels.Product;
-using ShopSite.ViewModels.Attribute;
-using ShopSite.ProductAttributes.Models;
+using ShopSite.Data.Repository;
+using System.IO;
 
 namespace ShopSite.Controllers
 {
-    [Authorize(Roles="admin")]
+    [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
         private ICategoryService _categoryRepo;
         private IProductService _productRepo;
-        private IProductAttributeGroupService _attributeGroupRepo;
-        private IProductAttributeService _attributeRepo;
+        private IRepository<ProductCategory> _productCategoryRepo;
 
         public AdminController(
             ICategoryService categoryRepo,
             IProductService productRepo,
-            IProductAttributeGroupService attributeGroupRepo,
-            IProductAttributeService attributeRepo)
+            IRepository<ProductCategory> productCategoryRepo)
         {
             _categoryRepo = categoryRepo;
             _productRepo = productRepo;
-            _attributeGroupRepo = attributeGroupRepo;
-            _attributeRepo = attributeRepo;
+            _productCategoryRepo = productCategoryRepo;
         }
 
         public ViewResult Index()
         {
             return View();
-        }
-
-        public ViewResult Attributes()
-        {
-            var model = new AttributeListViewModel
-            {
-                ProductAttributes = _attributeRepo.GetAll()
-            };
-
-            return View("~/Views/Admin/Attributes/Attributes.cshtml", model);
-        }
-
-
-        [HttpGet]
-        public IActionResult AttributeEdit(int id)
-        {
-            return View("~/Views/Admin/Attributes/AttributeEdit.cshtml");
-        }
-
-        public ViewResult AttributeGroups()
-        {
-            var model = new AttributeGroupListViewModel()
-            {
-                AttributeGroups = _attributeGroupRepo.GetAll()
-            };
-
-            return View("~/Views/Admin/Attributes/AttributeGroups.cshtml", model);
         }
 
         public ViewResult Products()
@@ -84,40 +54,7 @@ namespace ShopSite.Controllers
 
             return View("~/Views/Admin/Categories/Categories.cshtml", model);
         }
-
-        private IList<SelectListItem> GetAttributeGroups()
-        {
-            var list = new List<SelectListItem>();
-
-            foreach (var item in _attributeGroupRepo.GetAll())
-            {
-                list.Add(new SelectListItem()
-                {
-                    Text = item.Name,
-                    Value = item.Id.ToString()
-                });
-            }
-
-            return list;
-        }
-
-        [HttpGet]
-        public IActionResult AttributeCreate()
-        {
-            var model = new AttributeEdit
-            {
-                Groups = GetAttributeGroups()
-            };
-
-            return View("~/Views/Admin/Attributes/AttributeCreate.cshtml", model);
-        }
-
-        [HttpGet]
-        public IActionResult AttributeGroupCreate()
-        {
-            return View("~/Views/Admin/Attributes/AttributeGroupCreate.cshtml");
-        }
-
+ 
         [HttpGet]
         public IActionResult CategoryCreate()
         {
@@ -134,35 +71,14 @@ namespace ShopSite.Controllers
 
             return View("~/Views/Admin/Products/Create.cshtml", model);
 
-        }
-
-        public IActionResult AttributeGroupRemove(int id)
-        {
-            var attributeGroup = _attributeGroupRepo.Get(id);
-
-            _attributeGroupRepo.Remove(attributeGroup);
-
-            _attributeGroupRepo.Commit();
-
-            return RedirectToAction("Index");
-        }
-
+        }  
+    
         public IActionResult ProductRemove(int id)
         {
             var product = _productRepo.Get(id);
 
             _productRepo.Remove(product);
             _productRepo.Commit();
-
-            return RedirectToAction("Index");
-        }
-
-        public IActionResult AttributeRemove(int id)
-        {
-            var attribute = _attributeRepo.Get(id);
-
-            _attributeRepo.Remove(attribute);
-            _attributeRepo.Commit();
 
             return RedirectToAction("Index");
         }
@@ -185,6 +101,8 @@ namespace ShopSite.Controllers
                 return RedirectToAction("ProductCreate");
 
             var product = model.Product;
+
+            product.ImageUrl = Path.Combine("/images/", model.Product.ImageUrl);
 
             var categories = _categoryRepo.GetAll();
 
@@ -215,43 +133,6 @@ namespace ShopSite.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
-        public IActionResult AttributeGroupEdit(int id)
-        {
-            var attribute = _attributeGroupRepo.Get(id);
-
-            var model = new AttributeGroupEdit()
-            {
-                Name = attribute.Name
-            };
-
-            return View("~/Views/Admin/Attributes/AttributeGroupEdit.cshtml", model);
-        }
-
-        [HttpPost]
-        public IActionResult AttributeGroupCreate(AttributeGroupEdit model)
-        {
-            if (!ModelState.IsValid)
-                return View("~/Views/Admin/Attributes/AttributeGroupCreate.cshtml");
-
-            var attributeGroup = new ProductAttributeGroup()
-            {
-                Name = model.Name
-            };
-
-
-            _attributeGroupRepo.Create(attributeGroup);
-            _attributeGroupRepo.Commit();
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        public IActionResult AttributeCreate(AttributeEdit model)
-        {
-            return RedirectToAction("Index");
-        }
-
         [HttpPost]
         public IActionResult CategoryCreate(Category model)
         {
@@ -263,30 +144,6 @@ namespace ShopSite.Controllers
             _categoryRepo.Create(category);
             _categoryRepo.Commit();
 
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        public IActionResult AttributeGroupEdit(int id, AttributeGroupEdit model)
-        {
-            var attributeGroup = _attributeGroupRepo.Get(id);
-
-            if (ModelState.IsValid && attributeGroup != null)
-            {
-                attributeGroup.Name = model.Name;
-
-                _attributeGroupRepo.Update(attributeGroup);
-                _attributeGroupRepo.Commit();
-
-                return RedirectToAction("AttributeGroups");
-            }
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        public IActionResult AttributeEdit(int id, AttributeEdit model)
-        {
             return RedirectToAction("Index");
         }
 
@@ -304,28 +161,74 @@ namespace ShopSite.Controllers
                 _categoryRepo.Update(category);
                 _categoryRepo.Commit();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Categories");
             }
 
-            return View("~/Views/Admin/Categories/Edit.cshtml");
+            return RedirectToAction("CategoryEdit");
         }
 
         [HttpPost]
         public IActionResult ProductEdit(int id, ProductEdit model)
         {
-            var product = _productRepo.Get(id);
+            var product = _productRepo.GetWithCategories(id);
 
             if (ModelState.IsValid && product != null)
             {
-                product = model.Product;
+                product.Name = model.Product.Name;   
+                product.Description = model.Product.Description;
+                product.ShortDescription = model.Product.ShortDescription;
+                product.StockQuantity = model.Product.StockQuantity;
+                product.Price = model.Product.Price;
+                product.IsAllowedToOrder = model.Product.IsAllowedToOrder;
+                product.IsFeatured = model.Product.IsFeatured;
+
+                if (model.EditImageUrl && !string.IsNullOrEmpty(model.Product.ImageUrl))
+                    product.ImageUrl = Path.Combine("/images/", model.Product.ImageUrl);
+
+                var categories = _categoryRepo.GetAll();
+                var selectedCategoryIds = new List<int>();
+                var categoryIds = categories.Select(item => item.Id).ToList();
+
+                for (var i = 0; i < model.SelectedCategories.Count; i++)
+                {
+                    if (model.SelectedCategories[i])
+                    {
+                        selectedCategoryIds.Add(categoryIds[i]);
+                    }
+                }
+
+                foreach (var item in selectedCategoryIds)
+                {
+                    if (product.Categories.Any(x => x.CategoryId == item))
+                    {
+                        continue;
+                    }
+
+                    var productCategory = new ProductCategory
+                    {
+                        CategoryId = item
+                    };
+                    product.AddCategory(productCategory);
+                }
+
+                List<ProductCategory> deletedProductCategories = product.Categories
+                    .Where(x => !selectedCategoryIds.Contains(x.CategoryId)).ToList();
+
+                foreach (var item in deletedProductCategories)
+                {
+                    item.Product = null;
+                    product.Categories.Remove(item);
+                    _productCategoryRepo.Delete(item);
+                }
 
                 _productRepo.Update(product);
                 _productRepo.Commit();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Products");
             }
 
-            return RedirectToAction("Products");
+            return RedirectToAction("Index");
+            
         }
 
         [HttpGet]
@@ -360,7 +263,8 @@ namespace ShopSite.Controllers
             {
                 foreach (var item in categories.ToList())
                 {
-                    selectItem.Selected = string.Equals(selectItem.Text, item.Name);
+                    bool change = Equals(selectItem.Value, item.Id.ToString());
+                    if (change) selectItem.Selected = true;
                 }
             }
 
@@ -406,7 +310,7 @@ namespace ShopSite.Controllers
                 list.Add(new SelectListItem()
                 {
                     Text = item.Name,
-                    Value = item.ParentId.ToString()
+                    Value = item.Id.ToString()
                 });
             }
 

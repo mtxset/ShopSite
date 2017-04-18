@@ -17,7 +17,11 @@ namespace ShopSite.Data
         private IConfiguration _config;
         private ILogger _logger;
 
-        public AdminRoleSeed(ILoggerFactory logger, RoleManager<IdentityRole> roleManager, UserManager<User> userManager, IConfiguration config)
+        public AdminRoleSeed(
+            ILoggerFactory logger,
+            RoleManager<IdentityRole> roleManager,
+            UserManager<User> userManager,
+            IConfiguration config)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -27,27 +31,31 @@ namespace ShopSite.Data
 
         public async Task EnsureAdminSeed()
         {
-            string adminName = _config.GetValue<string>("AdminUserName");
+            var adminNames = _config.GetSection("AdminUserName").GetChildren().Select(x => x.Value).ToList();
             var roleNames = _config.GetSection("UserRoles").GetChildren().Select(x => x.Value).ToList();
 
             var list = new List<string>();
 
-            if (await _userManager.FindByNameAsync(adminName) != null)
+            foreach (var adminName in adminNames)
             {
-                foreach (var item in roleNames)
+                if (await _userManager.FindByNameAsync(adminName) != null)
                 {
-                    await _roleManager.CreateAsync(new IdentityRole(item));
-                    list.Add(item);
-                }
-                
-                if (!string.IsNullOrEmpty(adminName))
-                { 
-                    User user = await _userManager.FindByNameAsync(adminName);
+                    foreach (var item in roleNames)
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(item));
+                        list.Add(item);
+                    }
 
-                    IdentityResult result = await _userManager.AddToRoleAsync(user, "admin");
+                    if (!string.IsNullOrEmpty(adminName))
+                    {
+                        var user = await _userManager.FindByNameAsync(adminName);
+
+                        IdentityResult result = await _userManager.AddToRoleAsync(user, "admin");
+                    }
+                    else { _logger.LogError("Admin name could't be found"); }
                 }
-                else { _logger.LogError("Admin name could't be found"); }
             }
+
 
             _logger.LogInformation("Roles and admin user were assigned");
         }

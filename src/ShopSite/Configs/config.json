@@ -1,10 +1,10 @@
 ﻿{
-  "AdminUserName": "yuk",
+  "AdminUserNames": [ "yuk", "mtxset"],
 
   "UserRoles": ["admin", "customer", "guest"],
 
   "database": {
-    "connection": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ShopSite0"
+    "connection": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ShopSite"
   },
 
   "ProductPageSize": "15"

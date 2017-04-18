@@ -5,6 +5,6 @@ namespace ShopSite.Orders.Services
 {
     public interface IOrderService
     {
-        void CreateOrder(User user, OrderAddress address);
+        void CreateOrder(string userId, OrderAddress address);
     }
 }

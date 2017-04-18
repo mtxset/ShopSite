@@ -6,8 +6,8 @@ namespace ShopSite.Orders.Services
 {
     public interface ICartService
     {
-        CartItem AddToCart(User user, int productId, int quantity);
+        CartItem AddToCart(string userId, int productId, int quantity);
 
-        IList<CartItem> GetCartItems(User user);
+        IList<CartItem> GetCartItems(string userId);
     }
 }

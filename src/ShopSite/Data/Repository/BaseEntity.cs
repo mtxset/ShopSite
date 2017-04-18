@@ -2,6 +2,6 @@
 {
     public abstract partial class BaseEntity
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
     }
 }
