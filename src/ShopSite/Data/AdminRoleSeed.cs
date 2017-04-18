@@ -31,7 +31,7 @@ namespace ShopSite.Data
 
         public async Task EnsureAdminSeed()
         {
-            var adminNames = _config.GetSection("AdminUserName").GetChildren().Select(x => x.Value).ToList();
+            var adminNames = _config.GetSection("AdminUserNames").GetChildren().Select(x => x.Value).ToList();
             var roleNames = _config.GetSection("UserRoles").GetChildren().Select(x => x.Value).ToList();
 
             var list = new List<string>();
@@ -55,7 +55,6 @@ namespace ShopSite.Data
                     else { _logger.LogError("Admin name could't be found"); }
                 }
             }
-
 
             _logger.LogInformation("Roles and admin user were assigned");
         }
