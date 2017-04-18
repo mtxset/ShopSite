@@ -30,7 +30,7 @@ namespace ShopSite.Models
         {
             //var shopSiteDbContext = _context.ProductAttributeComplexTypeDefinition.Include(p => p.Parent);
             var qResult = _PAComplexTDRepo.GetAll();
-            return View("~/ProductAttributes/Views/ProductAttributeComplexTypeDefinitions/Index.cshtml", await shopSiteDbContext.ToListAsync());
+            return View("~/ProductAttributes/Views/ProductAttributeComplexTypeDefinitions/Index.cshtml", await qResult.ToListAsync());
         }
 
         // GET: ProductAttributeComplexTypeDefinitions/Details/5
@@ -56,7 +56,7 @@ namespace ShopSite.Models
         public IActionResult Create()
         {
             ViewData["ParentId"] = new SelectList(_context.ProductAttributeComplexTypeDefinition, "Id", "Name");
-            return View();
+            return View("~/ProductAttributes/Views/ProductAttributeComplexTypeDefinitions/Create.cshtml");
         }
 
         // POST: ProductAttributeComplexTypeDefinitions/Create
