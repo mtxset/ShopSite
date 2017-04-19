@@ -129,7 +129,7 @@ namespace ShopSite
             }
             else
             {
-                app.UseExceptionHandler("Error");
+                app.UseExceptionHandler("/Error");
             }
 
             app.UseCustomLocalization();

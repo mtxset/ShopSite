@@ -1,7 +1,9 @@
 ﻿{
   "AdminUserNames": [ "yuk", "mtxset" ],
   "database": {
-    "connection": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ShopSite"
+    "connection": "Data Source=HSHSERMITN;Initial Catalog=ShopSite;User ID=sa;Password=lag007",
+    "connection1": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ShopSite",
+    "connection2": "server=localhost;userid=mtxset;password=lag007;database=ShopSite"
   },
   "ProductPageSize": "15",
   "UserRoles": [ "admin", "customer", "guest" ]
