@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using ShopSite.Models;
 using ShopSite.Services;
 using ShopSite.ViewModels;
 using System.IO;
@@ -20,7 +21,19 @@ namespace ShopSite.Controllers
         {
             _categoryRepo = categoryRepo;
             _productRepo = productRepo;
-            _pageSize = config.GetValue<int>("ProductPageSize");
+            _pageSize = config.GetValue<int>("ProductsPageSize");
+        }
+
+        public IActionResult Search(string query)
+        {
+            if (string.IsNullOrEmpty(query))
+                return View();
+
+            var q = _productRepo.QueryProduct().Cast<Product>();
+
+            q = q.Where(x => x.Name.Contains(query) && x.IsFeatured);
+
+            return View();
         }
 
         public IActionResult ProductsByCategory(int id, ProductsByCategoryVM readModel)

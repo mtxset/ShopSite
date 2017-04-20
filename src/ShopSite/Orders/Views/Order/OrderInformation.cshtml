@@ -1,17 +1,51 @@
 ﻿@model ShopSite.Orders.ViewModels.OrderInformationVm
 
-@{ 
+@{
     ViewBag.Title = Localizer["Delivery Information"];
 }
 
 <div class="row">
-    <div class="col-md-7">
+    <div class="col-md-9">
         <form asp-controller="Order" asp-action="OrderInformation" method="post" class="form-horizontal">
             <h3>@Localizer["Shipping address"]</h3>
-            <div class="form-group">
-                <strong>@Model.OrderAddress.Region</strong><br />
-                @Model.OrderAddress.AddressLine2, @Model.OrderAddress.AddressLine3, @Model.OrderAddress.AddressLine1<br />
-                Phone: @Model.OrderAddress.Phone
+            <div class="form-group-sm">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">@Localizer["Contact Name"]</label>
+                    <div class="col-sm-9">
+                        <input asp-for="OrderAddress.ContactName" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">@Localizer["Region"]</label>
+                    <div class="col-sm-9">
+                        <input asp-for="OrderAddress.Region" placeholder="@Model.OrderAddress.Region" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">@Localizer["Address (City)"]</label>
+                    <div class="col-sm-9">
+                        <input asp-for="OrderAddress.AddressLine1" placeholder="@Model.OrderAddress.AddressLine1" class="form-control" />
+                    </div>
+
+                    <label class="col-sm-2 control-label">@Localizer["Address (Street)"]</label>
+                    <div class="col-sm-9">
+                        <input asp-for="OrderAddress.AddressLine2" placeholder="@Model.OrderAddress.AddressLine2"  class="form-control" />
+                    </div>
+
+                    <label class="col-sm-2 control-label">@Localizer["Address (House)"]</label>
+                    <div class="col-sm-9">
+                        <input asp-for="OrderAddress.AddressLine3" placeholder="@Model.OrderAddress.AddressLine3" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">@Localizer["Phone"]</label>
+                    <div class="col-sm-9">
+                        <input type="tel" asp-for="OrderAddress.Phone" class="form-control" />
+                    </div>
+                </div>
             </div>
             <div class="form-group">
                 <div class="col-md-12 text-right">

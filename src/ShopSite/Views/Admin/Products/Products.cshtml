@@ -14,14 +14,24 @@
 </div>
 
 
+<form asp-action="Products" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-xs btn-default" /> |
+            <a asp-action="Products">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
 <table class="table table-striped">
     <thead>
         <tr>
             <th>Name</th>
-            <th>Stock</th>
-            <th>Price</th>
-            <th>Is Featured</th>
-            <th>Is Allowed to Order</th>
+            <th><a asp-action="Products" asp-route-sortOrder="@ViewData["StockSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Stock</a></th>
+            <th><a asp-action="Products" asp-route-sortOrder="@ViewData["PriceSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Price</a></th>
+            <th><a asp-action="Products" asp-route-sortOrder="@ViewData["IsFeaturedParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Is Featured</a></th>
+            <th><a asp-action="Products" asp-route-sortOrder="@ViewData["IsAllowedToOrderParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Is Allowed To Order</a></th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -44,3 +54,23 @@
         }
     </tbody>
 </table>
+
+<div class="row">
+    <div class="col-md-12 text-right">
+        <a asp-action="Products"
+           asp-route-page=@(Model.IndexPage-1)
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-default @((!Model.Products.HasPreviousPage)?"disabled":"") ">@Localizer["Previous"]</a>
+        @for (int i = 0; i < Model.Products.TotalPages; i++)
+        {
+            <a asp-action="Products" asp-route-page="@i.ToString()"
+               class="btn @((Model.IndexPage == i)? "btn-primary" : "btn-default") ">@i.ToString()</a>
+        }
+        <a asp-action="Products"
+           asp-route-page=@(Model.IndexPage+1)
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-default @((!Model.Products.HasNextPage)?"disabled":"")">@Localizer["Next"]</a>
+    </div>
+</div>

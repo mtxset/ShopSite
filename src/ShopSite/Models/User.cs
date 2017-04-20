@@ -5,6 +5,6 @@ namespace ShopSite.Models
 {
     public class User : IdentityUser
     {
-
+        
     }
 }

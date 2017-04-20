@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ShopSite.Services;
 
 namespace ShopSite.ViewModels.Product
 {
     public class ProductListViewModel
     {
-        public IEnumerable<Models.Product> Products { get; set; }
+        public int IndexPage { get; set; }
+        public IPagedList<Models.Product> Products { get; set; }
 
         public Models.Product Product { get; set; }
 

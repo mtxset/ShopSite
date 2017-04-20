@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using ShopSite.Data.Repository;
 using ShopSite.Orders.Models;
 using ShopSite.Orders.Services;
 using ShopSite.Orders.ViewModels;
 using ShopSite.Services;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,12 +18,18 @@ namespace ShopSite.Orders.Controllers
         private IWorkContext _workContext;
         private IOrderService _orderService;
         private IRepository<Order> _orderRepo;
+        private int ordersPageSize;
 
-        public OrderController(IWorkContext workContext, IOrderService orderService, IRepository<Order> orderRepo)
+        public OrderController(
+            IWorkContext workContext, 
+            IOrderService orderService, 
+            IRepository<Order> orderRepo, 
+            IConfiguration config)
         {
             _workContext = workContext;
             _orderService = orderService;
             _orderRepo = orderRepo;
+            ordersPageSize = config.GetValue<int>("OrdersPageSize");
         }
 
         public IActionResult Index()
@@ -47,18 +53,16 @@ namespace ShopSite.Orders.Controllers
 
             model.OrderAddress.Phone = "Hone";
             model.OrderAddress.Region = "Kyivs'ka oblast";
-            // Load user's address
+            // TODO: Load User's address
 
-            return View("~/Orders/Views/Order/OrderInformation.cshtml",model);
+            return View("~/Orders/Views/Order/OrderInformation.cshtml", model);
         }
 
         [HttpPost]
         public async Task<IActionResult> OrderInformation(OrderInformationVm model)
         {
             if (!ModelState.IsValid && (model.OrderAddress != null))
-            {
                 return View(model);
-            }
 
             var currentUser = await _workContext.GetCurrentUser();
 
@@ -75,21 +79,55 @@ namespace ShopSite.Orders.Controllers
 
         [HttpGet]
         [Authorize(Roles ="admin")]
-        public IActionResult Admin()
-        {     
-            var q = _orderRepo.Table
-                .Include(x => x.CreatedBy).ToList();
-            
-            return View("~/Orders/Views/Admin/Orders.cshtml", q);
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "admin")]
-        public IActionResult Admin(string status)
+        public IActionResult Admin(string currentFilter, string sortOrder, string searchString, int? statusId, int? page)
         {
-            ViewData["OrderSort"] = string.IsNullOrEmpty(status) ? "orderSort" : "";
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["SubTotalParm"] = string.IsNullOrEmpty(sortOrder) ? "subtotal" : "subtotal_desc";
+            ViewData["DateSortParm"] = sortOrder == "date" ? "date_desc" : "date";
 
-            return Admin();
+            if (searchString != null)
+                page = 0;
+            else
+                searchString = currentFilter;
+
+            ViewData["CurrentFilter"] = searchString;
+
+            IQueryable<Order> q = _orderRepo.Table
+                .Include(x => x.CreatedBy);
+
+            if (!String.IsNullOrEmpty(searchString))
+                q = q.Where(x => x.CreatedBy.UserName == searchString);
+
+            if (statusId != null && statusId != 0)
+            {
+                var status = (OrderStatus)statusId;
+                q = q.Where(x => x.OrderStatus == status);
+
+                page = 0;
+            }
+
+            switch (sortOrder)
+            {
+                case "date":
+                    q = q.OrderBy(x => x.CreatedOn);
+                    break;
+                case "date_desc":
+                    q = q.OrderByDescending(x => x.CreatedOn);
+                    break;
+                case "subtotal":
+                    q = q.OrderBy(x => x.SubTotal);
+                    break;
+                case "subtotal_desc":
+                    q = q.OrderByDescending(x => x.SubTotal);
+                    break;
+            }
+
+            var model = new OrderListVm
+            {
+                Orders = new PagedList<Order>(q.ToList(), page ?? 0, ordersPageSize)
+            };
+            
+            return View("~/Orders/Views/Admin/Orders.cshtml", model);
         }
 
         [HttpGet]
@@ -125,6 +163,18 @@ namespace ShopSite.Orders.Controllers
             }
 
             return BadRequest(new { Error = "Could not get status" });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> OrderHistory()
+        {
+            var currentUser = await _workContext.GetCurrentUser();
+
+            var model = _orderRepo.Table
+                .Include(x => x.OrderItems).ThenInclude(x => x.Product)
+                .Where(x => x.CreatedById == currentUser.Id).ToList();
+
+            return View("~/Orders/Views/Order/OrderHistory.cshtml", model);
         }
     }
 }

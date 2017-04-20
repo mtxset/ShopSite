@@ -55,12 +55,18 @@ namespace ShopSite
                 .AddJsonFile("Configs/config.json");
 
             JsonConfiguration = jBuilder.Build();
+
+            // TODO: check whether Configs/config.json is available to access from client on IIS
+
+            if (env.IsDevelopment())
+                ConnectionString = "database:connectionDev";
+            else if (env.IsProduction())
+                ConnectionString = "database:connectionPro";
         }
 
+        public string ConnectionString { get; set; } = "database:connectionDev";
         public IConfiguration JsonConfiguration { get; set; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services
@@ -69,13 +75,13 @@ namespace ShopSite
                 .AddDataAnnotationsLocalization();
 
             services.AddEntityFramework()
-                .AddEntityFrameworkSqlServer()
-                .AddDbContext<ShopSiteDbContext>
-                (
-                    opts => opts.UseSqlServer(JsonConfiguration["database:connection"])
-                );
+                 .AddEntityFrameworkSqlServer()
+                 .AddDbContext<ShopSiteDbContext>
+                 (
+                     opts => opts.UseSqlServer(JsonConfiguration[ConnectionString])
+                 );
 
-            services.AddIdentity<User, IdentityRole>(opts=> 
+            services.AddIdentity<User, IdentityRole>(opts =>
             {
                 opts.Password.RequireDigit = false;
                 opts.Password.RequireLowercase = false;
@@ -87,11 +93,11 @@ namespace ShopSite
             services.AddTransient<AdminRoleSeed>();
 
             services.AddSingleton(provider => JsonConfiguration);
-            
+
             AddCustomServices(services);
         }
 
-        
+
         public void AddCustomServices(IServiceCollection services)
         {
             services.AddScoped<ICategoryService, SqlCategoryService>();
@@ -115,8 +121,8 @@ namespace ShopSite
         }
 
         public async void Configure(
-            IApplicationBuilder app, 
-            IHostingEnvironment env, 
+            IApplicationBuilder app,
+            IHostingEnvironment env,
             ILoggerFactory loggerFactory,
             AdminRoleSeed adminSeeder)
         {
@@ -133,11 +139,11 @@ namespace ShopSite
             }
 
             app.UseCustomLocalization();
-           
+
             app.UseFileServer();
 
             app.UseIdentity();
-            
+
             app.UseMvcWithDefaultRoute();
 
             await adminSeeder.EnsureAdminSeed();

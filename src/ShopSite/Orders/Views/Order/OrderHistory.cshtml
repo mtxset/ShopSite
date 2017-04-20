@@ -1,0 +1,41 @@
+﻿@model IList<ShopSite.Orders.Models.Order>
+
+@{ 
+    ViewData["Title"] = Localizer["Order History"];
+}
+
+<div class="row">
+    <div class="col-md-9">
+        <table class="table table-striped order-history">
+            <tr>
+                <td>Data</td>
+                <td>Products</td>
+                <td>SubTotal</td>
+                <td>Status</td>
+            </tr>
+            @foreach(var item in Model)
+            {
+                <tr>
+                    <td>@item.CreatedOn</td>
+                    <td>
+                        @foreach(var orderItem in item.OrderItems)
+                        {
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <img class="img-responsive" src="@orderItem.Product.ImageUrl" />
+                                </div>
+                                <div class="col-md-9">
+                                    <p>@orderItem.Product.Name</p>
+                                    <p>@Localizer["Quantity"] @orderItem.Quantity</p>
+                                </div>
+                            </div>
+
+                        }
+                    </td>
+                    <td>@item.SubTotal</td>
+                    <td>@item.OrderStatus</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

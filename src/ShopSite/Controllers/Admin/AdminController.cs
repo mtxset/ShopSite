@@ -10,6 +10,7 @@ using ShopSite.ViewModels.Category;
 using ShopSite.ViewModels.Product;
 using ShopSite.Data.Repository;
 using System.IO;
+using Microsoft.Extensions.Configuration;
 
 namespace ShopSite.Controllers
 {
@@ -19,15 +20,18 @@ namespace ShopSite.Controllers
         private ICategoryService _categoryRepo;
         private IProductService _productRepo;
         private IRepository<ProductCategory> _productCategoryRepo;
+        private int productsPageSize;
 
         public AdminController(
             ICategoryService categoryRepo,
             IProductService productRepo,
-            IRepository<ProductCategory> productCategoryRepo)
+            IRepository<ProductCategory> productCategoryRepo,
+            IConfiguration _config)
         {
             _categoryRepo = categoryRepo;
             _productRepo = productRepo;
             _productCategoryRepo = productCategoryRepo;
+            productsPageSize = _config.GetValue<int>("ProductsPageSize");
         }
 
         public ViewResult Index()
@@ -35,11 +39,59 @@ namespace ShopSite.Controllers
             return View();
         }
 
-        public ViewResult Products()
+        public ViewResult Products(string currentFilter, string sortOrder, string searchString, int? page)
         {
-            var model = new ProductListViewModel()
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["PriceSortParm"] = sortOrder== "price" ? "price_desc" : "price" ;
+            ViewData["StockSortParm"] = sortOrder == "stock" ? "stock_desc" : "stock";
+            ViewData["IsFeaturedParm"] = sortOrder == "isFeatured" ? "isNotFeatured" : "isFeatured";
+            ViewData["IsAllowedToOrderParm"] = sortOrder == "isAllowedToOrder" ? "isNotAllowedToOrder" : "isAllowedToOrder";
+
+            if (searchString != null)
+                page = 0;
+            else
+                searchString = currentFilter;
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var q = _productRepo.QueryProduct().Cast<Product>();
+
+            switch (sortOrder)
             {
-                Products = _productRepo.GetAll()
+                case "price":
+                    q = q.OrderBy(x => x.Price);
+                    break;
+                case "price_desc":
+                    q = q.OrderByDescending(x => x.Price);
+                    break;
+                case "stock":
+                    q = q.OrderBy(x => x.StockQuantity);
+                    break;
+                case "stock_desc":
+                    q = q.OrderByDescending(x => x.StockQuantity);
+                    break;
+
+                case "isFeatured":
+                    q = q.Where(x => x.IsFeatured);
+                    break;
+                case "isNotFeatured":
+                    q = q.Where(x => x.IsFeatured == false);
+                    break;
+
+                case "isAllowedToOrder":
+                    q = q.Where(x => x.IsAllowedToOrder);
+                    break;
+                case "isNotAllowedToOrder":
+                    q = q.Where(x => x.IsAllowedToOrder == false);
+                    break;
+            }
+
+            if (!string.IsNullOrEmpty(searchString))
+                q = q.Where(x => x.Name.Contains(searchString));
+
+            var model = new ProductListViewModel
+            {
+                Products = new PagedList<Product>(q.ToList(), page ?? 0, productsPageSize)
             };
 
             return View("~/Views/Admin/Products/Products.cshtml", model);

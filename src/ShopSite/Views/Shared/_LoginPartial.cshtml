@@ -6,7 +6,7 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li>
-        <a asp-controller="Manage" asp-action="Index">@UserManager.GetUserName(User)</a>
+        <a asp-controller="Account" asp-action="Manage">@UserManager.GetUserName(User)</a>
     </li>
     <li>
         <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="">

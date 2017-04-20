@@ -1,5 +1,9 @@
 ﻿@using ShopSite.Orders.Models
-@model IList<ShopSite.Orders.Models.Order>
+@model ShopSite.Orders.ViewModels.OrderListVm
+
+@{ 
+    ViewBag.Title = "Order List";
+}
 
 <div class="row">
     <div class="col-md-8">
@@ -9,27 +13,57 @@
     </div>
 </div>
 
+<form asp-action="Admin" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-xs btn-default" /> |
+            <a asp-action="Admin">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
 <table class="table table-striped">
     <thead>
         <tr>
             <th>Order Id</th>
-            <th>Order Status</th>
+            <th>
+                <div class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                        Order Status
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a asp-action="Admin" asp-route-statusId="0">All</a></li>
+                        @foreach (var item in Html.GetEnumSelectList(typeof(OrderStatus)))
+                        {
+                            <li><a asp-action="Admin" asp-route-statusId="@item.Value">@item.Text</a></li>
+                        }
+                    </ul>
+                </div>
+            </th>
             <th>Customer name</th>
-            <th>Created On</th>
-            <th>SubTotal</th>
+            <th><a asp-action="Admin" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Created On</a></th>
+            <th><a asp-action="Admin" asp-route-sortOrder="@ViewData["SubTotalParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">SubTotal</a></th>
             <th>Actions</th>
         </tr>
         <tr>
             <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
+            <th><!-- Order Status -->
+                
+            </th>
+            <th><!-- Name -->
+
+            </th>
+            <th>
+                <!-- Date -->
+            </th>
             <th></th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach(var item in Model)
+        @foreach (var item in Model.Orders)
         {
             <tr>
                 <td>@item.Id</td>
@@ -46,4 +80,24 @@
         }
     </tbody>
 </table>
+
+<div class="row">
+    <div class="col-md-12 text-right">
+        <a asp-action="Admin"
+           asp-route-page=@(Model.IndexPage-1)
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-default @((!Model.Orders.HasPreviousPage)?"disabled":"") ">@Localizer["Previous"]</a>
+        @for (int i = 0; i < Model.Orders.TotalPages; i++)
+        {
+            <a asp-action="Admin" asp-route-page="@i.ToString()"
+               class="btn @((Model.IndexPage == i)? "btn-primary" : "btn-default") ">@i.ToString()</a>
+        }
+        <a asp-action="Admin"
+           asp-route-page=@(Model.IndexPage+1)
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-default @((!Model.Orders.HasNextPage)?"disabled":"")">@Localizer["Next"]</a>
+    </div>
+</div>
 
