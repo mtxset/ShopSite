@@ -27,6 +27,7 @@
   },
   "publishOptions": {
     "include": [
+      "Orders/Views",
       "Configs",
       "wwwroot",
       "Views",
