@@ -17,6 +17,7 @@ namespace ShopSite.Services
         int Commit();
 
         IQueryable QueryProduct();
+        IQueryable<Product> QueryableProduct();
 
         void Create(Product product);
         void Update(Product product);

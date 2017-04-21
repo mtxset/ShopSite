@@ -67,5 +67,10 @@ namespace ShopSite.Services.SQL
         {
             return _context.Products.FirstOrDefault(r => r.Id == id);
         }
+
+        public IQueryable<Product> QueryableProduct()
+        {
+            return _context.Products;
+        }
     }
 }

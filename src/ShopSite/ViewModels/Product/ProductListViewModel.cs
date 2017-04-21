@@ -6,6 +6,8 @@ namespace ShopSite.ViewModels.Product
 {
     public class ProductListViewModel
     {
+        public SearchOptions SearchOptions { get; set; }
+
         public int IndexPage { get; set; }
         public IPagedList<Models.Product> Products { get; set; }
 
