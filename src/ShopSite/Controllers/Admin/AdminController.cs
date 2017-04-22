@@ -154,7 +154,10 @@ namespace ShopSite.Controllers
 
             var product = model.Product;
 
-            product.ImageUrl = Path.Combine("/images/", model.Product.ImageUrl);
+            if (string.IsNullOrEmpty(model.Product.ImageUrl))
+                product.ImageUrl = Path.Combine("/images/", "cheese.jpg");
+            else
+                product.ImageUrl = Path.Combine("/images/", model.Product.ImageUrl);
 
             var categories = _categoryRepo.GetAll();
 

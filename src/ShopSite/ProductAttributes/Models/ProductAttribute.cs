@@ -10,8 +10,16 @@ namespace ShopSite.ProductAttributes.Models
         public string Name { get; set; }
         public Category Category { get; set; }
 
+        /// <summary>
+        /// Data type of attribute (string, int, decimal..)
+        /// </summary>
         public AttrType AtributeType { get; set; }
+        
+        /// <summary>
+        /// Reference to object's 
+        /// </summary>
         public int ProductAttributeCompexTypeDefinitionId { get; set; }
+
         public ProductAttributeComplexTypeDefinition ProductAttributeCompexTypeDefinition { get; set; }
 
         public enum AttrType

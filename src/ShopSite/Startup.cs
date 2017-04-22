@@ -56,8 +56,6 @@ namespace ShopSite
 
             JsonConfiguration = jBuilder.Build();
 
-            // TODO: check whether Configs/config.json is available to access from client on IIS
-
             if (env.IsDevelopment())
                 ConnectionString = "database:connectionDev";
             else if (env.IsProduction())

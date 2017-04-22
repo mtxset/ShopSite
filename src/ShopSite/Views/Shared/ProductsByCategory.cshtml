@@ -12,6 +12,25 @@
             <p class="lead">@Localizer["products"] <label class="text-primary">@Model.CategoryName</label>  </p>
             <p class="lead">@Localizer["results"] <label class="text-info">@Model.TotalProducts</label></p>
             <div class="list-group">
+
+                <div class="panel-group" id="accordion-sort">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h2 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion-sort" href="#collapse-sort">
+                                    @Localizer["Sort"]
+                                    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                                </a>
+                            </h2>
+                        </div>
+                        <div id="collapse-sort" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="panel-group" id="accordion-price">
                     <div class="panel panel-default">
                         <div class="panel-heading">
