@@ -2,6 +2,7 @@
 
 namespace ShopSite.ProductAttributes.Models
 {
+    //TODO Delete this class when will finish attribute block
     public class ProductAttributeValue
     {
         public int Id { get; set; }
