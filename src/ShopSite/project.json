@@ -27,6 +27,7 @@
   },
   "publishOptions": {
     "include": [
+      "**/*.cshtml",
       "Orders/Views",
       "Configs",
       "wwwroot",

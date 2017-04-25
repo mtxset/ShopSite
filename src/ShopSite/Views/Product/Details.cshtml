@@ -1,3 +1,4 @@
+@using Newtonsoft.Json;
 @model ShopSite.Models.Product
 
 @{
@@ -38,8 +39,28 @@
             }
 
             <div class="product-price">
-                <h4>@Localizer["Price"] @Model.Price</h4>
+                <h4>@Localizer["Price"] @Model.Price.ToString("C", CultureInfo.CreateSpecificCulture("uk-Ua"))</h4>
             </div>
+
+            <form>
+                <div class="product-attrs">
+                    @foreach (var item in Model.OptionValues)
+                    {
+                        <div>
+                            <h4> </h4>
+                            <ul class="list-inline product-attr-options">
+                                @foreach (var optionItem in JsonConvert.DeserializeObject<IList<string>>(item.Value))
+                                {
+                                    <li>
+                                        <input type="radio" value="@optionItem"  name="option" />
+                                        <label>@optionItem</label>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                </div>
+            </form>
 
             <div class="add-to-cart">
                 <form class="inline">

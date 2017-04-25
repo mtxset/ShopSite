@@ -4,14 +4,15 @@ $(function () {
         var quantity,
             $form = $(this).closest("form"),
             productId = $(this).closest("form").find('input[name=productId]').val(),
-            $quantityInput = $form.find('.quantity-field');
+            $quantityInput = $form.find('.quantity-field'),
+            option = $("input[name='option']:checked").val();
 
         quantity = $quantityInput.length === 1 ? $quantityInput.val() : 1;
 
         $.ajax({
             type: 'POST',
             url: '/cart/addtocart',
-            data: JSON.stringify({ productId: productId, quantity: quantity }),
+            data: JSON.stringify({ productId: productId, quantity: quantity, option: option }),
             contentType: "application/json"
         }).done(function (data) {
             console.log(data)

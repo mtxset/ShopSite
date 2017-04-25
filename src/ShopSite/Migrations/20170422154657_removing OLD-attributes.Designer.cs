@@ -10,9 +10,10 @@ using ShopSite.ProductAttributes.Models;
 namespace ShopSite.Migrations
 {
     [DbContext(typeof(ShopSiteDbContext))]
-    partial class ShopSiteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170422154657_removing OLD-attributes")]
+    partial class removingOLDattributes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -274,8 +275,6 @@ namespace ShopSite.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("OptionValue");
-
                     b.Property<int>("ProductId");
 
                     b.Property<int>("Quantity");
@@ -341,8 +340,6 @@ namespace ShopSite.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("OptionValue");
 
                     b.Property<int?>("OrderId");
 
@@ -500,38 +497,6 @@ namespace ShopSite.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductAttributeStrings");
-                });
-
-            modelBuilder.Entity("ShopSite.ProductOptions.Models.ProductOption", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProductOptions");
-                });
-
-            modelBuilder.Entity("ShopSite.ProductOptions.Models.ProductOptionValue", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("OptionId");
-
-                    b.Property<int>("ProductId");
-
-                    b.Property<string>("Value");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OptionId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductOptionValues");
                 });
 
             modelBuilder.Entity("ShopSite.Models.User", b =>
@@ -728,19 +693,6 @@ namespace ShopSite.Migrations
 
                     b.HasOne("ShopSite.Models.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ShopSite.ProductOptions.Models.ProductOptionValue", b =>
-                {
-                    b.HasOne("ShopSite.ProductOptions.Models.ProductOption", "Option")
-                        .WithMany()
-                        .HasForeignKey("OptionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ShopSite.Models.Product", "Product")
-                        .WithMany("OptionValues")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

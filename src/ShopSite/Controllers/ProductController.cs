@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using ShopSite.Models;
 using ShopSite.Services;
@@ -102,7 +103,10 @@ namespace ShopSite.Controllers
 
         public IActionResult Details(int id)
         {
-            var model = _productRepo.Get(id);
+            var q = _productRepo.QueryableProduct();
+
+            var model = q.Include(x => x.OptionValues)
+                .FirstOrDefault(x => x.Id == id);
 
             return View(model);
         }

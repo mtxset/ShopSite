@@ -45,7 +45,8 @@ namespace ShopSite.Orders.Services.SQL
                 {
                     Product = item.Product,
                     ProductPrice = item.Product.Price,
-                    Quantity = item.Quantity
+                    Quantity = item.Quantity,
+                    OptionValue = item.OptionValue
                 };
                 order.AddOrderItem(orderItem);
 

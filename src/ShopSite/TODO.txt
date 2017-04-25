@@ -1,1 +1,3 @@
 ﻿Fix in cart view (Orders.Views.Cart.Index) quantity update
+
+Make volume options for product

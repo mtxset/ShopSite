@@ -10,9 +10,10 @@ using ShopSite.ProductAttributes.Models;
 namespace ShopSite.Migrations
 {
     [DbContext(typeof(ShopSiteDbContext))]
-    partial class ShopSiteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170425073250_ProductOptionValue")]
+    partial class ProductOptionValue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -274,8 +275,6 @@ namespace ShopSite.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("OptionValue");
-
                     b.Property<int>("ProductId");
 
                     b.Property<int>("Quantity");
@@ -341,8 +340,6 @@ namespace ShopSite.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("OptionValue");
 
                     b.Property<int?>("OrderId");
 

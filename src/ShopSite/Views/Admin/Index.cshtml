@@ -1,9 +1,14 @@
-﻿<div class="col-md-4">
+﻿@{ 
+    ViewBag.Title = "Admin Dashboard";
+}
+
+<div class="col-md-4">
     <p class="lead">Shop Name</p>
     <div class="list-group">
         <a asp-controller="Admin" asp-action="Products" class="list-group-item">Products</a>
         <a asp-controller="Order" asp-action="Admin" class="list-group-item">Orders</a>
         <a asp-controller="Admin" asp-action="Categories" class="list-group-item">Categories</a>
+        <a asp-controller="ProductOption" asp-action="Admin" class="list-group-item">Product Options</a>
         <a asp-controller="ProductAttributeComplexTypeDefinitions" asp-action="Index" class="list-group-item">ProductAttributeComplexTypeDefinitions</a>
     </div>
 </div>

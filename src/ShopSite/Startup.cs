@@ -16,6 +16,8 @@ using ShopSite.Models;
 using ShopSite.Orders.Models;
 using ShopSite.Orders.Services;
 using ShopSite.Orders.Services.SQL;
+using ShopSite.ProductOptions.Models;
+using ShopSite.ProductOptions.Services;
 using ShopSite.Services;
 using ShopSite.Services.SQL;
 using System.Globalization;
@@ -102,6 +104,10 @@ namespace ShopSite
             services.AddScoped<IProductService, ProductService>();
 
             services.AddScoped<IRepository<ProductCategory>, Repository<ProductCategory>>();
+
+            services.AddScoped<IProductOptionService, ProductOptionService>();
+            services.AddScoped<IRepository<ProductOption>, Repository<ProductOption>>();
+            services.AddScoped<IRepository<ProductOptionValue>, Repository<ProductOptionValue>>();
 
             services.AddScoped<IResourceService, ResourceService>();
             services.AddScoped<IProductAttributeComplexTypeDefinitionsService, ProductAttributeComplexTypeDefinitionsService>();

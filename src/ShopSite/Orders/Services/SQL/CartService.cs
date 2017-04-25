@@ -16,7 +16,7 @@ namespace ShopSite.Orders.Services.SQL
             _cartItemRepository = cartService;
         }
 
-        public CartItem AddToCart(string userId, int productId, int quantity)
+        public CartItem AddToCart(string userId, int productId, int quantity, string optionValue)
         {
             // Get data from user(userId) filled with product(productId) from cartItem table
             var cartItem = _cartItemRepository.Table
@@ -30,7 +30,8 @@ namespace ShopSite.Orders.Services.SQL
                 {
                     UserId = userId,
                     ProductId = productId,
-                    Quantity = quantity
+                    Quantity = quantity,
+                    OptionValue = optionValue
                 };
 
                 _cartItemRepository.Insert(cartItem);

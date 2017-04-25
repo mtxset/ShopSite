@@ -74,7 +74,7 @@ namespace ShopSite.Orders.Controllers
         [HttpGet]
         public IActionResult OrderConfirmation()
         {
-            return View();
+            return View("~/Orders/Views/Order/OrderConfirmation.cshtml");
         }
 
         [HttpGet]

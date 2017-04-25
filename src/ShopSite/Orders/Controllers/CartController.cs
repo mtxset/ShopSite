@@ -29,7 +29,7 @@ namespace ShopSite.Orders.Controllers
         {
             var currentUser = await _workContext.GetCurrentUser();
 
-            CartItem cartItem = _cartService.AddToCart(currentUser.Id, model.ProductId, model.Quantity);
+            CartItem cartItem = _cartService.AddToCart(currentUser.Id, model.ProductId, model.Quantity, model.Option);
 
             return RedirectToAction("AddToCartResult", new { cartItemId = cartItem.Id });
         }
@@ -81,7 +81,7 @@ namespace ShopSite.Orders.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update([FromBody] string id, [FromBody] int quantity)
+        public IActionResult Update([FromBody] string id, [FromBody] int quantity)
         {
             throw new NotImplementedException();
             //return await Index();

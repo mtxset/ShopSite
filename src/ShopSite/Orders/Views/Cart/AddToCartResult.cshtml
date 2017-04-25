@@ -13,7 +13,7 @@
             <h4>@Model.ProductName</h4>
         </div>
         <div class="col-md-3">
-            @Model.Quantity x @Model.ProductPrice.ToString()
+            @Model.Quantity x @Model.ProductPrice.ToString("C", CultureInfo.CreateSpecificCulture("uk-Ua"))
         </div>
     </div>
     <div class="row">

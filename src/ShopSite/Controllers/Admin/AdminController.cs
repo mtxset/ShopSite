@@ -11,6 +11,12 @@ using ShopSite.ViewModels.Product;
 using ShopSite.Data.Repository;
 using System.IO;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Http.Internal;
+using Microsoft.AspNetCore.Hosting;
+using System.Threading.Tasks;
+using ShopSite.ProductOptions.Models;
+using Newtonsoft.Json;
+using ShopSite.ProductOptions.ViewModels;
 
 namespace ShopSite.Controllers
 {
@@ -19,19 +25,28 @@ namespace ShopSite.Controllers
     {
         private ICategoryService _categoryRepo;
         private IProductService _productRepo;
+        private IRepository<ProductOption> _productOptionsRepo;
+        private IRepository<ProductOptionValue> _productOptionValuesRepo;
         private IRepository<ProductCategory> _productCategoryRepo;
         private int productsPageSize;
+        private IHostingEnvironment _env;
 
         public AdminController(
             ICategoryService categoryRepo,
             IProductService productRepo,
             IRepository<ProductCategory> productCategoryRepo,
-            IConfiguration _config)
+            IConfiguration _config,
+            IHostingEnvironment env,
+            IRepository<ProductOptionValue> productOptionValuesRepo,
+            IRepository<ProductOption> productOptionsRepo)
         {
+            _productOptionsRepo = productOptionsRepo;
+            _productOptionValuesRepo = productOptionValuesRepo;
             _categoryRepo = categoryRepo;
             _productRepo = productRepo;
             _productCategoryRepo = productCategoryRepo;
             productsPageSize = _config.GetValue<int>("ProductsPageSize");
+            _env = env;
         }
 
         public ViewResult Index()
@@ -42,13 +57,20 @@ namespace ShopSite.Controllers
         public ViewResult Products(string currentFilter, string sortOrder, string searchString, int? page)
         {
             ViewData["CurrentSort"] = sortOrder;
-            ViewData["PriceSortParm"] = sortOrder== "price" ? "price_desc" : "price" ;
+            ViewData["PriceSortParm"] = sortOrder == "price" ? "price_desc" : "price";
             ViewData["StockSortParm"] = sortOrder == "stock" ? "stock_desc" : "stock";
             ViewData["IsFeaturedParm"] = sortOrder == "isFeatured" ? "isNotFeatured" : "isFeatured";
             ViewData["IsAllowedToOrderParm"] = sortOrder == "isAllowedToOrder" ? "isNotAllowedToOrder" : "isAllowedToOrder";
 
+            var model = new ProductListViewModel();
+
+            if (page.HasValue)
+                model.IndexPage = page.Value;
+            else
+                model.IndexPage = 0;
+
             if (searchString != null)
-                page = 0;
+                model.IndexPage = 0;
             else
                 searchString = currentFilter;
 
@@ -89,10 +111,7 @@ namespace ShopSite.Controllers
             if (!string.IsNullOrEmpty(searchString))
                 q = q.Where(x => x.Name.Contains(searchString));
 
-            var model = new ProductListViewModel
-            {
-                Products = new PagedList<Product>(q.ToList(), page ?? 0, productsPageSize)
-            };
+            model.Products = new PagedList<Product>(q.ToList(), model.IndexPage, productsPageSize);
 
             return View("~/Views/Admin/Products/Products.cshtml", model);
         }
@@ -106,7 +125,7 @@ namespace ShopSite.Controllers
 
             return View("~/Views/Admin/Categories/Categories.cshtml", model);
         }
- 
+
         [HttpGet]
         public IActionResult CategoryCreate()
         {
@@ -116,15 +135,25 @@ namespace ShopSite.Controllers
         [HttpGet]
         public IActionResult ProductCreate()
         {
+            var q = _productOptionsRepo.Table.ToList();
+
+            var options = q.Select(x => new ProductOptionVm()
+            {
+                Id = x.Id,
+                Name = x.Name
+
+            }).ToList();
+
             var model = new ProductEdit
             {
-                Categories = GetAllCategories()
+                Categories = GetAllCategories(),
+                Options = options
             };
 
             return View("~/Views/Admin/Products/Create.cshtml", model);
 
-        }  
-    
+        }
+
         public IActionResult ProductRemove(int id)
         {
             var product = _productRepo.Get(id);
@@ -147,17 +176,37 @@ namespace ShopSite.Controllers
         }
 
         [HttpPost]
-        public IActionResult ProductCreate(ProductEdit model)
+        public async Task<IActionResult> ProductCreate(ProductEdit model)
         {
             if (!ModelState.IsValid)
                 return RedirectToAction("ProductCreate");
 
             var product = model.Product;
 
-            if (string.IsNullOrEmpty(model.Product.ImageUrl))
-                product.ImageUrl = Path.Combine("/images/", "cheese.jpg");
+            if (model.File != null)
+            {
+                if (!string.IsNullOrEmpty(model.File.FileName))
+                {
+                    var filePath = Path.Combine(_env.ContentRootPath, "wwwroot\\images", model.File.FileName);
+                    if (model.File.Length > 0)
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await model.File.CopyToAsync(stream);
+                            product.ImageUrl = Path.Combine("/images/", model.File.FileName);
+                        }
+                }
+            }
             else
-                product.ImageUrl = Path.Combine("/images/", model.Product.ImageUrl);
+                product.ImageUrl = Path.Combine("/images/", "cheese.jpg");
+
+            foreach (var item in model.Options)
+            {
+                product.AddOptionValue(new ProductOptionValue
+                {
+                    OptionId = item.Id,
+                    Value = JsonConvert.SerializeObject(item.Values)
+                });
+            }
 
             var categories = _categoryRepo.GetAll();
 
@@ -185,7 +234,7 @@ namespace ShopSite.Controllers
             _productRepo.Create(product);
             _productRepo.Commit();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Products");
         }
 
         [HttpPost]
@@ -229,7 +278,7 @@ namespace ShopSite.Controllers
 
             if (ModelState.IsValid && product != null)
             {
-                product.Name = model.Product.Name;   
+                product.Name = model.Product.Name;
                 product.Description = model.Product.Description;
                 product.ShortDescription = model.Product.ShortDescription;
                 product.StockQuantity = model.Product.StockQuantity;
@@ -237,6 +286,7 @@ namespace ShopSite.Controllers
                 product.IsAllowedToOrder = model.Product.IsAllowedToOrder;
                 product.IsFeatured = model.Product.IsFeatured;
 
+                // TODO: fix
                 if (model.EditImageUrl && !string.IsNullOrEmpty(model.Product.ImageUrl))
                     product.ImageUrl = Path.Combine("/images/", model.Product.ImageUrl);
 
@@ -283,9 +333,10 @@ namespace ShopSite.Controllers
             }
 
             return RedirectToAction("Index");
-            
+
         }
 
+        // TODO: Incorporate Option Value edit and image downlaod
         [HttpGet]
         public IActionResult ProductEdit(int id)
         {
@@ -327,6 +378,25 @@ namespace ShopSite.Controllers
 
             return View("~/Views/Admin/Products/Edit.cshtml", model);
         }
+
+        private List<SelectListItem> GetAllOptions()
+        {
+            var list = new List<SelectListItem>();
+
+            foreach (var item in _productOptionsRepo.Table.ToList())
+            {
+                list.Add(new SelectListItem()
+                {
+                    Text = item.Name,
+                    Value = item.Id.ToString()
+                });
+            }
+
+            return list;
+        }
+
+
+
 
         private List<SelectListItem> GetAllCategories()
         {

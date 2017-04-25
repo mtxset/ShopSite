@@ -32,7 +32,7 @@
 
                         }
                     </td>
-                    <td>@item.SubTotal</td>
+                    <td>@item.SubTotal.ToString("C", CultureInfo.CreateSpecificCulture("uk-Ua"))</td>
                     <td>@item.OrderStatus</td>
                 </tr>
             }

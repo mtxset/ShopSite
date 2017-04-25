@@ -1,4 +1,5 @@
 ﻿using ShopSite.ProductAttributes.Models;
+using ShopSite.ProductOptions.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -24,7 +25,8 @@ namespace ShopSite.Models
         public string ImageUrl { get; set; }
 
         public IList<ProductCategory> Categories { get; set; } = new List<ProductCategory>();
-        public IList<ProductAttributeValue> AttributeValues { get; set; } = new List<ProductAttributeValue>();
+
+        public IList<ProductOptionValue> OptionValues { get; set; } = new List<ProductOptionValue>();
 
         public void AddCategory(ProductCategory category)
         {
@@ -32,11 +34,10 @@ namespace ShopSite.Models
             Categories.Add(category);
         }
 
-        public void AddAttribute(ProductAttributeValue attributeValue)
+        public void AddOptionValue(ProductOptionValue optValue)
         {
-            attributeValue.Product = this;
-            AttributeValues.Add(attributeValue);
+            optValue.Product = this;
+            OptionValues.Add(optValue);
         }
-
     }
 }

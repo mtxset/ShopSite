@@ -7,6 +7,9 @@ namespace ShopSite.ProductAttributes.Models
         public int Id { get; set; }
 
         public int CategoryId { get; set; }
+        /// <summary>
+        /// Name of attribute (Vendor, Amount of volume, Country)
+        /// </summary>
         public string Name { get; set; }
         public Category Category { get; set; }
 

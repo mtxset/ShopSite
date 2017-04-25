@@ -11,6 +11,8 @@ namespace ShopSite.Orders.Models
 
         public int Quantity { get; set; }
 
+        public string OptionValue { get; set; }
+
         public decimal ProductPrice { get; set; }
 
         public virtual Order Order { get; set; }

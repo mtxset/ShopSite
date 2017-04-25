@@ -5,6 +5,7 @@ using ShopSite.Models;
 using ShopSite.Localization.Models;
 using ShopSite.Orders.Models;
 using ShopSite.ProductAttributes.Models;
+using ShopSite.ProductOptions.Models;
 
 namespace ShopSite.Data
 {
@@ -18,6 +19,9 @@ namespace ShopSite.Data
         public DbSet<Product> Products { get; set; }        
         public DbSet<Resource> Resources { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
+
+        public DbSet<ProductOption> ProductOptions { get; set; } 
+        public DbSet<ProductOptionValue> ProductOptionValues { get; set; }
 
         public DbSet<Order> Orders { get; set; }
         public DbSet<CartItem> CartItems { get; set; }

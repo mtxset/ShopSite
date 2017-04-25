@@ -1,17 +1,20 @@
-﻿
+﻿@using System
+@using ShopSite.ProductOptions.ViewModels
 @model ProductEdit
 
 @{
     ViewBag.Title = "Create";
+    int m = 0;
 }
 
 
-<form class="form-horizontal" asp-action="ProductCreate" method="post">
+<form class="form-horizontal" asp-action="ProductCreate" method="post" enctype="multipart/form-data">
 
     <div class="form-group">
         <label class="col-sm-2 control-label">Product Name</label>
         <div class="col-sm-9">
             <input asp-for="Product.Name" class="form-control" />
+            <span asp-validation-for="Product.Name"></span>
         </div>
     </div>
 
@@ -33,6 +36,7 @@
         <label class="col-sm-2 control-label">Price</label>
         <div class="col-sm-5">
             <input asp-for="Product.Price" rows="3" class="form-control" />
+            <span asp-validation-for="Product.Price"></span>
         </div>
     </div>
 
@@ -60,7 +64,8 @@
     <div class="form-group">
         <label class="col-sm-2 control-label">Image</label>
         <div class="col-sm-10">
-            <input class="form-control" type="file" asp-for="Product.ImageUrl">
+            <input asp-for="File" />
+            <span asp-validation-for="File"></span>
         </div>
     </div>
 
@@ -79,6 +84,29 @@
         </div>
     </div>
 
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Options</label>
+        <div class="col-sm-6">
+            <ul class="list-group">
+                
+                @for (int i =0;i<Model.Options.Count;i++)
+                {
+                    <li id="mmm_@i.ToString()" class="list-group-item">
+                        <input type="hidden" asp-for=Options[i].Id />
+                        <input type="hidden" asp-for=Options[i].Name />
+                        <label>@Model.Options[i].Name</label>
+                    </li>
+                    <li class="list-unstyled">
+                        <a class="btn btn-xs btn-info" id="btn_@i.ToString()">
+                            <span class="glyphicon glyphicon-plus"></span> New Value
+                        </a>
+                    </li>
+                }
+                
+            </ul>
+            
+        </div>
+    </div>
 
 
     <div class="form-group">
@@ -87,3 +115,17 @@
         </div>
     </div>
 </form>
+
+
+<script src="~/js/jquery.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#btn_0").click(function () {
+            $("#mmm_0").append("<input type=\"text\" id=\"Options_"+0+"__Values\" name=\"Options["+0+ "].Values\" />");
+        });
+
+        $("#btn_1").click(function () {
+            $("#mmm_1").append("<input type=\"text\" id=\"Options_" + 1 + "__Values\" name=\"Options[" + 1 + "].Values\" />");
+        });
+    });
+</script>
