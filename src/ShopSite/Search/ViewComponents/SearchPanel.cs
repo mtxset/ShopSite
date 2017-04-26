@@ -16,7 +16,6 @@ namespace ShopSite.ViewComponents
 
         public IViewComponentResult Invoke()
         {
-            // TODO: Unique Search for product and category
             return View();
         }
     }

@@ -22,8 +22,6 @@ namespace ShopSite.Search.ViewModels
         public decimal MinPrice { get; set; }
         public decimal MaxPrice { get; set; }
 
-        // TODO put it into SearchOptions
-
         public IPagedList<ProductPreview> Products { get; set; }
     }
 }
