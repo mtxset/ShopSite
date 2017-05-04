@@ -9,6 +9,10 @@ namespace ShopSite.ProductAttibutes.Services
     public interface IProductAttributeComplexTypeDefinitionsService
     {
         IQueryable<ProductAttributeComplexTypeDefinition> GetAll();
-        ProductAttributeComplexTypeDefinition GetById(int id);
+        IQueryable<ProductAttributeComplexTypeDefinition> GetAllParents();
+        Task<ProductAttributeComplexTypeDefinition> GetById(int id);
+        Task<int> RemoveById(int id);
+        Task<int> UpdateObj(ProductAttributeComplexTypeDefinition productAttributeComplexTypeDefinition);
+        Task<int> AddNewItem(ProductAttributeComplexTypeDefinition productAttributeComplexTypeDefinition);
     }
 }

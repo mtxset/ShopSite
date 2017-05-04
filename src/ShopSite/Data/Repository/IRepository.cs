@@ -12,6 +12,7 @@ namespace ShopSite.Data.Repository
         void Insert(IEnumerable<T> entities);
 
         void Update(T entity);
+        void DirtyUpdate(T entity);
         void Update(IEnumerable<T> entities);
 
         void Delete(T entity);

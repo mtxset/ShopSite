@@ -110,5 +110,21 @@ namespace ShopSite.Data.Repository
                 throw new Exception(ex.Message, ex);
             }
         }
+
+        public virtual void DirtyUpdate(T entity)
+        {
+            try
+            {
+                if (entity == null)
+                    throw new ArgumentNullException("entity");
+
+                _context.Update(entity);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }

@@ -17,6 +17,7 @@ using ShopSite.Orders.Models;
 using ShopSite.Orders.Services;
 using ShopSite.Orders.Services.SQL;
 using ShopSite.ProductAttibutes.Services;
+using ShopSite.ProductAttributes.Models;
 using ShopSite.ProductAttributes.Services.SQL;
 using ShopSite.ProductOptions.Models;
 using ShopSite.ProductOptions.Services;
@@ -97,8 +98,14 @@ namespace ShopSite
             services.AddSingleton(provider => JsonConfiguration);
 
             AddCustomServices(services);
+            AddProductAttributeServices(services);
         }
 
+        public void AddProductAttributeServices(IServiceCollection services)
+        {
+            services.AddScoped<IProductAttributeComplexTypeDefinitionsService, ProductAttributeComplexTypeDefinitionsService>();
+            services.AddScoped<IRepository<ProductAttribute>, Repository<ProductAttribute>>();
+        }
 
         public void AddCustomServices(IServiceCollection services)
         {
@@ -112,8 +119,7 @@ namespace ShopSite
             services.AddScoped<IRepository<ProductOptionValue>, Repository<ProductOptionValue>>();
 
             services.AddScoped<IResourceService, ResourceService>();
-            services.AddScoped<IProductAttributeComplexTypeDefinitionsService, ProductAttributeComplexTypeDefinitionsService>();
-
+            
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); // required for work context
             services.AddScoped<IWorkContext, WorkContext>();
 

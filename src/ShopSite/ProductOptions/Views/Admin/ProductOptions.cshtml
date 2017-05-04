@@ -24,17 +24,20 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Options)
-        {
-            <tr>
+        @if(Model.Options.Any())
+        { 
+            @foreach (var item in Model.Options)
+            {
+                <tr>
 
-                <td>@item.Name</td>
-                <td>
-                    <a title="Edit" class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-pencil"></span></a>
-                    <a title="Remove" class="btn btn-danger delete" asp-action="Remove" asp-route-id="@item.Id"><span class="glyphicon glyphicon-remove"></span></a>
-                </td>
+                    <td>@item.Name</td>
+                    <td>
+                        <a title="Edit" class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-pencil"></span></a>
+                        <a title="Remove" class="btn btn-danger delete" asp-action="Remove" asp-route-id="@item.Id"><span class="glyphicon glyphicon-remove"></span></a>
+                    </td>
 
-            </tr>
+                </tr>
+            }
         }
     </tbody>
 </table>

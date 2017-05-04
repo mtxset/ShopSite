@@ -15,15 +15,10 @@ namespace ShopSite.Models
     public class ProductAttributeComplexTypeDefinitionsController : Controller
     {
         private IProductAttributeComplexTypeDefinitionsService _PAComplexTDRepo;
-        //remove some later
-        private readonly ShopSiteDbContext _context;
-
-        public ProductAttributeComplexTypeDefinitionsController(ShopSiteDbContext context,
-            IProductAttributeComplexTypeDefinitionsService PAComplexTDRepo)
+        
+        public ProductAttributeComplexTypeDefinitionsController(IProductAttributeComplexTypeDefinitionsService PAComplexTDRepo)
         {
             _PAComplexTDRepo = PAComplexTDRepo;
-            // TODO: remove _context
-            _context = context;
         }
 
         // GET: ProductAttributeComplexTypeDefinitions
@@ -43,7 +38,7 @@ namespace ShopSite.Models
             if (!id.HasValue)
                 return NotFound();
             
-            var productAttributeComplexTypeDefinition = _PAComplexTDRepo.GetById(id.Value);
+            var productAttributeComplexTypeDefinition = await _PAComplexTDRepo.GetById(id.Value);
             if (productAttributeComplexTypeDefinition == null)
             {
                 return NotFound();
@@ -64,33 +59,37 @@ namespace ShopSite.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ParentId")] ProductAttributeComplexTypeDefinition productAttributeComplexTypeDefinition)
+        public async Task<IActionResult> Create(ProductAttributeComplexTypeDefinition productAttributeComplexTypeDefinition)
         {
+
             if (ModelState.IsValid)
             {
-                _context.Add(productAttributeComplexTypeDefinition);
-                await _context.SaveChangesAsync();
+                var model = new ProductAttributeComplexTypeDefinition()
+                {
+                    Name = productAttributeComplexTypeDefinition.Name,
+                    ParentId = productAttributeComplexTypeDefinition.ParentId
+                };
+
+                await _PAComplexTDRepo.AddNewItem(model);
                 return RedirectToAction("Index");
             }
-            ViewData["ParentId"] = new SelectList(_context.ProductAttributeComplexTypeDefinitions, "Id", "Name", productAttributeComplexTypeDefinition.ParentId);
-            return View(productAttributeComplexTypeDefinition);
+            ViewData["ParentId"] = new SelectList(_PAComplexTDRepo.GetAll().ToList(), "Id", "Name", productAttributeComplexTypeDefinition.ParentId);
+            return View("~/ProductAttributes/Views/ProductAttributeComplexTypeDefinitions/Create.cshtml", productAttributeComplexTypeDefinition);
         }
 
         // GET: ProductAttributeComplexTypeDefinitions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
+            if (!id.HasValue)
                 return NotFound();
-            }
 
-            var productAttributeComplexTypeDefinition = await _context.ProductAttributeComplexTypeDefinitions.SingleOrDefaultAsync(m => m.Id == id);
+            var productAttributeComplexTypeDefinition = await _PAComplexTDRepo.GetById(id.Value);
             if (productAttributeComplexTypeDefinition == null)
             {
                 return NotFound();
             }
-            ViewData["ParentId"] = new SelectList(_context.ProductAttributeComplexTypeDefinitions, "Id", "Name", productAttributeComplexTypeDefinition.ParentId);
-            return View(productAttributeComplexTypeDefinition);
+            ViewData["ParentId"] = new SelectList(_PAComplexTDRepo.GetAll().ToList(), "Id", "Name", productAttributeComplexTypeDefinition.ParentId);
+            return View("~/ProductAttributes/Views/ProductAttributeComplexTypeDefinitions/Edit.cshtml", productAttributeComplexTypeDefinition);
         }
 
         // POST: ProductAttributeComplexTypeDefinitions/Edit/5
@@ -98,7 +97,7 @@ namespace ShopSite.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ParentId")] ProductAttributeComplexTypeDefinition productAttributeComplexTypeDefinition)
+        public async Task<IActionResult> Edit(int id, ProductAttributeComplexTypeDefinition productAttributeComplexTypeDefinition)
         {
             if (id != productAttributeComplexTypeDefinition.Id)
             {
@@ -109,8 +108,7 @@ namespace ShopSite.Models
             {
                 try
                 {
-                    _context.Update(productAttributeComplexTypeDefinition);
-                    await _context.SaveChangesAsync();
+                    await _PAComplexTDRepo.UpdateObj(productAttributeComplexTypeDefinition);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -125,27 +123,23 @@ namespace ShopSite.Models
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["ParentId"] = new SelectList(_context.ProductAttributeComplexTypeDefinitions, "Id", "Name", productAttributeComplexTypeDefinition.ParentId);
+            ViewData["ParentId"] = new SelectList(_PAComplexTDRepo.GetAll().ToList(), "Id", "Name", productAttributeComplexTypeDefinition.ParentId);
             return View(productAttributeComplexTypeDefinition);
         }
 
         // GET: ProductAttributeComplexTypeDefinitions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
+            if (!id.HasValue)
                 return NotFound();
-            }
 
-            var productAttributeComplexTypeDefinition = await _context.ProductAttributeComplexTypeDefinitions
-                .Include(p => p.Parent)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var productAttributeComplexTypeDefinition = await _PAComplexTDRepo.GetById(id.Value);
             if (productAttributeComplexTypeDefinition == null)
             {
                 return NotFound();
             }
 
-            return View(productAttributeComplexTypeDefinition);
+            return View("~/ProductAttributes/Views/ProductAttributeComplexTypeDefinitions/Delete.cshtml");
         }
 
         // POST: ProductAttributeComplexTypeDefinitions/Delete/5
@@ -153,15 +147,16 @@ namespace ShopSite.Models
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var productAttributeComplexTypeDefinition = await _context.ProductAttributeComplexTypeDefinitions.SingleOrDefaultAsync(m => m.Id == id);
-            _context.ProductAttributeComplexTypeDefinitions.Remove(productAttributeComplexTypeDefinition);
-            await _context.SaveChangesAsync();
+            await _PAComplexTDRepo.RemoveById(id);
             return RedirectToAction("Index");
         }
 
         private bool ProductAttributeComplexTypeDefinitionExists(int id)
         {
-            return _context.ProductAttributeComplexTypeDefinitions.Any(e => e.Id == id);
+            //TODO: rewrite
+            //return _context.ProductAttributeComplexTypeDefinitions.Any(e => e.Id == id);
+            return true;
+
         }
     }
 }

@@ -1,0 +1,52 @@
+@model ShopSite.ProductAttributes.Models.ProductAttribute
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>ProductAttribute</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="CategoryId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Name" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AtributeType" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="AtributeType" class="form-control" asp-items="ViewBag.AttrType"></select>
+                <span asp-validation-for="AtributeType" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ProductAttributeComplexTypeDefinitionId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="ProductAttributeComplexTypeDefinitionId" class ="form-control" asp-items="ViewBag.ProductAttributeComplexTypeDefinitionId">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
