@@ -6,7 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using ShopSite.Data;
 using ShopSite.ProductAttributes.Models;
 using Microsoft.AspNetCore.Authorization;
-using ShopSite.Services;
+using ShopSite.ProductAttibutes.Services;
+using Newtonsoft.Json;
 
 namespace ShopSite.Models
 {
@@ -21,41 +22,40 @@ namespace ShopSite.Models
             IProductAttributeComplexTypeDefinitionsService PAComplexTDRepo)
         {
             _PAComplexTDRepo = PAComplexTDRepo;
-            //remove
+            // TODO: remove _context
             _context = context;
         }
 
         // GET: ProductAttributeComplexTypeDefinitions
         public async Task<IActionResult> Index()
         {
-            //var shopSiteDbContext = _context.ProductAttributeComplexTypeDefinition.Include(p => p.Parent);
             var qResult = _PAComplexTDRepo.GetAll();
+
+            // TODO: Json format
+            //var res = JsonConvert.SerializeObject(qResult, Formatting.Indented);
+            //return Content(res);
             return View("~/ProductAttributes/Views/ProductAttributeComplexTypeDefinitions/Index.cshtml", await qResult.ToListAsync());
         }
 
         // GET: ProductAttributeComplexTypeDefinitions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
+            if (!id.HasValue)
                 return NotFound();
-            }
-
-            var productAttributeComplexTypeDefinition = await _context.ProductAttributeComplexTypeDefinitions
-                .Include(p => p.Parent)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            
+            var productAttributeComplexTypeDefinition = _PAComplexTDRepo.GetById(id.Value);
             if (productAttributeComplexTypeDefinition == null)
             {
                 return NotFound();
             }
 
-            return View(productAttributeComplexTypeDefinition);
+            return View("~/ProductAttributes/Views/ProductAttributeComplexTypeDefinitions/Details.cshtml", productAttributeComplexTypeDefinition);
         }
 
         // GET: ProductAttributeComplexTypeDefinitions/Create
         public IActionResult Create()
         {
-            ViewData["ParentId"] = new SelectList(_context.ProductAttributeComplexTypeDefinitions, "Id", "Name");
+            ViewData["ParentId"] = new SelectList(_PAComplexTDRepo.GetAll().ToList(), "Id", "Name");
             return View("~/ProductAttributes/Views/ProductAttributeComplexTypeDefinitions/Create.cshtml");
         }
 

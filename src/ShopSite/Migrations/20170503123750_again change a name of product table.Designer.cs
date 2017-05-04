@@ -10,9 +10,10 @@ using ShopSite.ProductAttributes.Models;
 namespace ShopSite.Migrations
 {
     [DbContext(typeof(ShopSiteDbContext))]
-    partial class ShopSiteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170503123750_again change a name of product table")]
+    partial class againchangeanameofproducttable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")

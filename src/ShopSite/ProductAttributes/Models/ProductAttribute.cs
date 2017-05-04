@@ -21,9 +21,8 @@ namespace ShopSite.ProductAttributes.Models
         /// <summary>
         /// Reference to object's 
         /// </summary>
-        public int ProductAttributeCompexTypeDefinitionId { get; set; }
-
-        public ProductAttributeComplexTypeDefinition ProductAttributeCompexTypeDefinition { get; set; }
+        public int ProductAttributeComplexTypeDefinitionId { get; set; }
+        public ProductAttributeComplexTypeDefinition ProductAttributeComplexTypeDefinition { get; set; }
 
         public enum AttrType
         {

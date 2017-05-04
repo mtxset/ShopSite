@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ShopSite.Models;
+﻿using System.Linq;
 using ShopSite.Data;
 using ShopSite.ProductAttributes.Models;
 using Microsoft.EntityFrameworkCore;
+using ShopSite.ProductAttibutes.Services;
 
-namespace ShopSite.Services.SQL
+namespace ShopSite.ProductAttributes.Services.SQL
 {
     public class ProductAttributeComplexTypeDefinitionsService : IProductAttributeComplexTypeDefinitionsService
     {
@@ -22,6 +19,14 @@ namespace ShopSite.Services.SQL
         {
             var IQueryableVar = _context.ProductAttributeComplexTypeDefinitions.Include(p => p.Parent);
             return IQueryableVar;
+        }
+
+        public ProductAttributeComplexTypeDefinition GetById(int id)
+        {
+            var productAttributeComplexTypeDefinition = _context.ProductAttributeComplexTypeDefinitions
+                .Include(p => p.Parent)
+                .SingleOrDefault(m => m.Id == id);
+            return productAttributeComplexTypeDefinition;
         }
     }
 }

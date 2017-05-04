@@ -16,6 +16,8 @@ using ShopSite.Models;
 using ShopSite.Orders.Models;
 using ShopSite.Orders.Services;
 using ShopSite.Orders.Services.SQL;
+using ShopSite.ProductAttibutes.Services;
+using ShopSite.ProductAttributes.Services.SQL;
 using ShopSite.ProductOptions.Models;
 using ShopSite.ProductOptions.Services;
 using ShopSite.Services;
