@@ -105,6 +105,11 @@ namespace ShopSite
         {
             services.AddScoped<IProductAttributeComplexTypeDefinitionsService, ProductAttributeComplexTypeDefinitionsService>();
             services.AddScoped<IRepository<ProductAttribute>, Repository<ProductAttribute>>();
+
+            services.AddScoped<IRepository<ProductAttributeDate>, Repository<ProductAttributeDate>>();
+            services.AddScoped<IRepository<ProductAttributeDec>, Repository<ProductAttributeDec>>();
+            services.AddScoped<IRepository<ProductAttributeInt>, Repository<ProductAttributeInt>>();
+            services.AddScoped<IRepository<ProductAttributeString>, Repository<ProductAttributeString>>();
         }
 
         public void AddCustomServices(IServiceCollection services)

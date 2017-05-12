@@ -2,7 +2,7 @@
   "AdminUserNames": [ "yuk", "mtxset" ],
   "database": {
     "connectionPro": "Data Source=HSHSERMITN;Initial Catalog=ShopSite;User ID=sa;Password=lag007",
-    "connectionDev": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ShopSite"
+    "connectionDev": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ShopSite;MultipleActiveResultSets=true"
   },
   "ProductsPageSize": "15",
   "OrdersPageSize": "25",

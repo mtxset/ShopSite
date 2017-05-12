@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Http;
 using ShopSite.ProductOptions.ViewModels;
+using ShopSite.ProductAttributes.ViewModels;
 
 namespace ShopSite.ViewModels.Admin
 {
@@ -18,5 +19,9 @@ namespace ShopSite.ViewModels.Admin
         public IFormFile File { get; set; }
 
         public IList<ProductOptionVm> Options { get; set; }
+
+        public IList<ProductAttributeVm> ProductAttributes { get; set; }
+
+        public IList<ProductAttributeCompTVm> ProductAttributesCompT { get; set; }
     }
 }
