@@ -313,41 +313,41 @@ namespace ShopSite.Controllers
                 if (model.EditImageUrl && !string.IsNullOrEmpty(model.Product.ImageUrl))
                     product.ImageUrl = Path.Combine("/images/", model.Product.ImageUrl);
 
-                var categories = _categoryRepo.GetAll();
-                var selectedCategoryIds = new List<int>();
-                var categoryIds = categories.Select(item => item.Id).ToList();
+                //var categories = _categoryRepo.GetAll();
+                //var selectedCategoryIds = new List<int>();
+                //var categoryIds = categories.Select(item => item.Id).ToList();
 
-                for (var i = 0; i < model.SelectedCategories.Count; i++)
-                {
-                    if (model.SelectedCategories[i])
-                    {
-                        selectedCategoryIds.Add(categoryIds[i]);
-                    }
-                }
+                //for (var i = 0; i < model.SelectedCategories.Count; i++)
+                //{
+                //    if (model.SelectedCategories[i])
+                //    {
+                //        selectedCategoryIds.Add(categoryIds[i]);
+                //    }
+                //}
 
-                foreach (var item in selectedCategoryIds)
-                {
-                    if (product.Categories.Any(x => x.CategoryId == item))
-                    {
-                        continue;
-                    }
+                //foreach (var item in selectedCategoryIds)
+                //{
+                //    if (product.Categories.Any(x => x.CategoryId == item))
+                //    {
+                //        continue;
+                //    }
 
-                    var productCategory = new ProductCategory
-                    {
-                        CategoryId = item
-                    };
-                    product.AddCategory(productCategory);
-                }
+                //    var productCategory = new ProductCategory
+                //    {
+                //        CategoryId = item
+                //    };
+                //    product.AddCategory(productCategory);
+                //}
 
-                List<ProductCategory> deletedProductCategories = product.Categories
-                    .Where(x => !selectedCategoryIds.Contains(x.CategoryId)).ToList();
+                //List<ProductCategory> deletedProductCategories = product.Categories
+                //    .Where(x => !selectedCategoryIds.Contains(x.CategoryId)).ToList();
 
-                foreach (var item in deletedProductCategories)
-                {
-                    item.Product = null;
-                    product.Categories.Remove(item);
-                    _productCategoryRepo.Delete(item);
-                }
+                //foreach (var item in deletedProductCategories)
+                //{
+                //    item.Product = null;
+                //    product.Categories.Remove(item);
+                //    _productCategoryRepo.Delete(item);
+                //}
 
                 _productRepo.Update(product);
                 _productRepo.Commit();
@@ -376,33 +376,19 @@ namespace ShopSite.Controllers
                 productCategoryIds.Add(item.CategoryId);
             }
 
-            var categories = _categoryRepo.GetListByIds(productCategoryIds);
-            var list = new List<SelectListItem>();
+            if (productCategoryIds.Count == 0)
+                return NotFound(); // there should be no products without category
 
-            foreach (var item in _categoryRepo.GetAll())
-            {
-                list.Add(new SelectListItem()
-                {
-                    Text = item.Name,
-                    Value = item.Id.ToString()
-                });
-            }
+            var Category = _categoryRepo.GetCategory(productCategoryIds[0]);
 
-            foreach (SelectListItem selectItem in list)
-            {
-                foreach (var item in categories.ToList())
-                {
-                    bool change = Equals(selectItem.Value, item.Id.ToString());
-                    if (change) selectItem.Selected = true;
-                }
-            }
+            if (string.IsNullOrEmpty(Category.Name))
+                return NotFound();
 
-            model.Categories = list;
+            model.Category = Category;
 
             //added product attribute parameters
-            var Category = product.Categories[0];
             var modelProductAttributeList = new List<ProductAttributeVm>();
-            var ListOfAttributes = _PARepoProductAttribute.Table.Where(m => m.CategoryId == Category.CategoryId);
+            var ListOfAttributes = _PARepoProductAttribute.Table.Where(m => m.CategoryId == Category.Id);
             foreach (var Attribute in ListOfAttributes)
             {
                 var modelProductAttribute = new ProductAttributeVm();
