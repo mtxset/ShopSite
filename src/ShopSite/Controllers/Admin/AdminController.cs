@@ -237,19 +237,21 @@ namespace ShopSite.Controllers
                 });
             }
 
-            var categories = _categoryRepo.GetAll();
+            // TODO: remove; uncomment if on creating you need to select few categories
+            //var categories = _categoryRepo.GetAll();
 
-            var categoryIds = categories.Select(item => item.Id).ToList();
+            //var categoryIds = categories.Select(item => item.Id).ToList();
 
             var selectedCategoryIds = new List<int>();
+            selectedCategoryIds.Add(model.SelectedCategory);
 
-            for (var i = 0; i < model.SelectedCategories.Count; i++)
+            /*for (var i = 0; i < model.SelectedCategories.Count; i++)
             {
                 if (model.SelectedCategories[i])
                 {
                     selectedCategoryIds.Add(categoryIds[i]);
                 }
-            }
+            }*/
 
             foreach (var item in selectedCategoryIds)
             {
