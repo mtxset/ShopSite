@@ -20,8 +20,8 @@ namespace ShopSite.ViewModels.Admin
 
         public IList<ProductOptionVm> Options { get; set; }
 
-        public IList<ProductAttributeVm> ProductAttributes { get; set; }
+        public IList<ProductAttributeVm> ProductAttributes { get; set; } = new List<ProductAttributeVm>();
 
-        public IList<ProductAttributeCompTVm> ProductAttributesCompT { get; set; }
+        public IList<ProductAttributeCompTVm> ProductAttributesCompT { get; set; } = new List<ProductAttributeCompTVm>();
     }
 }

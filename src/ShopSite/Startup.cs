@@ -110,6 +110,7 @@ namespace ShopSite
             services.AddScoped<IRepository<ProductAttributeDec>, Repository<ProductAttributeDec>>();
             services.AddScoped<IRepository<ProductAttributeInt>, Repository<ProductAttributeInt>>();
             services.AddScoped<IRepository<ProductAttributeString>, Repository<ProductAttributeString>>();
+            services.AddScoped<IRepository<ProductAttributeCompexType>, Repository<ProductAttributeCompexType>>();
         }
 
         public void AddCustomServices(IServiceCollection services)

@@ -44,6 +44,13 @@ namespace ShopSite.ProductAttributes.Services.SQL
             return await productAttributeComplexTypeDefinition;
         }
 
+        public IQueryable<ProductAttributeComplexTypeDefinition> GetByParent(ProductAttributeComplexTypeDefinition Parent)
+        {
+            var IQueryableVar = _context.ProductAttributeComplexTypeDefinitions
+                .Where(p => p.Parent == Parent);
+            return IQueryableVar;
+        }
+
         public async Task<int> RemoveById(int id)
         {
             var productAttributeComplexTypeDefinition = _context.ProductAttributeComplexTypeDefinitions
