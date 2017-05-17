@@ -1,4 +1,5 @@
 ﻿using ShopSite.ProductAttributes.Models;
+using System.Collections.Generic;
 
 namespace ShopSite.ProductAttributes.ViewModels
 {
@@ -6,8 +7,10 @@ namespace ShopSite.ProductAttributes.ViewModels
     {
         public int ProductAttributeId { get; set; }
 
-        public int? ProductAttributeComplexTypeDefinitionId { get; set; }
-        public ProductAttributeComplexTypeDefinition ProductAttributeComplexTypeDefinition { get; set; }
+        public string ProductAttributeName { get; set; }
+
+        public IList<ProductAttributeComplexTypeDefinition> ProductAttributeComplexTypeDefinition { get; set; } 
+            = new List<ProductAttributeComplexTypeDefinition>();
 
         public int? ValueId { get; set; }
         public ProductAttributeComplexTypeDefinition Value { get; set; }

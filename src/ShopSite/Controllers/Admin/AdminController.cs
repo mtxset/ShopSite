@@ -20,6 +20,7 @@ using ShopSite.ProductOptions.ViewModels;
 using ShopSite.ProductAttributes.Models;
 using ShopSite.ProductAttributes.ViewModels;
 using static ShopSite.ProductAttributes.Models.ProductAttribute;
+using ShopSite.ProductAttibutes.Services;
 
 namespace ShopSite.Controllers
 {
@@ -37,6 +38,9 @@ namespace ShopSite.Controllers
         private IRepository<ProductAttributeDec> _PARepoProductAttributeDec;
         private IRepository<ProductAttributeInt> _PARepoProductAttributeInt;
         private IRepository<ProductAttributeString> _PARepoProductAttributeString;
+        private IRepository<ProductAttributeCompexType> _PARepoProductAttributeCompT;
+
+        private IProductAttributeComplexTypeDefinitionsService _PAComplexTDRepo;
 
         private int productsPageSize;
         private IHostingEnvironment _env;
@@ -53,7 +57,9 @@ namespace ShopSite.Controllers
             IRepository<ProductAttributeDate> PARepoProductAttributeDate,
             IRepository<ProductAttributeDec> PARepoProductAttributeDec,
             IRepository<ProductAttributeInt> PARepoProductAttributeInt,
-            IRepository<ProductAttributeString> PARepoProductAttributeString)
+            IRepository<ProductAttributeString> PARepoProductAttributeString,
+            IRepository<ProductAttributeCompexType> PARepoProductAttributeCompT,
+            IProductAttributeComplexTypeDefinitionsService PAComplexTDRepo)
         {
             _productOptionsRepo = productOptionsRepo;
             _productOptionValuesRepo = productOptionValuesRepo;
@@ -68,6 +74,8 @@ namespace ShopSite.Controllers
             _PARepoProductAttributeDec = PARepoProductAttributeDec;
             _PARepoProductAttributeInt = PARepoProductAttributeInt;
             _PARepoProductAttributeString = PARepoProductAttributeString;
+            _PARepoProductAttributeCompT = PARepoProductAttributeCompT;
+            _PAComplexTDRepo = PAComplexTDRepo;
         }
 
         public ViewResult Index()
@@ -387,35 +395,55 @@ namespace ShopSite.Controllers
             model.Category = Category;
 
             //added product attribute parameters
-            var modelProductAttributeList = new List<ProductAttributeVm>();
-            var ListOfAttributes = _PARepoProductAttribute.Table.Where(m => m.CategoryId == Category.Id);
+            var Category = product.Categories[0];
+            var ListOfAttributes = _PARepoProductAttribute.Table.Where(m => m.CategoryId == Category.CategoryId);
             foreach (var Attribute in ListOfAttributes)
             {
                 var modelProductAttribute = new ProductAttributeVm();
                 modelProductAttribute.ProductAttributeId = Attribute.CategoryId;
+                modelProductAttribute.ProductAttributeName = Attribute.Name;
                 modelProductAttribute.AttrType = Attribute.AtributeType;
+
+                var modelProductAttributeCompT = new ProductAttributeCompTVm();
+                modelProductAttributeCompT.ProductAttributeId = Attribute.CategoryId;
+                modelProductAttributeCompT.ProductAttributeName = Attribute.Name;
 
                 switch (Attribute.AtributeType)
                 {
                     case AttrType.TypeData:
                         var t = _PARepoProductAttributeDate.Table.SingleOrDefault(m => m.ProductId == id) ?? null;
                         if (t != null) modelProductAttribute.Value = t.Value.ToString();
+                        model.ProductAttributes.Add(modelProductAttribute);
                         break;
                     case AttrType.TypeDecimal:
                         var t1 = _PARepoProductAttributeDec.Table.SingleOrDefault(m => m.ProductId == id) ?? null;
                         if (t1 != null) modelProductAttribute.Value = t1.Value.ToString();
+                        model.ProductAttributes.Add(modelProductAttribute);
                         break;
                     case AttrType.TypeInteger:
                         var t2 = _PARepoProductAttributeInt.Table.SingleOrDefault(m => m.ProductId == id) ?? null;
                         if (t2 != null) modelProductAttribute.Value = t2.Value.ToString();
+                        model.ProductAttributes.Add(modelProductAttribute);
                         break;
                     case AttrType.TypeString:
-                        var t4 = _PARepoProductAttributeString.Table.SingleOrDefault(m => m.ProductId == id) ?? null;
-                        if (t4 != null) modelProductAttribute.Value = t4.Value.ToString();
+                        var t3 = _PARepoProductAttributeString.Table.SingleOrDefault(m => m.ProductId == id) ?? null;
+                        if (t3 != null) modelProductAttribute.Value = t3.Value.ToString();
+                        model.ProductAttributes.Add(modelProductAttribute);
+                        break;
+                    case AttrType.TypeOther:
+                        var t4 = _PARepoProductAttributeCompT.Table.SingleOrDefault(m => m.ProductId == id) ?? null;
+                        if (t4 != null)
+                        {
+                            modelProductAttributeCompT.Value = t4.Value;
+                            modelProductAttributeCompT.ValueId = t4.ValueId;
+
+                            var t5 = _PAComplexTDRepo.GetByParent(t4.Value);
+                            modelProductAttributeCompT.ProductAttributeComplexTypeDefinition = t5.ToList();
+                        }
+                        
+                        model.ProductAttributesCompT.Add(modelProductAttributeCompT);
                         break;
                 }
-                modelProductAttributeList.Add(modelProductAttribute);
-                model.ProductAttributes = modelProductAttributeList;
             }
             
             return View("~/Views/Admin/Products/Edit.cshtml", model);
