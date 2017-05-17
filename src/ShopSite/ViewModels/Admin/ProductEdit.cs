@@ -28,5 +28,6 @@ namespace ShopSite.ViewModels.Admin
         public IList<ProductAttributeVm> ProductAttributes { get; set; } = new List<ProductAttributeVm>();
 
         public IList<ProductAttributeCompTVm> ProductAttributesCompT { get; set; } = new List<ProductAttributeCompTVm>();
+        public IList<int> SelectedCompTypeId { get; set; }
     }
 }

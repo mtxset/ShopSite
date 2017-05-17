@@ -439,7 +439,21 @@ namespace ShopSite.Controllers
                         }
                         var t5 = _PAComplexTDRepo.GetByParent(Attribute.ProductAttributeComplexTypeDefinitionId);
                         if (t5 != null)
-                        modelProductAttributeCompT.ProductAttributeComplexTypeDefinition = t5.ToList();
+                        {
+                            var list = new List<SelectListItem>();
+
+                            foreach (var item in t5.ToList())
+                            {
+                                list.Add(new SelectListItem()
+                                {
+                                    Text = item.Name,
+                                    Value = item.Id.ToString()
+                                });
+                            }
+
+                            modelProductAttributeCompT.ProductAttributeComplexTypeDefinition = list;
+                        }
+                        
                         
                         
                         model.ProductAttributesCompT.Add(modelProductAttributeCompT);

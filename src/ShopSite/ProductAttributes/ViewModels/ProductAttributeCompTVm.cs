@@ -1,4 +1,5 @@
-﻿using ShopSite.ProductAttributes.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using ShopSite.ProductAttributes.Models;
 using System.Collections.Generic;
 
 namespace ShopSite.ProductAttributes.ViewModels
@@ -9,8 +10,7 @@ namespace ShopSite.ProductAttributes.ViewModels
 
         public string ProductAttributeName { get; set; }
 
-        public IList<ProductAttributeComplexTypeDefinition> ProductAttributeComplexTypeDefinition { get; set; } 
-            = new List<ProductAttributeComplexTypeDefinition>();
+        public IList<SelectListItem> ProductAttributeComplexTypeDefinition { get; set; }
 
         public int? ValueId { get; set; }
         public ProductAttributeComplexTypeDefinition Value { get; set; }
