@@ -10,7 +10,7 @@ namespace ShopSite.ProductAttibutes.Services
     {
         IQueryable<ProductAttributeComplexTypeDefinition> GetAll();
         IQueryable<ProductAttributeComplexTypeDefinition> GetAllParents();
-        IQueryable<ProductAttributeComplexTypeDefinition> GetByParent(ProductAttributeComplexTypeDefinition Parent);
+        IQueryable<ProductAttributeComplexTypeDefinition> GetByParent(int? ParentId);
         Task<ProductAttributeComplexTypeDefinition> GetById(int id);
         Task<int> RemoveById(int id);
         Task<int> UpdateObj(ProductAttributeComplexTypeDefinition productAttributeComplexTypeDefinition);

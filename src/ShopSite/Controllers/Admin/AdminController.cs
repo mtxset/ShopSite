@@ -436,10 +436,11 @@ namespace ShopSite.Controllers
                         {
                             modelProductAttributeCompT.Value = t4.Value;
                             modelProductAttributeCompT.ValueId = t4.ValueId;
-
-                            var t5 = _PAComplexTDRepo.GetByParent(t4.Value);
-                            modelProductAttributeCompT.ProductAttributeComplexTypeDefinition = t5.ToList();
                         }
+                        var t5 = _PAComplexTDRepo.GetByParent(Attribute.ProductAttributeComplexTypeDefinitionId);
+                        if (t5 != null)
+                        modelProductAttributeCompT.ProductAttributeComplexTypeDefinition = t5.ToList();
+                        
                         
                         model.ProductAttributesCompT.Add(modelProductAttributeCompT);
                         break;

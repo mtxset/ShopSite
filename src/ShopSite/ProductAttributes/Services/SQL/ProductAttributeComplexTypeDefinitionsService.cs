@@ -44,10 +44,10 @@ namespace ShopSite.ProductAttributes.Services.SQL
             return await productAttributeComplexTypeDefinition;
         }
 
-        public IQueryable<ProductAttributeComplexTypeDefinition> GetByParent(ProductAttributeComplexTypeDefinition Parent)
+        public IQueryable<ProductAttributeComplexTypeDefinition> GetByParent(int? ParentId)
         {
             var IQueryableVar = _context.ProductAttributeComplexTypeDefinitions
-                .Where(p => p.Parent == Parent);
+                .Where(p => p.ParentId == ParentId);
             return IQueryableVar;
         }
 
