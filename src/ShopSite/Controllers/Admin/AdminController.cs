@@ -395,8 +395,8 @@ namespace ShopSite.Controllers
             model.Category = Category;
 
             //added product attribute parameters
-            var Category = product.Categories[0];
-            var ListOfAttributes = _PARepoProductAttribute.Table.Where(m => m.CategoryId == Category.CategoryId);
+            //var Category = product.Categories[0];
+            var ListOfAttributes = _PARepoProductAttribute.Table.Where(m => m.CategoryId == Category.Id);
             foreach (var Attribute in ListOfAttributes)
             {
                 var modelProductAttribute = new ProductAttributeVm();

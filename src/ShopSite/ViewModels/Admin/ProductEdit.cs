@@ -25,8 +25,8 @@ namespace ShopSite.ViewModels.Admin
         [Required]
         public int SelectedCategory { get; set; }
 
-        public IList<ProductAttributeVm> ProductAttributes { get; set; }
+        public IList<ProductAttributeVm> ProductAttributes { get; set; } = new List<ProductAttributeVm>();
 
-        public IList<ProductAttributeCompTVm> ProductAttributesCompT { get; set; }
+        public IList<ProductAttributeCompTVm> ProductAttributesCompT { get; set; } = new List<ProductAttributeCompTVm>();
     }
 }
