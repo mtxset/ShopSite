@@ -518,7 +518,7 @@ namespace ShopSite.Controllers
                         break;
                     case AttrType.TypeString:
                         var t3 = _PARepoProductAttributeString.Table.SingleOrDefault(m => m.ProductId == id) ?? null;
-                        if (t3 != null) modelProductAttribute.Value = t3.Value.ToString();
+                        if (t3 != null) modelProductAttribute.Value = t3.Value;
                         model.ProductAttributes.Add(modelProductAttribute);
                         break;
                     case AttrType.TypeOther:
