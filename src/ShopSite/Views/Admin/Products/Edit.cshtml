@@ -86,7 +86,10 @@
                 @for (int i = 0; i < Model.ProductAttributes.Count; i++)
                 {
                     <label class="control-label">@Model.ProductAttributes[i].ProductAttributeName</label>
-                    @Html.EditorFor(x => x.ProductAttributes[i].Value);
+                    @Html.HiddenFor(x => x.ProductAttributes[i].ProductAttributeId)
+                    @Html.HiddenFor(x => x.ProductAttributes[i].AttrType)
+                    @Html.HiddenFor(x => x.ProductAttributes[i].ProductId)
+                    @Html.EditorFor(x => x.ProductAttributes[i].Value)
                     <br />
                 }
             </div>
@@ -109,6 +112,7 @@
 
                         <div>
                             @Html.HiddenFor(x => x.ProductAttributesCompT[i].ProductAttributeId, Model.ProductAttributesCompT[i].ProductAttributeId)
+                            @Html.HiddenFor(x => x.ProductAttributesCompT[i].ProductId)
                             @Html.RadioButtonFor(x => x.ProductAttributesCompT[i].ValueId, Model.ProductAttributesCompT[i].ProductAttributeComplexTypeDefinition[m].Value)
                             @Html.Label(Model.ProductAttributesCompT[i].ProductAttributeComplexTypeDefinition[m].Text)
                         </div>

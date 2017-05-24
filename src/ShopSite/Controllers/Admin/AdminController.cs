@@ -21,6 +21,7 @@ using ShopSite.ProductAttributes.Models;
 using ShopSite.ProductAttributes.ViewModels;
 using static ShopSite.ProductAttributes.Models.ProductAttribute;
 using ShopSite.ProductAttibutes.Services;
+using System;
 
 namespace ShopSite.Controllers
 {
@@ -360,6 +361,94 @@ namespace ShopSite.Controllers
                 _productRepo.Update(product);
                 _productRepo.Commit();
 
+                bool FlagCreation;
+
+                foreach (var ProductAttribute in model.ProductAttributes)
+                    switch (ProductAttribute.AttrType)
+                    {
+                        case AttrType.TypeData:
+                            var t = _PARepoProductAttributeDate.Table.SingleOrDefault(m => m.ProductId == id) ?? null;
+                            FlagCreation = t == null ? true : false;
+
+                            if (FlagCreation) t = new ProductAttributeDate();
+
+                            DateTime ValueDT;
+                            if (!DateTime.TryParse(ProductAttribute.Value, out ValueDT)) break;
+
+                            t.AtributeNameId = ProductAttribute.ProductAttributeId;
+                            t.ProductId = ProductAttribute.ProductId;
+                            t.Value = ValueDT;
+
+                            if (FlagCreation) _PARepoProductAttributeDate.Insert(t);
+                            else _PARepoProductAttributeDate.Update(t);
+                            break;
+                        case AttrType.TypeDecimal:
+                            var t1 = _PARepoProductAttributeDec.Table.SingleOrDefault(m => m.ProductId == id) ?? null;
+                            FlagCreation = t1 == null ? true : false;
+
+                            if (FlagCreation) t1 = new ProductAttributeDec();
+
+                            Decimal ValueDec;
+                            if (!Decimal.TryParse(ProductAttribute.Value, out ValueDec)) break;
+
+                            t1.AtributeNameId = ProductAttribute.ProductAttributeId;
+                            t1.ProductId = ProductAttribute.ProductId;
+                            t1.Value = ValueDec;
+
+                            if (FlagCreation) _PARepoProductAttributeDec.Insert(t1);
+                            else _PARepoProductAttributeDec.Update(t1);
+                            break;
+                        case AttrType.TypeInteger:
+                            var t2 = _PARepoProductAttributeInt.Table.SingleOrDefault(m => m.ProductId == id && m.AtributeNameId == ProductAttribute.ProductAttributeId) ?? null;
+                            FlagCreation = t2 == null ? true : false;
+
+                            if (FlagCreation) t2 = new ProductAttributeInt();
+
+                            int ValueInt;
+                            if (!int.TryParse(ProductAttribute.Value, out ValueInt)) break;
+
+                            t2.AtributeNameId = ProductAttribute.ProductAttributeId;
+                            t2.ProductId = ProductAttribute.ProductId;
+                            t2.Value = ValueInt;
+
+                            if (FlagCreation) _PARepoProductAttributeInt.Insert(t2);
+                            else _PARepoProductAttributeInt.Update(t2);
+
+                            break;
+                        case AttrType.TypeString:
+                            var t3 = _PARepoProductAttributeString.Table.SingleOrDefault(m => m.ProductId == id && m.AtributeNameId == ProductAttribute.ProductAttributeId) ?? null;
+
+                            FlagCreation = t3 == null ? true : false;
+
+                            if (FlagCreation) t3 = new ProductAttributeString();
+
+                            t3.AtributeNameId = ProductAttribute.ProductAttributeId;
+                            t3.ProductId = ProductAttribute.ProductId;
+                            t3.Value = ProductAttribute.Value;
+
+                            if (FlagCreation) _PARepoProductAttributeString.Insert(t3);
+                            else _PARepoProductAttributeString.Update(t3);
+                            break;
+                    }
+
+                foreach (var ProductAttributeCT in model.ProductAttributesCompT)
+                {
+                    var t4 = _PARepoProductAttributeCompT.Table.SingleOrDefault(m => m.ProductId == id && m.AtributeNameId == ProductAttributeCT.ProductAttributeId) ?? null;
+
+                    FlagCreation = t4 == null ? true : false;
+                    if (FlagCreation) t4 = new ProductAttributeCompexType();
+
+                    if (ProductAttributeCT.ValueId != null)
+                    {
+                        t4.AtributeNameId = ProductAttributeCT.ProductAttributeId;
+                        t4.ProductId = ProductAttributeCT.ProductId;
+                        t4.ValueId = ProductAttributeCT.ValueId;
+
+                        if (FlagCreation) _PARepoProductAttributeCompT.Insert(t4);
+                        else _PARepoProductAttributeCompT.Update(t4);
+                    }
+                }
+
                 return RedirectToAction("Products");
             }
 
@@ -400,12 +489,14 @@ namespace ShopSite.Controllers
             foreach (var Attribute in ListOfAttributes)
             {
                 var modelProductAttribute = new ProductAttributeVm();
-                modelProductAttribute.ProductAttributeId = Attribute.CategoryId;
+                modelProductAttribute.ProductAttributeId = Attribute.Id;
+                modelProductAttribute.ProductId = id;
                 modelProductAttribute.ProductAttributeName = Attribute.Name;
                 modelProductAttribute.AttrType = Attribute.AtributeType;
 
                 var modelProductAttributeCompT = new ProductAttributeCompTVm();
-                modelProductAttributeCompT.ProductAttributeId = Attribute.CategoryId;
+                modelProductAttributeCompT.ProductAttributeId = Attribute.Id;
+                modelProductAttributeCompT.ProductId = id;
                 modelProductAttributeCompT.ProductAttributeName = Attribute.Name;
 
                 switch (Attribute.AtributeType)

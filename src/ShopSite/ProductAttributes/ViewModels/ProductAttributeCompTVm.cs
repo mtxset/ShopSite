@@ -7,7 +7,7 @@ namespace ShopSite.ProductAttributes.ViewModels
     public class ProductAttributeCompTVm
     {
         public int ProductAttributeId { get; set; }
-
+        public int ProductId { get; set; }
         public string ProductAttributeName { get; set; }
 
         public IList<SelectListItem> ProductAttributeComplexTypeDefinition { get; set; }
